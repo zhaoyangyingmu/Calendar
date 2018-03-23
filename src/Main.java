@@ -1,21 +1,24 @@
 import exception.InvalidDateException;
 
+import java.util.List;
+
 /*
 * Start here!
 *
 * */
 public class Main {
-    public static void main(String[] args){
-        /**
-        System.out.println(Util.getCurrentYear());
-        System.out.println(Util.getCurrentMonth());
-        System.out.println(Util.getCurrentDay());
-        */
+    public static void main(String[] args) {
+
+        System.out.println(DateUtil.getToday().toString());
         //todo
         try {
-            Calendar c = new Calendar("1997-11-04");
+            CalendarDate c = new CalendarDate("2000-" + 2 + "-" + "1");
+            List<CalendarDate> list = DateUtil.getDaysInMonth(c);
+            for (int i = 0; i < list.size(); i++){
+                System.out.println(list.get(i));
+            }
         } catch (InvalidDateException e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
         }
     }
 }
