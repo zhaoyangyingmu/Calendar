@@ -51,7 +51,19 @@ public class CalendarDate {
      * @return 1-7, 1 stands for Monday and 7 stands for Sunday
      */
     public int getDayOfWeek(){
-        return 0;
+        int C = year / 100;
+        int y = year % 100;
+        int m = month;
+        if (month <= 2){
+            m = month + 12;
+        }
+        int d = day;
+        int dayOfWeek = C/4 - 2*C + y + y/4  + ((26*(m+1))/10) + d - 1;
+        dayOfWeek = ((dayOfWeek % 7) + 7) % 7;
+        if (dayOfWeek == 0){
+            return 7;
+        }
+        return dayOfWeek;
     }
 
     @Override
