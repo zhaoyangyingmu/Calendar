@@ -1,8 +1,10 @@
+package kernel;
+
 import exception.InvalidDateException;
 
 /**
  * We have finished part of this class yet, you should finish the rest.
- * 1. A constructor that can return a CalendarDate object through the given string.
+ * 1. A constructor that can return a kernel.CalendarDate object through the given string.
  * 2. A method named getDayOfWeek() that can get the index of a day in a week.
  */
 public class CalendarDate {
@@ -17,7 +19,7 @@ public class CalendarDate {
     }
 
     /**
-     * a constructor that can return a CalendarDate object through the given string.
+     * a constructor that can return a kernel.CalendarDate object through the given string.
      * @param dateString format: 2018-3-18
      */
     public CalendarDate(String dateString) throws InvalidDateException {
