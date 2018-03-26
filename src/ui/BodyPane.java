@@ -29,7 +29,6 @@ public class BodyPane extends StackPane {
     }
 
     public void changeContent(CalendarDate date) {
-        //// TODO: 2018/3/25 remain to be tested
         this.getChildren().remove(contentGrid);
         contentGrid = new ContentGrid(date);
         this.getChildren().add(contentGrid);
@@ -62,10 +61,18 @@ public class BodyPane extends StackPane {
                     StackPane pane = new StackPane();
                     int index = (row-1)*7 + column + 1 - dayOfWeekBegin - 1;
                     String labelStr = "";
+                    boolean isToday = false;
                     if (index >= 0 && index < calendars.size()){
                         labelStr += calendars.get(index).getDay();
+                        if (calendars.get(index).equals(DateUtil.getToday())){
+                            isToday = true;
+                        }
                     }
                     Label label = new Label(labelStr);
+                    if (isToday){
+                        label.setStyle("-fx-text-fill: blue;");
+                        isToday = false;
+                    }
                     label.setAlignment(Pos.CENTER);
                     pane.getChildren().add(label);
                     pane.setMaxSize(53,26);

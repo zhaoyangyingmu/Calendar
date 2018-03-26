@@ -9,6 +9,8 @@ import ui.BodyPane;
 import ui.MenuPane;
 import ui.QueryPane;
 
+import java.util.Calendar;
+
 /*
 * You need to implement Calendar GUI here!
 * show the calendar of month of today.
@@ -34,18 +36,23 @@ public class Display extends Application {
         stage.show();
     }
 
-    /**
-     * Init the UI Windows here. For example, the frame, some panels and buttons.
-     */
-    public void init(){
-
-    }
 
     /**
      * paint the days of whole current month on the frame with the given kernel.CalendarDate
      * @param date a valid kernel.CalendarDate param.
      */
-    private void paintDays(CalendarDate date){
-
+    public static boolean paintDays(CalendarDate date){
+        if (date == null){
+            System.out.println("date is null!");
+            return false;
+        }
+        if (DateUtil.isValid(date)){
+            MenuPane.getInstance().changeChoice(date);
+            BodyPane.getInstance().changeContent(date);
+            return true;
+        }else {
+            System.out.println("date "+ date.toString() + " is not valid");
+            return false;
+        }
     }
 }

@@ -1,6 +1,5 @@
 package kernel;
 
-import exception.InvalidDateException;
 
 /**
  * We have finished part of this class yet, you should finish the rest.
@@ -12,7 +11,7 @@ public class CalendarDate {
     private final int month;
     private final int day;
 
-    public CalendarDate(int year, int month, int day){
+    public CalendarDate(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -22,15 +21,14 @@ public class CalendarDate {
      * a constructor that can return a kernel.CalendarDate object through the given string.
      * @param dateString format: 2018-3-18
      */
-    public CalendarDate(String dateString) throws InvalidDateException {
-        if (DateUtil.isFormatted(dateString)){
-            String[] date_parts = dateString.split("-");
-            year = Integer.parseInt(date_parts[0]);
-            month = Integer.parseInt(date_parts[1]);
-            day = Integer.parseInt(date_parts[2]);
-        }else{
-            throw new InvalidDateException(dateString);
-        }
+    /**
+     * Before using this constructor, one must make sure dateString is correct.
+     */
+    public CalendarDate(String dateString) {
+        String[] date_parts = dateString.split("-");
+        year = Integer.parseInt(date_parts[0]);
+        month = Integer.parseInt(date_parts[1]);
+        day = Integer.parseInt(date_parts[2]);
     }
 
     public int getYear() {
@@ -47,30 +45,38 @@ public class CalendarDate {
 
     /**
      * Get index of the day in a week for one date.
-     *
+     * <p>
      * Don't use the existing implement like Calendar.setTime(),
      * try to implement your own algorithm.
+     *
      * @return 1-7, 1 stands for Monday and 7 stands for Sunday
      */
-    public int getDayOfWeek(){
+    public int getDayOfWeek() {
         int C = year / 100;
         int y = year % 100;
         int m = month;
-        if (month <= 2){
+        if (month <= 2) {
             m = month + 12;
         }
         int d = day;
-        int dayOfWeek = C/4 - 2*C + y + y/4  + ((26*(m+1))/10) + d - 1;
+        int dayOfWeek = C / 4 - 2 * C + y + y / 4 + ((26 * (m + 1)) / 10) + d - 1;
         dayOfWeek = ((dayOfWeek % 7) + 7) % 7;
-        if (dayOfWeek == 0){
+        if (dayOfWeek == 0) {
             return 7;
         }
         return dayOfWeek;
     }
 
     @Override
-    public String toString(){
-        return ""+year+"-"+month+"-"+day;
+    public String toString() {
+        return "" + year + "-" + month + "-" + day;
+    }
+
+    public boolean equals(CalendarDate date) {
+        if ((this.getYear() == date.getYear()) && (this.getMonth() == date.getMonth()) && (this.getDay() == date.getDay())) {
+            return true;
+        }
+        return false;
     }
 
 }

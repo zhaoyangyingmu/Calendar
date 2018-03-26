@@ -6,22 +6,25 @@ package kernel;/*
 *
 * */
 
-import kernel.CalendarDate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class DateUtil {
+    private static CalendarDate today;
     /**
      * get a kernel.CalendarDate instance point to today
      *
      * @return a kernel.CalendarDate object
      */
     public static CalendarDate getToday() {
-        Calendar calendar = Calendar.getInstance();
-        return new CalendarDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DAY_OF_MONTH));
+        if (today == null){
+            Calendar calendar = Calendar.getInstance();
+            today = new CalendarDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DAY_OF_MONTH));
+        }
+        return today;
     }
 
     /**
