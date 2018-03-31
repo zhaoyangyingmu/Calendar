@@ -1,8 +1,9 @@
-package ui;
+package ui.pane;
 
-import exception.InvalidDateException;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -11,9 +12,9 @@ import javafx.scene.layout.StackPane;
 import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
+import ui.Config;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by 谢东方xdf on 2018/3/25.
@@ -27,6 +28,8 @@ public class MenuPane extends StackPane {
     public static MenuPane getInstance() {
         if (menuPane == null) {
             menuPane = new MenuPane();
+            menuPane.setPadding(new Insets(0,0,10,0));
+            menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/button.css").toString());
         }
         return menuPane;
     }
@@ -34,7 +37,7 @@ public class MenuPane extends StackPane {
     public MenuPane() {
         Label yearLabel = new Label("年份：");
         ArrayList<String> yearList = new ArrayList<>();
-        for (int i = 1990; i <= 2020; i++) {
+        for (int i = 1800; i <= 2300; i++) {
             yearList.add("" + i);
         }
         yearChoices = new ChoiceBox<>(FXCollections.observableArrayList(yearList));
@@ -49,6 +52,10 @@ public class MenuPane extends StackPane {
         monthChoices.setValue("3");
 
         Button checkBt = new Button("查看");
+        checkBt.getStyleClass().add("btn");
+        checkBt.setMaxSize(50,30);
+        checkBt.setMinSize(50,30);
+        checkBt.setCursor(Cursor.HAND);
         checkBt.setOnMouseClicked(event -> {
             String year = yearChoices.getValue();
             String month = monthChoices.getValue();
@@ -59,6 +66,10 @@ public class MenuPane extends StackPane {
             }
         });
         Button todayBt = new Button("今天");
+        todayBt.getStyleClass().add("btn");
+        todayBt.setMaxSize(50,30);
+        todayBt.setMinSize(50,30);
+        todayBt.setCursor(Cursor.HAND);
         todayBt.setOnMouseClicked(event -> {
             CalendarDate today = DateUtil.getToday();
             Display.paintDays(today);
@@ -70,6 +81,7 @@ public class MenuPane extends StackPane {
         contentGrid.add(monthChoices, 3, 0);
         contentGrid.add(checkBt, 4, 0);
         contentGrid.add(todayBt, 5, 0);
+        contentGrid.setHgap(20);
         contentGrid.setAlignment(Pos.CENTER);
         this.getChildren().add(contentGrid);
     }

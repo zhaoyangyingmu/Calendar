@@ -1,15 +1,16 @@
 package kernel;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import ui.BodyPane;
-import ui.MenuPane;
-import ui.QueryPane;
-
-import java.util.Calendar;
+import ui.Config;
+import ui.pane.BodyPane;
+import ui.pane.MenuPane;
+import ui.pane.QueryPane;
 
 /*
 * You need to implement Calendar GUI here!
@@ -31,7 +32,14 @@ public class Display extends Application {
         pane.setTop(MenuPane.getInstance());
         pane.setCenter(BodyPane.getInstance());
         pane.setBottom(QueryPane.getInstance());
+
+        pane.setPadding(Config.getPadding());
         Scene scene = new Scene(pane);
+        stage.setMaxHeight(Config.getWindowHeight());
+        stage.setMinHeight(Config.getWindowHeight());
+        stage.setMaxWidth(Config.getWindowWidth());
+        stage.setMinWidth(Config.getWindowWidth());
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

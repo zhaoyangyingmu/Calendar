@@ -10,11 +10,15 @@ public class CalendarDate {
     private final int year;
     private final int month;
     private final int day;
+    private ActivityType activityType;
+    private String message;
 
     public CalendarDate(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
+        activityType = ActivityType.LEISURE;
+        message = "";
     }
 
     /**
@@ -29,6 +33,8 @@ public class CalendarDate {
         year = Integer.parseInt(date_parts[0]);
         month = Integer.parseInt(date_parts[1]);
         day = Integer.parseInt(date_parts[2]);
+        activityType = ActivityType.LEISURE;
+        message = "";
     }
 
     public int getYear() {
@@ -67,6 +73,22 @@ public class CalendarDate {
         return dayOfWeek;
     }
 
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType){
+        this.activityType = activityType;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return "" + year + "-" + month + "-" + day;
@@ -77,6 +99,10 @@ public class CalendarDate {
             return true;
         }
         return false;
+    }
+
+    public enum ActivityType {
+        LEISURE , DATING , STUDY;
     }
 
 }

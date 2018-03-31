@@ -1,4 +1,4 @@
-package ui;
+package ui.pane;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import kernel.CalendarDate;
 import kernel.DateUtil;
+import ui.Config;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class BodyPane extends StackPane {
     public static BodyPane getInstance() {
         if (bodyPane == null) {
             bodyPane = new BodyPane();
+            bodyPane.getStylesheets().add(Config.class.getResource("/stylesheet/body.css").toString());
+            bodyPane.getStyleClass().add("bodyPane");
         }
         return bodyPane;
     }
@@ -42,12 +45,13 @@ public class BodyPane extends StackPane {
                 Label label = new Label(""+ DateUtil.DayType.values()[i].getPrintMark());
                 label.setAlignment(Pos.CENTER);
                 pane.getChildren().add(label);
-                pane.setMaxSize(53,26);
-                pane.setMinSize(53,26);
+                pane.setMaxSize(Config.getRectangleWidth(),Config.getRectangleHeight());
+                pane.setMinSize(Config.getRectangleWidth(),Config.getRectangleHeight());
+                pane.getStyleClass().add("thead");
                 this.add(pane,i,0);
             }
             List<CalendarDate> calendars = DateUtil.getDaysInMonth(date);
-            int dayOfWeekBegin = calendars.get(0).getDayOfWeek();
+            int dayOfWeekBegin = calendars.get(0).getDayOfWeek()%7;
             int dayOfWeekEnd = calendars.get(calendars.size()-1).getDayOfWeek();
             dayOfWeekEnd = 6 - dayOfWeekEnd;
             if (dayOfWeekEnd < 0){
@@ -64,22 +68,34 @@ public class BodyPane extends StackPane {
                     boolean isToday = false;
                     if (index >= 0 && index < calendars.size()){
                         labelStr += calendars.get(index).getDay();
+                        CalendarDate.ActivityType activityType = calendars.get(index).getActivityType();
+                        if (activityType == CalendarDate.ActivityType.LEISURE){
+                            pane.getStyleClass().add("leisure");
+                        }else if (activityType == CalendarDate.ActivityType.DATING){
+                            pane.getStyleClass().add("dating");
+                        }else {
+                            pane.getStyleClass().add("study");
+                        }
                         if (calendars.get(index).equals(DateUtil.getToday())){
                             isToday = true;
                         }
+                    }else {
+                        pane.getStyleClass().add("leisure");
                     }
                     Label label = new Label(labelStr);
                     if (isToday){
-                        label.setStyle("-fx-text-fill: blue;");
+                        pane.setId("today");
                         isToday = false;
                     }
                     label.setAlignment(Pos.CENTER);
                     pane.getChildren().add(label);
-                    pane.setMaxSize(53,26);
-                    pane.setMinSize(53,26);
+                    pane.setMaxSize(Config.getRectangleWidth(),Config.getRectangleHeight());
+                    pane.setMinSize(Config.getRectangleWidth(),Config.getRectangleHeight());
                     this.add(pane,column,row);
                 }
             }
+            this.setVgap(Config.getvGap());
+            this.setHgap(Config.gethGap());
         }
     }
 }
