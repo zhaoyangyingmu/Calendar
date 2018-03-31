@@ -35,26 +35,28 @@ public class MenuPane extends StackPane {
     }
 
     public MenuPane() {
-        Label yearLabel = new Label("年份：");
+        Label yearLabel = new Label("Year: ");
+        yearLabel.setStyle("-fx-text-fill: white;");
         ArrayList<String> yearList = new ArrayList<>();
         for (int i = 1800; i <= 2300; i++) {
             yearList.add("" + i);
         }
         yearChoices = new ChoiceBox<>(FXCollections.observableArrayList(yearList));
-        yearChoices.setValue("2018");
+        yearChoices.setValue(DateUtil.getToday().getYear()+"");
 
-        Label monthLabel = new Label("月份：");
+        Label monthLabel = new Label("Month: ");
+        monthLabel.setStyle("-fx-text-fill: white;");
         ArrayList<String> monthList = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             monthList.add("" + i);
         }
         monthChoices = new ChoiceBox<>(FXCollections.observableArrayList(monthList));
-        monthChoices.setValue("3");
+        monthChoices.setValue("" + DateUtil.getToday().getMonth());
 
-        Button checkBt = new Button("查看");
+        Button checkBt = new Button("Check");
         checkBt.getStyleClass().add("btn");
-        checkBt.setMaxSize(50,30);
-        checkBt.setMinSize(50,30);
+        checkBt.setMaxSize(60,30);
+        checkBt.setMinSize(60,30);
         checkBt.setCursor(Cursor.HAND);
         checkBt.setOnMouseClicked(event -> {
             String year = yearChoices.getValue();
@@ -65,10 +67,10 @@ public class MenuPane extends StackPane {
                 Display.paintDays(date);
             }
         });
-        Button todayBt = new Button("今天");
+        Button todayBt = new Button("Today");
         todayBt.getStyleClass().add("btn");
-        todayBt.setMaxSize(50,30);
-        todayBt.setMinSize(50,30);
+        todayBt.setMaxSize(60,30);
+        todayBt.setMinSize(60,30);
         todayBt.setCursor(Cursor.HAND);
         todayBt.setOnMouseClicked(event -> {
             CalendarDate today = DateUtil.getToday();

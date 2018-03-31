@@ -145,8 +145,8 @@ public class DateUtil {
     }
 
     public enum DayType {
-        SUN("日"), MON("一"), TUES("二"), WEDN("三"),
-        THUR("四"), FRI("五"), SAT("六");
+        SUN("Sun"), MON("Mon"), TUES("Tues"), WEDN("Wed"),
+        THUR("Thur"), FRI("Fri"), SAT("Sat");
         private final String printMark;
 
         DayType(String printMark) {

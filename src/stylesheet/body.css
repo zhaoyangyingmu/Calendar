@@ -1,11 +1,7 @@
-.thead {
-    -fx-background-color: rgba(0, 132, 255, 0.5);
-    -fx-font-family:STXingkai;
-    -fx-font-size:25;
-}
-
-.leisure {
-    -fx-background-color: rgba(255, 255 ,255 , 1);
+.thead , .leisure {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-font-family:Times New Roman;
+    -fx-font-size:20;
 }
 
 .study {

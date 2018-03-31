@@ -43,6 +43,7 @@ public class BodyPane extends StackPane {
             for (int i = 0 ; i<7 ; i++){
                 StackPane pane = new StackPane();
                 Label label = new Label(""+ DateUtil.DayType.values()[i].getPrintMark());
+                label.setStyle("-fx-text-fill: white;");
                 label.setAlignment(Pos.CENTER);
                 pane.getChildren().add(label);
                 pane.setMaxSize(Config.getRectangleWidth(),Config.getRectangleHeight());
@@ -61,7 +62,6 @@ public class BodyPane extends StackPane {
             int weekNum = printTotal/7;
             for (int row = 1 ; row <= weekNum ; row++){
                 for(int column = 0; column < 7; column++){
-                    // // TODO: 2018/3/25 judge current day
                     StackPane pane = new StackPane();
                     int index = (row-1)*7 + column + 1 - dayOfWeekBegin - 1;
                     String labelStr = "";
@@ -83,6 +83,7 @@ public class BodyPane extends StackPane {
                         pane.getStyleClass().add("leisure");
                     }
                     Label label = new Label(labelStr);
+                    label.setStyle("-fx-text-fill: white;");
                     if (isToday){
                         pane.setId("today");
                         isToday = false;

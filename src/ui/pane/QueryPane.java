@@ -32,10 +32,10 @@ public class QueryPane extends StackPane {
         TextField dateText = new TextField("Search format : 2018-1-1");
         dateText.setMaxSize(200 , 30);
         dateText.setMinSize(200 , 30);
-        Button searchBt = new Button("查询");
+        Button searchBt = new Button("Search");
         searchBt.getStyleClass().add("btn");
-        searchBt.setMaxSize(50,30);
-        searchBt.setMinSize(50,30);
+        searchBt.setMaxSize(80,30);
+        searchBt.setMinSize(80,30);
         searchBt.setCursor(Cursor.HAND);
         searchBt.setOnMouseClicked(event -> {
             String text = dateText.getText();
