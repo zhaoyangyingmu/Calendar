@@ -1,5 +1,6 @@
 package ui.pane;
 
+import exception.InvalidDateException;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,7 +29,7 @@ public class MenuPane extends StackPane {
     public static MenuPane getInstance() {
         if (menuPane == null) {
             menuPane = new MenuPane();
-            menuPane.setPadding(new Insets(0,0,10,0));
+            menuPane.setPadding(new Insets(0, 0, 10, 0));
             menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/button.css").toString());
         }
         return menuPane;
@@ -42,7 +43,7 @@ public class MenuPane extends StackPane {
             yearList.add("" + i);
         }
         yearChoices = new ChoiceBox<>(FXCollections.observableArrayList(yearList));
-        yearChoices.setValue(DateUtil.getToday().getYear()+"");
+        yearChoices.setValue(DateUtil.getToday().getYear() + "");
         yearChoices.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
 
         Label monthLabel = new Label("Month: ");
@@ -57,22 +58,24 @@ public class MenuPane extends StackPane {
 
         Button checkBt = new Button("Check");
         checkBt.getStyleClass().add("btn");
-        checkBt.setMaxSize(60,30);
-        checkBt.setMinSize(60,30);
+        checkBt.setMaxSize(60, 30);
+        checkBt.setMinSize(60, 30);
         checkBt.setCursor(Cursor.HAND);
         checkBt.setOnMouseClicked(event -> {
             String year = yearChoices.getValue();
             String month = monthChoices.getValue();
             String dateString = year + "-" + month + "-" + 1;
-            if (DateUtil.isFormatted(dateString)) {
+            try {
                 CalendarDate date = new CalendarDate(dateString);
                 Display.paintDays(date);
+            } catch (InvalidDateException e) {
+                System.out.println(e.toString());
             }
         });
         Button todayBt = new Button("Today");
         todayBt.getStyleClass().add("btn");
-        todayBt.setMaxSize(60,30);
-        todayBt.setMinSize(60,30);
+        todayBt.setMaxSize(60, 30);
+        todayBt.setMinSize(60, 30);
         todayBt.setCursor(Cursor.HAND);
         todayBt.setOnMouseClicked(event -> {
             CalendarDate today = DateUtil.getToday();

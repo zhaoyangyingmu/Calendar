@@ -1,9 +1,11 @@
 package ui.pane;
 
+import exception.InvalidDateException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -29,6 +31,8 @@ public class QueryPane extends StackPane {
     }
 
     private QueryPane() {
+        Label hintLabel = new Label("HintLabel");
+        hintLabel.setStyle("-fx-text-fill: white ; -fx-font-size: 20");
         TextField dateText = new TextField("Search format : 2018-1-1");
         dateText.setMaxSize(200 , 30);
         dateText.setMinSize(200 , 30);
@@ -39,15 +43,25 @@ public class QueryPane extends StackPane {
         searchBt.setCursor(Cursor.HAND);
         searchBt.setOnMouseClicked(event -> {
             String text = dateText.getText();
-            if (DateUtil.isFormatted(text)) {
+            try {
                 CalendarDate date = new CalendarDate(text);
-                Display.paintDays(date);
+                if (!Display.paintDays(date)){
+                    hintLabel.setText("InvalidDate");
+                    hintLabel.setStyle("-fx-text-fill: red;; -fx-font-size: 15;");
+                }else {
+                    hintLabel.setText("HintLabel");
+                    hintLabel.setStyle("-fx-text-fill: white ; -fx-font-size: 20");
+                }
+            }catch (InvalidDateException e){
+                hintLabel.setText("InvalidFormat");
+                hintLabel.setStyle("-fx-text-fill: red;; -fx-font-size: 15;");
             }
         });
         contentGrid = new GridPane();
-        contentGrid.add(dateText, 0, 0);
-        contentGrid.add(searchBt, 1, 0);
-        contentGrid.setHgap(20);
+        contentGrid.add(hintLabel , 0 , 0);
+        contentGrid.add(dateText, 1, 0);
+        contentGrid.add(searchBt, 2, 0);
+        contentGrid.setHgap(15);
         contentGrid.setAlignment(Pos.CENTER);
         contentGrid.setPadding(new Insets(10,0,0,0));
         this.getChildren().add(contentGrid);

@@ -1,6 +1,8 @@
 package kernel;
 
 
+import exception.InvalidDateException;
+
 /**
  * We have finished part of this class yet, you should finish the rest.
  * 1. A constructor that can return a kernel.CalendarDate object through the given string.
@@ -28,7 +30,10 @@ public class CalendarDate {
     /**
      * Before using this constructor, one must make sure dateString is correct.
      */
-    public CalendarDate(String dateString) {
+    public CalendarDate(String dateString) throws InvalidDateException {
+        if (!DateUtil.isFormatted(dateString)){
+            throw new InvalidDateException("Date format is invalid!");
+        }
         String[] date_parts = dateString.split("-");
         year = Integer.parseInt(date_parts[0]);
         month = Integer.parseInt(date_parts[1]);
@@ -58,6 +63,9 @@ public class CalendarDate {
      * @return 1-7, 1 stands for Monday and 7 stands for Sunday
      */
     public int getDayOfWeek() {
+        if (!DateUtil.isValid(this)){
+            return -1;
+        }
         int C = year / 100;
         int y = year % 100;
         int m = month;

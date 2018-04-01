@@ -104,6 +104,15 @@ public class DateUtil {
                 int year = Integer.parseInt(date_parts[0]);
                 int month = Integer.parseInt(date_parts[1]);
                 int day = Integer.parseInt(date_parts[2]);
+                if(!(year > 0 && year <= 9999)){
+                    return false;
+                }
+                if (!(month > 0 && month <= 99 )){
+                    return false;
+                }
+                if (!(day > 0 && day <= 99)){
+                    return false;
+                }
                 return true;
             } catch (Exception e) {
                 return false;
