@@ -21,10 +21,10 @@
 
 .study:hover, .dating:hover , .leisure:hover , #today:hover {
     -fx-border-color:rgba(0,0,0,0.3);
-    -fx-background-color:linear-gradient(#92dbf6 0%, #11abe4 100%);
+    -fx-background-color:linear-gradient(#92dbf6 0%, #11abe4 30%);
 }
 
 #today {
     -fx-text-fill:black;
-    -fx-background-color:linear-gradient(#ccffff 0%, #00ffff 100%);
+    -fx-background-color:rgba(17, 171, 228, 0.4);
 }

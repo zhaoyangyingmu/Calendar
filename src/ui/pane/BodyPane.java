@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import kernel.CalendarDate;
 import kernel.DateUtil;
+import kernel.Display;
 import ui.Config;
 
 import java.util.List;
@@ -79,6 +80,9 @@ public class BodyPane extends StackPane {
                         if (calendars.get(index).equals(DateUtil.getToday())){
                             isToday = true;
                         }
+                        pane.setOnMouseClicked(event -> {
+                            Display.addEdit(calendars.get(index));
+                        });
                     }else {
                         pane.getStyleClass().add("leisure");
                     }

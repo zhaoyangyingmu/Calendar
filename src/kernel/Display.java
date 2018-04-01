@@ -1,18 +1,17 @@
 package kernel;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import ui.Config;
 import ui.pane.BodyPane;
+import ui.pane.EditPane;
 import ui.pane.MenuPane;
 import ui.pane.QueryPane;
 
@@ -56,6 +55,16 @@ public class Display extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static void addEdit(CalendarDate date) {
+        EditPane.getInstance().setContent(date);
+        imageCalendarPane.getChildren().add(EditPane.getInstance());
+        EditPane.getInstance().setAlignment(Pos.CENTER);
+    }
+
+    public static void removeEdit() {
+        imageCalendarPane.getChildren().remove(EditPane.getInstance());
     }
 
 

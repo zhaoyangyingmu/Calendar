@@ -43,6 +43,7 @@ public class MenuPane extends StackPane {
         }
         yearChoices = new ChoiceBox<>(FXCollections.observableArrayList(yearList));
         yearChoices.setValue(DateUtil.getToday().getYear()+"");
+        yearChoices.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
 
         Label monthLabel = new Label("Month: ");
         monthLabel.setStyle("-fx-text-fill: white;");
@@ -52,6 +53,7 @@ public class MenuPane extends StackPane {
         }
         monthChoices = new ChoiceBox<>(FXCollections.observableArrayList(monthList));
         monthChoices.setValue("" + DateUtil.getToday().getMonth());
+        monthChoices.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
 
         Button checkBt = new Button("Check");
         checkBt.getStyleClass().add("btn");

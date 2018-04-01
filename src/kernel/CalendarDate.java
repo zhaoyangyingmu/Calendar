@@ -102,7 +102,14 @@ public class CalendarDate {
     }
 
     public enum ActivityType {
-        LEISURE , DATING , STUDY;
+        LEISURE("leisure") , DATING("dating") , STUDY("study");
+        private String typeStr;
+        ActivityType(String typeStr) {
+            this.typeStr = typeStr;
+        }
+        public String getTypeStr() {
+            return typeStr;
+        }
     }
 
 }

@@ -10,6 +10,9 @@ public class Config {
     private static final int windowWidth = 1050;
     private static final int windowHeight = 650;
 
+    private Config() {
+
+    }
     public static int getWindowWidth(){
         return windowWidth;
     }
