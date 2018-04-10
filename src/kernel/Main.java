@@ -2,7 +2,6 @@ package kernel;
 
 import javafx.application.Application;
 
-
 /*
 * Start here!
 *
