@@ -68,10 +68,16 @@ public class DateUtil {
      * @return true if the date is valid, false if the date is not valid.
      */
     public static boolean isValid(CalendarDate date) {
+        if (date == null) {
+            return false;
+        }
         if ((date.getYear() < 1800) || (date.getYear() > 2100)) {
             return false;
         }
         if ((date.getMonth() < 1) || (date.getMonth() > 12)) {
+            return false;
+        }
+        if (date.getDay() < 0 ) {
             return false;
         }
         MonthType monthType = MonthType.values()[date.getMonth()];
@@ -98,6 +104,9 @@ public class DateUtil {
      * @return true if the input is formatted, false if the input is not formatted.
      */
     public static boolean isFormatted(String dateString) {
+        if (dateString == null) {
+            return false;
+        }
         String[] date_parts = dateString.split("-");
         if (date_parts.length == 3) {
             try {

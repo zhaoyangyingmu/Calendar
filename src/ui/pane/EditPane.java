@@ -22,7 +22,7 @@ public class EditPane extends StackPane {
     private ArrayList<String> activityList;
     private Button saveBt;
     private Button cancelBt;
-    private ChoiceBox<String> activityChoices;
+//    private ChoiceBox<String> activityChoices;
 
     public static EditPane getInstance() {
         if (editPane == null){
@@ -36,7 +36,7 @@ public class EditPane extends StackPane {
     public void setContent(CalendarDate date) {
         label.setText(date.toString());
         mesText.setText("What is going on today?");
-        activityChoices.setValue(date.getActivityType().toString());
+//        activityChoices.setValue(date.getActivityType().toString());
     }
     private EditPane() {
         contentGrid = new GridPane();
@@ -44,15 +44,15 @@ public class EditPane extends StackPane {
         label = new Label(date.toString());
         label.setAlignment(Pos.CENTER);
         label.setStyle("-fx-font-size: 20; -fx-text-fill: white");
-        mesText = new TextField();
-        mesText.setText(date.getMessage());
-
-        activityList = new ArrayList<>();
-        for (CalendarDate.ActivityType type : CalendarDate.ActivityType.values()){
-            activityList.add(type.getTypeStr());
-        }
-        activityChoices = new ChoiceBox<>(FXCollections.observableArrayList(activityList));
-        activityChoices.setValue(date.getActivityType().getTypeStr());
+//        mesText = new TextField();
+//        mesText.setText(date.getMessage());
+//
+//        activityList = new ArrayList<>();
+//        for (CalendarDate.ActivityType type : CalendarDate.ActivityType.values()){
+//            activityList.add(type.getTypeStr());
+//        }
+//        activityChoices = new ChoiceBox<>(FXCollections.observableArrayList(activityList));
+//        activityChoices.setValue(date.getActivityType().getTypeStr());
 
         saveBt = new Button("Save");
         saveBt.setOnMouseClicked(event -> {
@@ -65,7 +65,7 @@ public class EditPane extends StackPane {
 
         contentGrid.add(label, 0, 0);
         contentGrid.add(mesText , 0, 1);
-        contentGrid.add(activityChoices,0,2);
+//        contentGrid.add(activityChoices,0,2);
         contentGrid.add(saveBt,0,3);
         contentGrid.add(cancelBt,0,4);
         this.getChildren().add(contentGrid);

@@ -12,15 +12,11 @@ public class CalendarDate {
     private final int year;
     private final int month;
     private final int day;
-    private ActivityType activityType;
-    private String message;
 
     public CalendarDate(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
-        activityType = ActivityType.LEISURE;
-        message = "";
     }
 
     /**
@@ -38,8 +34,6 @@ public class CalendarDate {
         year = Integer.parseInt(date_parts[0]);
         month = Integer.parseInt(date_parts[1]);
         day = Integer.parseInt(date_parts[2]);
-        activityType = ActivityType.LEISURE;
-        message = "";
     }
 
     public int getYear() {
@@ -81,43 +75,14 @@ public class CalendarDate {
         return dayOfWeek;
     }
 
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType){
-        this.activityType = activityType;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     @Override
-    public String toString() {
-        return "" + year + "-" + month + "-" + day;
-    }
-
-    public boolean equals(CalendarDate date) {
-        if ((this.getYear() == date.getYear()) && (this.getMonth() == date.getMonth()) && (this.getDay() == date.getDay())) {
+    public boolean equals(Object date) {
+        int year = ((CalendarDate)date).getYear();
+        int month = ((CalendarDate)date).getMonth();
+        int day = ((CalendarDate)date).getDay();
+        if ((this.getYear() == year) && (this.getMonth() == month) && (this.getDay() == day)) {
             return true;
         }
         return false;
     }
-
-    public enum ActivityType {
-        LEISURE("leisure") , DATING("dating") , STUDY("study");
-        private String typeStr;
-        ActivityType(String typeStr) {
-            this.typeStr = typeStr;
-        }
-        public String getTypeStr() {
-            return typeStr;
-        }
-    }
-
 }

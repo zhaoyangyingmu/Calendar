@@ -15,6 +15,9 @@ public class Item {
     }
 
     public boolean isDuringTime(TimeStamp from, TimeStamp to){
+        if ((this.from.isBefore(to)) && (this.to.isAfter(from))) {
+            return true;
+        }
         return false;
     }
 
@@ -62,5 +65,12 @@ public class Item {
         public String getTypeStr() {
             return typeStr;
         }
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Item item = (Item)object;
+        return (from.equals(item.getFrom())) && (to.equals(item.getTo()))
+                && (detailText.equals(item.getDetailText())) && (itemType == item.getItemType());
     }
 }

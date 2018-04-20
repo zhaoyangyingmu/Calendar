@@ -1,14 +1,19 @@
 package ui.pane;
 
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
+import todoitem.util.TimeStamp;
 import ui.Config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,13 +34,14 @@ public class BodyPane extends StackPane {
 
     public BodyPane() {
         contentGrid = new ContentGrid(DateUtil.getToday());
-        this.getChildren().add(contentGrid);
+        this.add(new AsidePane(), 0,0);
+        this.add(contentGrid, 1 , 0);
     }
 
     public void changeContent(CalendarDate date) {
         this.getChildren().remove(contentGrid);
         contentGrid = new ContentGrid(date);
-        this.getChildren().add(contentGrid);
+        this.add(contentGrid,1,0);
     }
 
     private class ContentGrid extends GridPane {
@@ -69,20 +75,25 @@ public class BodyPane extends StackPane {
                     boolean isToday = false;
                     if (index >= 0 && index < calendars.size()){
                         labelStr += calendars.get(index).getDay();
-                        CalendarDate.ActivityType activityType = calendars.get(index).getActivityType();
-                        if (activityType == CalendarDate.ActivityType.LEISURE){
-                            pane.getStyleClass().add("leisure");
-                        }else if (activityType == CalendarDate.ActivityType.DATING){
-                            pane.getStyleClass().add("dating");
-                        }else {
-                            pane.getStyleClass().add("study");
-                        }
+//                        CalendarDate.ActivityType activityType = calendars.get(index).getActivityType();
+//                        if (activityType == CalendarDate.ActivityType.LEISURE){
+//                            pane.getStyleClass().add("leisure");
+//                        }else if (activityType == CalendarDate.ActivityType.DATING){
+//                            pane.getStyleClass().add("dating");
+//                        }else {
+//                            pane.getStyleClass().add("study");
+//                        }
                         if (calendars.get(index).equals(DateUtil.getToday())){
                             isToday = true;
                         }
                         pane.setOnMouseClicked(event -> {
                             try {
-                                Display.addEdit(calendars.get(index));
+                                CalendarDate dateI = calendars.get(index);
+                                TimeStamp from = new TimeStamp(dateI.getYear(),
+                                        dateI.getMonth(),dateI.getDay(),0,0);
+                                TimeStamp to = new TimeStamp(dateI.getYear(),
+                                        dateI.getMonth(),dateI.getDay(),23,59);
+                                Display.addDetailPane(from , to);
                             }catch (Exception e){
                                 System.out.println("Can't click twice!");
                             }
@@ -107,4 +118,6 @@ public class BodyPane extends StackPane {
             this.setHgap(Config.gethGap());
         }
     }
+
+
 }

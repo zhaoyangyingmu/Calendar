@@ -46,6 +46,7 @@ public class MenuPane extends StackPane {
         yearChoices.setValue(DateUtil.getToday().getYear() + "");
         yearChoices.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
 
+
         Label monthLabel = new Label("Month: ");
         monthLabel.setStyle("-fx-text-fill: white;");
         ArrayList<String> monthList = new ArrayList<>();
