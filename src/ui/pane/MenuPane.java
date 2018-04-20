@@ -30,7 +30,7 @@ public class MenuPane extends StackPane {
         if (menuPane == null) {
             menuPane = new MenuPane();
             menuPane.setPadding(new Insets(0, 0, 10, 0));
-            menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/button.css").toString());
+            menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/buttonAndLabel.css").toString());
         }
         return menuPane;
     }

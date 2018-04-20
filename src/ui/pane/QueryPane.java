@@ -10,7 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import kernel.CalendarDate;
-import kernel.DateUtil;
 import kernel.Display;
 import ui.Config;
 
@@ -25,7 +24,7 @@ public class QueryPane extends StackPane {
         if (queryPane == null) {
             queryPane = new QueryPane();
             queryPane.getStylesheets().add(Config.class.getResource("/stylesheet/query.css").toString());
-            queryPane.getStylesheets().add(Config.class.getResource("/stylesheet/button.css").toString());
+            queryPane.getStylesheets().add(Config.class.getResource("/stylesheet/buttonAndLabel.css").toString());
         }
         return queryPane;
     }
