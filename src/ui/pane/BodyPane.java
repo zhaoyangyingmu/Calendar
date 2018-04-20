@@ -1,19 +1,14 @@
 package ui.pane;
 
-import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
-import todoitem.util.TimeStamp;
 import ui.Config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,14 +29,13 @@ public class BodyPane extends StackPane {
 
     public BodyPane() {
         contentGrid = new ContentGrid(DateUtil.getToday());
-        this.add(new AsidePane(), 0,0);
-        this.add(contentGrid, 1 , 0);
+        this.getChildren().add(contentGrid);
     }
 
     public void changeContent(CalendarDate date) {
         this.getChildren().remove(contentGrid);
         contentGrid = new ContentGrid(date);
-        this.add(contentGrid,1,0);
+        this.getChildren().add(contentGrid);
     }
 
     private class ContentGrid extends GridPane {
@@ -83,17 +77,12 @@ public class BodyPane extends StackPane {
 //                        }else {
 //                            pane.getStyleClass().add("study");
 //                        }
-                        if (calendars.get(index).equals(DateUtil.getToday())){
-                            isToday = true;
-                        }
+//                        if (calendars.get(index).equals(DateUtil.getToday())){
+//                            isToday = true;
+//                        }
                         pane.setOnMouseClicked(event -> {
                             try {
-                                CalendarDate dateI = calendars.get(index);
-                                TimeStamp from = new TimeStamp(dateI.getYear(),
-                                        dateI.getMonth(),dateI.getDay(),0,0);
-                                TimeStamp to = new TimeStamp(dateI.getYear(),
-                                        dateI.getMonth(),dateI.getDay(),23,59);
-                                Display.addDetailPane(from , to);
+                                Display.addEdit(calendars.get(index));
                             }catch (Exception e){
                                 System.out.println("Can't click twice!");
                             }
@@ -118,6 +107,4 @@ public class BodyPane extends StackPane {
             this.setHgap(Config.gethGap());
         }
     }
-
-
 }

@@ -1,0 +1,141 @@
+package todoitem;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import todoitem.util.TimeStamp;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+public class ItemManagerTest {
+
+    @Before
+    public void setUp() throws Exception {
+        System.out.println("Class ItemManager tests begin! Good Luck!");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        System.out.println("Class ItemManager tests end! Are you satisfied?");
+        ItemManager.destroy();
+    }
+
+    @Test
+    public void addItem() {
+        boolean noSuchItem = false;
+        List<Item> items = new ArrayList<>() {
+            {
+                add(new Item(new TimeStamp(2016, 2,29, 0 , 1),
+                        new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE));
+
+                add(new Item(new TimeStamp(2013, 1,31, 23 , 1),
+                        new TimeStamp(2014, 1,31, 16 , 6), "", Item.ItemType.LEISURE));
+
+                add(new Item(new TimeStamp(2018, 6,30, 5 , 42),
+                        new TimeStamp(2018, 6,30, 5 , 43), "", Item.ItemType.LEISURE));
+            }
+        };
+        for (int i = 0;i < items.size();i++) {
+            ItemManager.getInstance().addItem(items.get(i));
+        }
+        here:
+        for (int i = 0 ; i < items.size();i++) {
+            List<Item> resultList = ItemManager.getInstance().getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
+            if (resultList.size() == 0) {
+                noSuchItem = true;
+                break;
+            }
+            for (int j = 0 ; j < resultList.size(); j++) {
+                if (resultList.get(j).equals(items.get(i))){
+                    continue here;
+                }
+            }
+            noSuchItem = true;
+            break;
+        }
+        assertFalse(noSuchItem);
+    }
+
+    @Test
+    public void getItemsByStamp() {
+        List<TimeStamp> fromCases = new ArrayList<>(){
+            {
+                add(new TimeStamp(2016, 2,29, 0 , 0));
+                add(new TimeStamp(2013, 1,31, 16 , 6));
+                add(new TimeStamp(2018, 6,30, 5 , 42));
+            }
+        };
+        List<TimeStamp> toCases = new ArrayList<>(){
+            {
+                add(new TimeStamp(2017, 2,29, 6 , 31));
+                add(new TimeStamp(2014, 1,31, 16 , 6));
+                add(new TimeStamp(2019, 6,30, 5 , 43));
+            }
+        };
+        List<Item> items = new ArrayList<>() {
+            {
+                for (int i = 0 ; i < fromCases.size(); i++){
+                    add(new Item(fromCases.get(i),toCases.get(i),"" , Item.ItemType.LEISURE));
+                }
+            }
+        };
+
+        for (int i = 0 ; i < items.size();i++) {
+            ItemManager.getInstance().addItem(items.get(i));
+        }
+        boolean pass = true;
+        for (int i = 0 ; i < items.size();i++){
+            List<Item> actualList = ItemManager.getInstance()
+                    .getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
+            if (!actualList.get(0).equals(items.get(i))){
+                pass = false;
+                break;
+            }
+        }
+        assertTrue(pass);
+    }
+
+    @Test
+    public void deleteItem() {
+        List<TimeStamp> fromCases = new ArrayList<>(){
+            {
+                add(new TimeStamp(2016, 2,29, 0 , 0));
+                add(new TimeStamp(2013, 1,31, 16 , 6));
+                add(new TimeStamp(2018, 6,30, 5 , 42));
+            }
+        };
+        List<TimeStamp> toCases = new ArrayList<>(){
+            {
+                add(new TimeStamp(2017, 2,29, 6 , 31));
+                add(new TimeStamp(2014, 1,31, 16 , 6));
+                add(new TimeStamp(2019, 6,30, 5 , 43));
+            }
+        };
+        List<Item> items = new ArrayList<>() {
+            {
+                for (int i = 0 ; i < fromCases.size(); i++){
+                    add(new Item(fromCases.get(i),toCases.get(i),"" , Item.ItemType.LEISURE));
+                }
+            }
+        };
+        for (int i = 0 ; i < items.size();i++) {
+            ItemManager.getInstance().addItem(items.get(i));
+        }
+        boolean pass = true;
+        for (int i = 0 ; i < items.size();i++){
+            List<Item> actualList = ItemManager.getInstance()
+                    .getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
+            ItemManager.getInstance().deleteItem(actualList.get(0));
+            List<Item> listAfterDelete = ItemManager.getInstance()
+                    .getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
+            if (listAfterDelete.size() != 0) {
+                pass = false;
+                break;
+            }
+        }
+        assertTrue(pass);
+    }
+}
