@@ -65,5 +65,6 @@ public class QueryPane extends StackPane {
         contentGrid.setPadding(new Insets(10,0,0,0));
         this.getChildren().add(contentGrid);
     }
+
 }
 

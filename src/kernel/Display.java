@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import todoitem.Item;
 import todoitem.util.TimeStamp;
 import ui.Config;
 import ui.pane.*;
@@ -39,6 +40,7 @@ public class Display extends Application {
     private static TimeStamp fromStatic;
     private static TimeStamp toStatic;
     private static ImageView backgroundImage;
+    private static EditPane editPane;
     public Display(){
 
     }
@@ -83,6 +85,9 @@ public class Display extends Application {
         imageCalendarPane.getChildren().remove(detailPane);
     }
 
+    /**
+     *  disable returnDetail function. .
+     * */
     public static void returnDetailPane() {
         imageCalendarPane.getChildren().remove(detailPane);
         detailPane = new DetailPane(fromStatic , toStatic);
@@ -98,6 +103,15 @@ public class Display extends Application {
 
     public static void removeEdit() {
         imageCalendarPane.getChildren().remove(EditPane.getInstance());
+    }
+
+    public static void addEditPane(Item item) {
+        editPane = new EditPane(item);
+        imageCalendarPane.getChildren().add(editPane);
+    }
+
+    public static void removeEditPane() {
+        imageCalendarPane.getChildren().remove(editPane);
     }
 
 
@@ -213,6 +227,23 @@ public class Display extends Application {
             this.setHalignment(toSecondRow, HPos.CENTER);
 
             Button searchBt = new Button("search");
+            searchBt.setOnMouseClicked(event -> {
+                int fromYear = Integer.parseInt(fromYearChoices.getValue());
+                int toYear = Integer.parseInt(toYearChoices.getValue());
+                int fromMonth = Integer.parseInt(fromMonthChoices.getValue());
+                int toMonth = Integer.parseInt(toMonthChoices.getValue());
+                int fromDay = Integer.parseInt(fromDayChoices.getValue());
+                int toDay = Integer.parseInt(toDayChoices.getValue());
+                int fromHour = Integer.parseInt(fromHourChoices.getValue());
+                int toHour = Integer.parseInt(toHourChoices.getValue());
+                int fromMinute = Integer.parseInt(fromMinuteChoices.getValue());
+                int toMinute = Integer.parseInt(toMinuteChoices.getValue());
+                TimeStamp from = new TimeStamp(fromYear, fromMonth, fromDay , fromHour , fromMinute);
+                TimeStamp to = new TimeStamp(toYear , toMonth , toDay , toHour , toMinute);
+                if (to.isValid() && from.isValid()) {
+                    Display.addDetailPane(from, to);
+                }
+            });
             searchBt.getStyleClass().add("btn");
             this.add(searchBt, 0, 5 );
             this.setHalignment(searchBt, HPos.CENTER);

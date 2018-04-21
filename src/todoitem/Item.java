@@ -73,4 +73,9 @@ public class Item {
         return (from.equals(item.getFrom())) && (to.equals(item.getTo()))
                 && (detailText.equals(item.getDetailText())) && (itemType == item.getItemType());
     }
+
+    @Override
+    public String toString() {
+        return "item";
+    }
 }
