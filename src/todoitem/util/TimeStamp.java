@@ -57,6 +57,7 @@ public class TimeStamp {
         if (year > target.getYear()){
             return true;
         }
+
         // year equal
         if (month < target.getMonth()){
             return false;
@@ -128,7 +129,7 @@ public class TimeStamp {
             return false;
         }
         // minute equal
-        return false;
+        return true;
     }
 
     public boolean isValid() {

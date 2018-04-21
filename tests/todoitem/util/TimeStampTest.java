@@ -101,7 +101,7 @@ public class TimeStampTest {
         List<TimeStamp> beforeCases = new ArrayList<>(){
             {
                 // date is true
-                add(new TimeStamp(2018, 3,31, 5 , 23));
+                add(new TimeStamp(2018, 3,31, 5 , 24));
                 add(new TimeStamp(2016, 1,31, 0 , 0));
                 add(new TimeStamp(2016, 3,31, 1 , 0));
             }
@@ -120,7 +120,7 @@ public class TimeStampTest {
         List<TimeStamp> afterCases = new ArrayList<>(){
             {
                 // date is true
-                add(new TimeStamp(2018, 3,31, 5 , 25));
+                add(new TimeStamp(2018, 3,31, 5 , 24));
                 add(new TimeStamp(2018, 4,29, 12 , 1));
                 add(new TimeStamp(2019, 3,29, 23 , 59));
             }

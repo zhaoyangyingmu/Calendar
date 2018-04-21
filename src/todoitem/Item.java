@@ -15,6 +15,10 @@ public class Item {
     }
 
     public boolean isDuringTime(TimeStamp from, TimeStamp to){
+        System.out.println("this.from "+ this.from.toString());
+        System.out.println("from " + from.toString());
+        System.out.println(this.from.isBefore(to));
+        System.out.println(this.to.isAfter(from));
         if ((this.from.isBefore(to)) && (this.to.isAfter(from))) {
             return true;
         }
@@ -64,6 +68,18 @@ public class Item {
 
         public String getTypeStr() {
             return typeStr;
+        }
+
+        public static ItemType parseItemType(String typeStr){
+            switch (typeStr) {
+                case "LEISURE":
+                    return LEISURE;
+                case "DATING":
+                    return DATING;
+                case "STUDY":
+                    return STUDY;
+            }
+            return null;
         }
     }
 

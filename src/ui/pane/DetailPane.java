@@ -33,17 +33,21 @@ public class DetailPane extends GridPane {
          * */
         GridPane detailContent = new GridPane();
         for ( int i = 0 ; i < itemList.size(); i++) {
-            Label label = new Label(itemList.toString());
+            Label label = new Label(itemList.get(i).getDetailText());
             detailContent.add(label, 0, i);
         }
         this.add(detailContent , 0 , 1);
         Button addBt = new Button("add");
         addBt.setOnMouseClicked(event -> {
             Item item = new Item(from, to , "" , Item.ItemType.LEISURE);
+            ItemManager.getInstance().addItem(item);
             Display.removeDetailPane();
             Display.addEditPane(item);
         });
         Button quitBt = new Button("quit");
+        quitBt.setOnMouseClicked(event -> {
+            Display.removeDetailPane();
+        });
         this.add(addBt , 0 , 2);
         this.add(quitBt , 0 , 3);
     }
@@ -67,5 +71,4 @@ public class DetailPane extends GridPane {
             this.add(buttonPane,0,3);
         }
     }
-
 }
