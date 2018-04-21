@@ -33,8 +33,8 @@ public class DetailPane extends GridPane {
          * */
         GridPane detailContent = new GridPane();
         for ( int i = 0 ; i < itemList.size(); i++) {
-            Label label = new Label(itemList.get(i).getDetailText());
-            detailContent.add(label, 0, i);
+            ItemPane itemPane = new ItemPane(itemList.get(i));
+            detailContent.add(itemPane, 0, i);
         }
         this.add(detailContent , 0 , 1);
         Button addBt = new Button("add");
@@ -65,7 +65,15 @@ public class DetailPane extends GridPane {
             this.add(detailText, 0 , 2);
             GridPane buttonPane = new GridPane();
             Button removeBt = new Button("remove");
+            removeBt.setOnMouseClicked(event -> {
+                ItemManager.getInstance().deleteItem(item);
+                Display.refreshDetailPane();
+            });
             Button editBt = new Button("edit");
+            editBt.setOnMouseClicked(event -> {
+                Display.removeDetailPane();
+                Display.addEditPane(item);
+            });
             buttonPane.add(removeBt,0,0);
             buttonPane.add(editBt, 1,0);
             this.add(buttonPane,0,3);
