@@ -85,26 +85,6 @@ public class Display extends Application {
         imageCalendarPane.getChildren().remove(detailPane);
     }
 
-    /**
-     *  disable returnDetail function. .
-     * */
-    public static void returnDetailPane() {
-        imageCalendarPane.getChildren().remove(detailPane);
-        detailPane = new DetailPane(fromStatic , toStatic);
-        imageCalendarPane.getChildren().add(detailPane);
-        detailPane.setAlignment(Pos.CENTER);
-    }
-
-    public static void addEdit(CalendarDate date) {
-        EditPane.getInstance().setContent(date);
-        imageCalendarPane.getChildren().add(EditPane.getInstance());
-        EditPane.getInstance().setAlignment(Pos.CENTER);
-    }
-
-    public static void removeEdit() {
-        imageCalendarPane.getChildren().remove(EditPane.getInstance());
-    }
-
     public static void addEditPane(Item item) {
         editPane = new EditPane(item);
         imageCalendarPane.getChildren().add(editPane);

@@ -80,13 +80,13 @@ public class BodyPane extends StackPane {
 //                        if (calendars.get(index).equals(DateUtil.getToday())){
 //                            isToday = true;
 //                        }
-                        pane.setOnMouseClicked(event -> {
-                            try {
-                                Display.addEdit(calendars.get(index));
-                            }catch (Exception e){
-                                System.out.println("Can't click twice!");
-                            }
-                        });
+//                        pane.setOnMouseClicked(event -> {
+//                            try {
+//                                Display.addEdit(calendars.get(index));
+//                            }catch (Exception e){
+//                                System.out.println("Can't click twice!");
+//                            }
+//                        });
                     }else {
                         pane.getStyleClass().add("leisure");
                     }
