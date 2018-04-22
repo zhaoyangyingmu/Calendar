@@ -39,6 +39,9 @@ public class TimeStamp {
         return minute;
     }
 
+    /**
+     * in practice, we find it not so useful. Therefore, we add setDay method;
+     * */
     public void changeTo(int year, int month , int day , int hour , int minute){
         this.year = year;
         this.month = month;
@@ -46,6 +49,11 @@ public class TimeStamp {
         this.hour = hour;
         this.minute = minute;
     }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
 
     /**
      * 2018.1.1 9:30 is after 2018.1.1 9:30

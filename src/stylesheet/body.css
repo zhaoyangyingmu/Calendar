@@ -9,11 +9,6 @@
     -fx-background-color:linear-gradient(#b3ffb3 0%, #4dff4d 100%);
 }
 
-.dating {
-    -fx-text-fill:black;
-    -fx-background-color:linear-gradient(#ffb3ec 0%, #ff4dd2 100%);
-}
-
 .thead , .study , .dating , .leisure{
     -fx-background-radius:10;
     -fx-border-radius:10;
@@ -27,4 +22,9 @@
 #today {
     -fx-text-fill:black;
     -fx-background-color:rgba(17, 171, 228, 0.4);
+}
+
+.dating {
+    -fx-text-fill:black;
+    -fx-background-color: pink;
 }
