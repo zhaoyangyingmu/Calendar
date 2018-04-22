@@ -6,15 +6,16 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.GridPane;
 import kernel.Display;
 import todoitem.util.TimeStamp;
-
 import java.util.ArrayList;
 
 public class AsidePane extends GridPane {
     public AsidePane() {
-        Label title = new Label("Detail search");
+        Label title = new Label("Detail Search");
+        title.setStyle("-fx-font-size: 20px;");
         title.getStyleClass().add("myLabel");
         this.add(title, 0, 0);
         this.setHalignment(title, HPos.CENTER);
@@ -30,12 +31,12 @@ public class AsidePane extends GridPane {
         ChoiceBox<String> fromYearChoices = getStringChoices(1800, 2100);
         fromFirstRow.add(fromYearChoices, 2, 0);
 
-        Label fromMonthLabel = new Label("month");
+        Label fromMonthLabel = new Label("month:");
         fromMonthLabel.getStyleClass().add("myLabel");
         fromFirstRow.add(fromMonthLabel, 3, 0);
         ChoiceBox<String> fromMonthChoices = getStringChoices(1, 12);
         fromFirstRow.add(fromMonthChoices, 4, 0);
-        fromFirstRow.setHgap(3);
+        fromFirstRow.setHgap(10);
         this.add(fromFirstRow, 0, 1);
         this.setHalignment(fromFirstRow, HPos.CENTER);
 
@@ -72,12 +73,12 @@ public class AsidePane extends GridPane {
         ChoiceBox<String> toYearChoices = getStringChoices(1800, 2100);
         toFirstRow.add(toYearChoices, 2, 0);
 
-        Label toMonthLabel = new Label("month");
+        Label toMonthLabel = new Label("month:");
         toMonthLabel.getStyleClass().add("myLabel");
         toFirstRow.add(toMonthLabel, 3, 0);
         ChoiceBox<String> toMonthChoices = getStringChoices(1, 12);
         toFirstRow.add(toMonthChoices, 4, 0);
-        toFirstRow.setHgap(3);
+        toFirstRow.setHgap(10);
         this.add(toFirstRow, 0, 3);
         this.setHalignment(toFirstRow, HPos.CENTER);
 
@@ -122,6 +123,7 @@ public class AsidePane extends GridPane {
             }
         });
         searchBt.getStyleClass().add("btn");
+        searchBt.setMaxSize(90 , 60);
         this.add(searchBt, 0, 5);
         this.setHalignment(searchBt, HPos.CENTER);
         this.setAlignment(Pos.CENTER);

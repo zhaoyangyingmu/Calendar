@@ -67,6 +67,9 @@ public class Display extends Application {
     }
 
     public static void addDetailPane(TimeStamp from , TimeStamp to) {
+        if (detailPane != null) {
+            removeDetailPane();
+        }
         detailPane = new DetailPane(from , to);
         fromStatic = from;
         toStatic = to;
@@ -76,6 +79,7 @@ public class Display extends Application {
 
     public static void removeDetailPane() {
         imageCalendarPane.getChildren().remove(detailPane);
+        detailPane = null;
     }
 
     public static void refreshDetailPane() {
