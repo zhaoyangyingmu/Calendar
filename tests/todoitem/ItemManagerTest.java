@@ -26,7 +26,7 @@ public class ItemManagerTest {
     @Test
     public void addItem() {
         boolean noSuchItem = false;
-        List<Item> items = new ArrayList<>() {
+        List<Item> items = new ArrayList<Item>() {
             {
                 add(new Item(new TimeStamp(2016, 2,29, 0 , 1),
                         new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE));
@@ -61,21 +61,21 @@ public class ItemManagerTest {
 
     @Test
     public void getItemsByStamp() {
-        List<TimeStamp> fromCases = new ArrayList<>(){
+        List<TimeStamp> fromCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2016, 2,29, 0 , 0));
                 add(new TimeStamp(2013, 1,31, 16 , 6));
                 add(new TimeStamp(2018, 6,30, 5 , 42));
             }
         };
-        List<TimeStamp> toCases = new ArrayList<>(){
+        List<TimeStamp> toCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2017, 2,29, 6 , 31));
                 add(new TimeStamp(2014, 1,31, 16 , 6));
                 add(new TimeStamp(2019, 6,30, 5 , 43));
             }
         };
-        List<Item> items = new ArrayList<>() {
+        List<Item> items = new ArrayList<Item>() {
             {
                 for (int i = 0 ; i < fromCases.size(); i++){
                     add(new Item(fromCases.get(i),toCases.get(i),"" , Item.ItemType.LEISURE));
@@ -100,21 +100,21 @@ public class ItemManagerTest {
 
     @Test
     public void deleteItem() {
-        List<TimeStamp> fromCases = new ArrayList<>(){
+        List<TimeStamp> fromCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2016, 2,29, 0 , 0));
                 add(new TimeStamp(2013, 1,31, 16 , 6));
                 add(new TimeStamp(2018, 6,30, 5 , 42));
             }
         };
-        List<TimeStamp> toCases = new ArrayList<>(){
+        List<TimeStamp> toCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2017, 2,29, 6 , 31));
                 add(new TimeStamp(2014, 1,31, 16 , 6));
                 add(new TimeStamp(2019, 6,30, 5 , 43));
             }
         };
-        List<Item> items = new ArrayList<>() {
+        List<Item> items = new ArrayList<Item>() {
             {
                 for (int i = 0 ; i < fromCases.size(); i++){
                     add(new Item(fromCases.get(i),toCases.get(i),"" , Item.ItemType.LEISURE));

@@ -24,21 +24,21 @@ public class ItemTest {
 
     @Test
     public void isDuringTime() {
-        List<TimeStamp> fromCases = new ArrayList<>(){
+        List<TimeStamp> fromCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2016, 2,29, 0 , 0));
                 add(new TimeStamp(2013, 1,31, 16 , 6));
                 add(new TimeStamp(2018, 6,30, 5 , 42));
             }
         };
-        List<TimeStamp> toCases = new ArrayList<>(){
+        List<TimeStamp> toCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2016, 2,29, 6 , 31));
                 add(new TimeStamp(2014, 1,31, 16 , 6));
                 add(new TimeStamp(2018, 6,30, 5 , 43));
             }
         };
-        List<Item> itemsDuringThisPeriod = new ArrayList<>() {
+        List<Item> itemsDuringThisPeriod = new ArrayList<Item>() {
             {
                 add(new Item(new TimeStamp(2016, 2,29, 0 , 1),
                              new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE));

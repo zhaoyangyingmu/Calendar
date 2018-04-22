@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class TimeStampTest {
     @Test
     public void isValid() {
         //assert true cases
-        List<TimeStamp> trueCases = new ArrayList<>(){
+        List<TimeStamp> trueCases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2016, 2,29, 0 , 0));
@@ -39,7 +40,7 @@ public class TimeStampTest {
             assertTrue(trueCases.get(i).isValid());
         }
         //assert false cases
-        List<TimeStamp> falseCases = new ArrayList<>(){
+        List<TimeStamp> falseCases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2016, 2,31, 0 , 0));
@@ -59,7 +60,7 @@ public class TimeStampTest {
 
     @Test
     public void changeTo() {
-        List<TimeStamp> cases = new ArrayList<>(){
+        List<TimeStamp> cases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2016, 2,29, 0 , 0));
@@ -67,7 +68,7 @@ public class TimeStampTest {
                 add(new TimeStamp(2016, 4,30, 0 , 0));
             }
         };
-        List<TimeStamp> testCases = new ArrayList<>(){
+        List<TimeStamp> testCases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2000, 1,21, 6 , 24));
@@ -90,7 +91,7 @@ public class TimeStampTest {
     @Test
     public void isAfter() {
         TimeStamp testCase = new TimeStamp(2018, 3 , 31 , 5, 24);
-        List<TimeStamp> afterCases = new ArrayList<>(){
+        List<TimeStamp> afterCases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2018, 3,31, 5 , 25));
@@ -98,7 +99,7 @@ public class TimeStampTest {
                 add(new TimeStamp(2019, 3,29, 23 , 59));
             }
         };
-        List<TimeStamp> beforeCases = new ArrayList<>(){
+        List<TimeStamp> beforeCases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2018, 3,31, 5 , 24));
@@ -117,7 +118,7 @@ public class TimeStampTest {
     @Test
     public void isBefore() {
         TimeStamp testCase = new TimeStamp(2018, 3 , 31 , 5, 24);
-        List<TimeStamp> afterCases = new ArrayList<>(){
+        List<TimeStamp> afterCases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2018, 3,31, 5 , 24));
@@ -125,7 +126,7 @@ public class TimeStampTest {
                 add(new TimeStamp(2019, 3,29, 23 , 59));
             }
         };
-        List<TimeStamp> beforeCases = new ArrayList<>(){
+        List<TimeStamp> beforeCases = new ArrayList<TimeStamp>(){
             {
                 // date is true
                 add(new TimeStamp(2018, 3,31, 5 , 23));
