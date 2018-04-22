@@ -14,6 +14,7 @@ import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
 import todoitem.Item;
+import todoitem.ItemManager;
 import todoitem.util.TimeStamp;
 
 import java.util.ArrayList;
@@ -108,6 +109,7 @@ public class EditPane extends GridPane {
         });
         Button cancelBt = new Button("Cancel");
         cancelBt.setOnMouseClicked(event -> {
+            ItemManager.getInstance().deleteItem(item);
             Display.removeEditPane();
         });
         buttonRow.add(saveBt, 0 ,0);

@@ -24,13 +24,6 @@ public class DetailPane extends GridPane {
         this.add(title, 0 , 0);
         title.setAlignment(Pos.CENTER);
         ArrayList<Item> itemList = ItemManager.getInstance().getItemsByStamp(from, to);
-        //        for (int i = 0 ; i < itemList.size() ; i++) {
-//            ItemPane itemPane = new ItemPane(itemList.get(i));
-//            this.add(itemPane, 0, i+1);
-//        }
-        /**
-         * disable item pane
-         * */
         GridPane detailContent = new GridPane();
         for ( int i = 0 ; i < itemList.size(); i++) {
             ItemPane itemPane = new ItemPane(itemList.get(i));

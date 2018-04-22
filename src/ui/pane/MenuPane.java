@@ -39,7 +39,7 @@ public class MenuPane extends StackPane {
         Label yearLabel = new Label("Year: ");
         yearLabel.setStyle("-fx-text-fill: white;");
         ArrayList<String> yearList = new ArrayList<>();
-        for (int i = 1800; i <= 2300; i++) {
+        for (int i = 1800; i <= 2100; i++) {
             yearList.add("" + i);
         }
         yearChoices = new ChoiceBox<>(FXCollections.observableArrayList(yearList));
