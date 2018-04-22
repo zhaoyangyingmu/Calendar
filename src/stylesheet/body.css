@@ -1,12 +1,7 @@
-.thead , .leisure {
+.thead , .leisure, .dating , .study {
     -fx-background-color: rgba(0, 0, 0, 0.5);
     -fx-font-family:Times New Roman;
     -fx-font-size:20;
-}
-
-.study {
-    -fx-text-fill:black;
-    -fx-background-color:linear-gradient(#b3ffb3 0%, #4dff4d 100%);
 }
 
 .thead , .study , .dating , .leisure{
@@ -14,7 +9,7 @@
     -fx-border-radius:10;
 }
 
-.study:hover, .dating:hover , .leisure:hover , #today:hover {
+.leisure:hover , #today:hover {
     -fx-border-color:rgba(0,0,0,0.3);
     -fx-background-color:linear-gradient(#92dbf6 0%, #11abe4 30%);
 }
@@ -26,5 +21,20 @@
 
 .dating {
     -fx-text-fill:black;
-    -fx-background-color: pink;
+    -fx-background-color: linear-gradient(#ff80bf 0%, #ff1a8c 30%);
+}
+
+.dating:hover {
+    -fx-border-color:rgba(0,0,0,0.3);
+    -fx-background-color:linear-gradient(#ff80bf 0%, #ff1a8c 100%);
+}
+
+.study {
+    -fx-text-fill:black;
+    -fx-background-color:linear-gradient(#b3ffb3 0%, #4dff4d 20%);
+}
+
+.study:hover {
+    -fx-border-color:rgba(0,0,0,0.3);
+    -fx-background-color:linear-gradient(#b3ffb3 0%, #4dff4d 100%);
 }

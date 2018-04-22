@@ -68,6 +68,7 @@ public class DetailPane extends GridPane {
             removeBt.setOnMouseClicked(event -> {
                 ItemManager.getInstance().deleteItem(item);
                 Display.refreshDetailPane();
+                BodyPane.getInstance().refresh();
             });
             Button editBt = new Button("edit");
             editBt.setOnMouseClicked(event -> {

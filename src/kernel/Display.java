@@ -99,6 +99,7 @@ public class Display extends Application {
     }
 
     public static void removeEditPane() {
+        BodyPane.getInstance().refresh();
         imageCalendarPane.getChildren().remove(editPane);
     }
 
