@@ -85,27 +85,36 @@ public class EditPane extends GridPane {
         GridPane buttonRow = new GridPane();
         Button saveBt = new Button("Save");
         saveBt.setOnMouseClicked(event -> {
-            int[] fromArray = new int[5];
-            fromArray[0] = Integer.parseInt(((LabelAndTextRow) fromYearRow).getTextField().getText());
-            fromArray[1] = Integer.parseInt(((LabelAndTextRow) fromMonthRow).getTextField().getText());
-            fromArray[2] = Integer.parseInt(((LabelAndTextRow) fromDayRow).getTextField().getText());
-            fromArray[3] = Integer.parseInt(((LabelAndTextRow) fromHourRow).getTextField().getText());
-            fromArray[4] = Integer.parseInt(((LabelAndTextRow) fromMinuteRow).getTextField().getText());
+            try {
+                int[] fromArray = new int[5];
+                fromArray[0] = Integer.parseInt(((LabelAndTextRow) fromYearRow).getTextField().getText());
+                fromArray[1] = Integer.parseInt(((LabelAndTextRow) fromMonthRow).getTextField().getText());
+                fromArray[2] = Integer.parseInt(((LabelAndTextRow) fromDayRow).getTextField().getText());
+                fromArray[3] = Integer.parseInt(((LabelAndTextRow) fromHourRow).getTextField().getText());
+                fromArray[4] = Integer.parseInt(((LabelAndTextRow) fromMinuteRow).getTextField().getText());
 
-            int[] toArray = new int[5];
-            toArray[0] = Integer.parseInt(((LabelAndTextRow) toYearRow).getTextField().getText());
-            toArray[1] = Integer.parseInt(((LabelAndTextRow) toMonthRow).getTextField().getText());
-            toArray[2] = Integer.parseInt(((LabelAndTextRow) toDayRow).getTextField().getText());
-            toArray[3] = Integer.parseInt(((LabelAndTextRow) toHourRow).getTextField().getText());
-            toArray[4] = Integer.parseInt(((LabelAndTextRow) toMinuteRow).getTextField().getText());
+                int[] toArray = new int[5];
+                toArray[0] = Integer.parseInt(((LabelAndTextRow) toYearRow).getTextField().getText());
+                toArray[1] = Integer.parseInt(((LabelAndTextRow) toMonthRow).getTextField().getText());
+                toArray[2] = Integer.parseInt(((LabelAndTextRow) toDayRow).getTextField().getText());
+                toArray[3] = Integer.parseInt(((LabelAndTextRow) toHourRow).getTextField().getText());
+                toArray[4] = Integer.parseInt(((LabelAndTextRow) toMinuteRow).getTextField().getText());
 
-            TimeStamp fromStamp = new TimeStamp(fromArray[0], fromArray[1], fromArray[2] , fromArray[3] , fromArray[4]);
-            TimeStamp toStamp = new TimeStamp(toArray[0] , toArray[1] , toArray[2] , toArray[3] , toArray[4]);
-            item.setFrom(fromStamp);
-            item.setTo(toStamp);
-            item.setItemType(Item.ItemType.parseItemType(((LabelAndTextRow) typeRow).getTextField().getText()));
-            item.setDetailText(((LabelAndTextRow) infoRow).getTextField().getText());
-            Display.removeEditPane();
+                TimeStamp fromStamp = new TimeStamp(fromArray[0], fromArray[1], fromArray[2], fromArray[3], fromArray[4]);
+                TimeStamp toStamp = new TimeStamp(toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
+                item.setFrom(fromStamp);
+                item.setTo(toStamp);
+                Item.ItemType tmpType = Item.ItemType.parseItemType(((LabelAndTextRow) typeRow).getTextField().getText());
+                if(tmpType != null) {
+                    item.setItemType(tmpType);
+                } else {
+                    throw new Exception("No such item type!");
+                }
+                item.setDetailText(((LabelAndTextRow) infoRow).getTextField().getText());
+                Display.removeEditPane();
+            }catch (Exception e) {
+                System.out.println("请输入数字与正确的类型！");
+            }
         });
         Button cancelBt = new Button("Cancel");
         cancelBt.setOnMouseClicked(event -> {
