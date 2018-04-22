@@ -10,7 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
