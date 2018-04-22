@@ -2,6 +2,7 @@ package ui.pane;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -118,7 +119,7 @@ public class BodyPane extends StackPane {
                         to = new TimeStamp(to.getYear() , to.getMonth() ,
                                 to.getDay()+1 ,to.getHour(), to.getMinute());
                     }else {
-                        pane.getStyleClass().add("leisure");
+                        pane.getStyleClass().add("none");
                     }
 
                     Label label = new Label(labelStr);

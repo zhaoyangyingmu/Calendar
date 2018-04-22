@@ -1,18 +1,10 @@
 package ui.pane;
 
-import javafx.collections.FXCollections;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
-import kernel.CalendarDate;
-import kernel.DateUtil;
 import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
@@ -23,9 +15,9 @@ import java.util.ArrayList;
 
 public class EditPane extends GridPane {
 
-    public EditPane(Item item) {
+    public EditPane(Item item, boolean fromAdd) {
         /**
-         * from
+         * from timeStamp information
          * */
         GridPane fromFirstRow = new GridPane();
         TimeStamp from = item.getFrom();
@@ -59,6 +51,10 @@ public class EditPane extends GridPane {
         this.add(fromSecondRow , 0  , 1 );
         fromSecondRow.setAlignment(Pos.CENTER);
 
+
+        /**
+         * to timeStamp information
+         * */
         GridPane toFirstRow = new GridPane();
         TimeStamp to = item.getTo();
         Label toLabel = new Label("To: ");
@@ -90,6 +86,9 @@ public class EditPane extends GridPane {
         this.add(toSecondRow, 0  , 3 );
         toSecondRow.setAlignment(Pos.CENTER);
 
+        /**
+         * type information
+         * */
         ArrayList<String> typeList = new ArrayList<>();
         for(int i = 0 ; i < Item.ItemType.values().length; i++) {
             typeList.add(Item.ItemType.values()[i].toString());
@@ -101,12 +100,22 @@ public class EditPane extends GridPane {
         this.add(typeRow, 0 , 4);
         typeRow.setAlignment(Pos.CENTER);
 
+        /**
+         * Detail information
+         * */
         GridPane infoRow = new LabelAndTextRow("Info: ", item.getDetailText());
         this.add(infoRow , 0, 5);
         infoRow.setAlignment(Pos.CENTER);
 
+
+        /**
+         * Save and remove button;
+         * */
         GridPane buttonRow = new GridPane();
         Button saveBt = new Button("Save");
+        saveBt.getStyleClass().add("green");
+        saveBt.setMinSize(70, 35);
+        saveBt.setMaxSize(70 , 35);
         saveBt.setOnMouseClicked(event -> {
             try {
                 int[] fromArray = new int[5];
@@ -143,18 +152,26 @@ public class EditPane extends GridPane {
             }
         });
         Button cancelBt = new Button("Cancel");
+        cancelBt.getStyleClass().add("red");
+        cancelBt.setMinSize(70 , 35);
+        cancelBt.setMaxSize(70 , 35);
+
         cancelBt.setOnMouseClicked(event -> {
-            ItemManager.getInstance().deleteItem(item);
+            if (fromAdd) {
+                ItemManager.getInstance().deleteItem(item);
+            }
             Display.removeEditPane();
         });
         buttonRow.add(saveBt, 0 ,0);
         buttonRow.add(cancelBt , 1, 0);
+        buttonRow.setHgap(10);
         this.add(buttonRow , 0, 6);
         buttonRow.setAlignment(Pos.CENTER);
         this.setVgap(10);
         this.setStyle("-fx-background-color: rgba(255 , 255 , 255 , 0.9);-fx-background-radius: 5.0;");
         this.setMaxSize(683, 315);
         this.setMinSize(683, 315);
+        this.getStylesheets().add("/stylesheet/greenAndRed.css");
     }
 
     private class LabelAndTextRow extends GridPane{
@@ -175,7 +192,4 @@ public class EditPane extends GridPane {
             return textField;
         }
     }
-//  public void setContent(Item item)
-// TODO: 2018/4/21
-
 }

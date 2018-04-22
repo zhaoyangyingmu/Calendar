@@ -87,8 +87,8 @@ public class Display extends Application {
         imageCalendarPane.getChildren().add(detailPane);
     }
 
-    public static void addEditPane(Item item) {
-        editPane = new EditPane(item);
+    public static void addEditPane(Item item , boolean fromAdd) {
+        editPane = new EditPane(item, fromAdd);
         imageCalendarPane.getChildren().add(editPane);
         editPane.setAlignment(Pos.CENTER);
     }

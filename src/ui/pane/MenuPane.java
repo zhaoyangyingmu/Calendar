@@ -14,6 +14,7 @@ import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
 import ui.Config;
+import ui.util.LabelAndCombo;
 
 import java.util.ArrayList;
 
@@ -23,8 +24,8 @@ import java.util.ArrayList;
 public class MenuPane extends StackPane {
     private static MenuPane menuPane;
     private GridPane contentGrid = new GridPane();
-    private ChoiceBox<String> yearChoices;
-    private ChoiceBox<String> monthChoices;
+    private GridPane yearUnit;
+    private GridPane monthUnit;
 
     public static MenuPane getInstance() {
         if (menuPane == null) {
@@ -36,26 +37,13 @@ public class MenuPane extends StackPane {
     }
 
     public MenuPane() {
-        Label yearLabel = new Label("Year: ");
-        yearLabel.setStyle("-fx-text-fill: white;");
-        ArrayList<String> yearList = new ArrayList<>();
-        for (int i = 1800; i <= 2100; i++) {
-            yearList.add("" + i);
-        }
-        yearChoices = new ChoiceBox<>(FXCollections.observableArrayList(yearList));
-        yearChoices.setValue(DateUtil.getToday().getYear() + "");
-        yearChoices.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
+        yearUnit = LabelAndCombo.getInstance("Year:   ", 1800, 2100);
+        ((LabelAndCombo) yearUnit).getComboBox().setMaxSize(70, 25);
+        ((LabelAndCombo) yearUnit).getComboBox().setMinSize(70 , 25);
+        ((LabelAndCombo) yearUnit).getComboBox().setValue(DateUtil.getToday().getYear() + "");
 
-
-        Label monthLabel = new Label("Month: ");
-        monthLabel.setStyle("-fx-text-fill: white;");
-        ArrayList<String> monthList = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
-            monthList.add("" + i);
-        }
-        monthChoices = new ChoiceBox<>(FXCollections.observableArrayList(monthList));
-        monthChoices.setValue("" + DateUtil.getToday().getMonth());
-        monthChoices.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
+        monthUnit = LabelAndCombo.getInstance("Month:   ", 1, 12);
+        ((LabelAndCombo) monthUnit).getComboBox().setValue("" + DateUtil.getToday().getMonth());
 
         Button checkBt = new Button("Check");
         checkBt.getStyleClass().add("btn");
@@ -63,14 +51,16 @@ public class MenuPane extends StackPane {
         checkBt.setMinSize(60, 30);
         checkBt.setCursor(Cursor.HAND);
         checkBt.setOnMouseClicked(event -> {
-            String year = yearChoices.getValue();
-            String month = monthChoices.getValue();
-            String dateString = year + "-" + month + "-" + 1;
             try {
+                String year = ((LabelAndCombo) yearUnit).getComboBox().getValue();
+                String month = ((LabelAndCombo) monthUnit).getComboBox().getValue();
+                String dateString = year + "-" + month + "-" + 1;
                 CalendarDate date = new CalendarDate(dateString);
                 Display.paintDays(date);
             } catch (InvalidDateException e) {
                 System.out.println(e.toString());
+            }catch (Exception e){
+                System.out.println("Type correct number, Please! ");
             }
         });
         Button todayBt = new Button("Today");
@@ -83,19 +73,18 @@ public class MenuPane extends StackPane {
             Display.paintDays(today);
         });
 
-        contentGrid.add(yearLabel, 0, 0);
-        contentGrid.add(yearChoices, 1, 0);
-        contentGrid.add(monthLabel, 2, 0);
-        contentGrid.add(monthChoices, 3, 0);
-        contentGrid.add(checkBt, 4, 0);
-        contentGrid.add(todayBt, 5, 0);
+        int colIndex = 0;
+        contentGrid.add(yearUnit, colIndex++, 0);
+        contentGrid.add(monthUnit, colIndex++, 0);
+        contentGrid.add(checkBt, colIndex++, 0);
+        contentGrid.add(todayBt, colIndex++, 0);
         contentGrid.setHgap(20);
         contentGrid.setAlignment(Pos.CENTER);
         this.getChildren().add(contentGrid);
     }
 
     public void changeChoice(CalendarDate date) {
-        yearChoices.setValue("" + date.getYear());
-        monthChoices.setValue("" + date.getMonth());
+        ((LabelAndCombo)yearUnit).getComboBox().setValue(""+date.getYear());
+        ((LabelAndCombo)monthUnit).getComboBox().setValue("" + date.getMonth());
     }
 }

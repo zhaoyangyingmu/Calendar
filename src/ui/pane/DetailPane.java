@@ -49,7 +49,7 @@ public class DetailPane extends BorderPane {
             Item item = new Item(from, to , "" , Item.ItemType.LEISURE);
             ItemManager.getInstance().addItem(item);
             Display.removeDetailPane();
-            Display.addEditPane(item);
+            Display.addEditPane(item, true);
         });
         addBt.getStyleClass().add("btn");
         addBt.setMaxSize(45 , 30);
@@ -97,22 +97,24 @@ public class DetailPane extends BorderPane {
 
             GridPane buttonPane = new GridPane();
             Button removeBt = new Button("remove");
+            removeBt.getStyleClass().add("redInDetail");
+            removeBt.setMaxSize(80, 23);
+            removeBt.setMinSize(80, 23);
             removeBt.setOnMouseClicked(event -> {
                 ItemManager.getInstance().deleteItem(item);
                 Display.refreshDetailPane();
                 BodyPane.getInstance().refresh();
             });
-            removeBt.setStyle("-fx-background-color: linear-gradient(#ff3333 0%,  #ff3333 100%);");
             removeBt.setCursor(Cursor.HAND);
 
             Button editBt = new Button("edit");
+            editBt.getStyleClass().add("greenInDetail");
             editBt.setOnMouseClicked(event -> {
                 Display.removeDetailPane();
-                Display.addEditPane(item);
+                Display.addEditPane(item, false);
             });
-            editBt.setMaxSize(60, 23);
-            editBt.setMinSize(60, 23);
-            editBt.setStyle("-fx-background-color: linear-gradient(#b3ffb3 0%, #4dff4d 100%);");
+            editBt.setMaxSize(80, 23);
+            editBt.setMinSize(80, 23);
             editBt.setCursor(Cursor.HAND);
 
             buttonPane.add(removeBt,0,0);
@@ -121,6 +123,7 @@ public class DetailPane extends BorderPane {
             this.add(buttonPane,0,rowIndex++);
             this.setMargin(buttonPane, new Insets(5, 0 , 0 , 0 ));
             this.setPadding(new Insets(10, 10,0 , 10));
+            this.getStylesheets().add("/stylesheet/greenAndRed.css");
         }
     }
 }

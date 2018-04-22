@@ -19,6 +19,7 @@ public class LabelAndCombo extends GridPane {
         comboBox.setMaxSize(50 , 25);
         comboBox.setEditable(true);
         comboBox.setValue(list.get(0));
+        comboBox.setOpacity(0.7);
         this.add(comboBox , 1, 0);
     }
 
