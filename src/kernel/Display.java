@@ -74,7 +74,6 @@ public class Display extends Application {
         fromStatic = from;
         toStatic = to;
         imageCalendarPane.getChildren().add(detailPane);
-        detailPane.setAlignment(Pos.CENTER);
     }
 
     public static void removeDetailPane() {
@@ -86,7 +85,6 @@ public class Display extends Application {
         imageCalendarPane.getChildren().remove(detailPane);
         detailPane  = new DetailPane(fromStatic , toStatic);
         imageCalendarPane.getChildren().add(detailPane);
-        detailPane.setAlignment(Pos.CENTER);
     }
 
     public static void addEditPane(Item item) {
