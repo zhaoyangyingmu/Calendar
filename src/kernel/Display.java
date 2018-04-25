@@ -14,6 +14,7 @@ import todoitem.Item;
 import todoitem.util.TimeStamp;
 import ui.Config;
 import ui.pane.*;
+import ui.util.Toast;
 
 
 /**
@@ -117,5 +118,12 @@ public class Display extends Application {
             System.out.println("date "+ date.getYear()+date.getMonth()+ date.getDay() + " is not valid");
             return false;
         }
+    }
+
+    public static void showToast(String mes) {
+        int delay = 3500;
+        int fadeInt = 500;
+        int fadeOut = 500;
+        Toast.makeText(stage , mes , delay ,fadeInt , fadeOut);
     }
 }

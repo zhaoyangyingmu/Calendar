@@ -58,9 +58,9 @@ public class MenuPane extends StackPane {
                 CalendarDate date = new CalendarDate(dateString);
                 Display.paintDays(date);
             } catch (InvalidDateException e) {
-                System.out.println(e.toString());
+                Display.showToast(e.toString());
             }catch (Exception e){
-                System.out.println("Type correct number, Please! ");
+                Display.showToast("Type in number, please! ");
             }
         });
         Button todayBt = new Button("Today");

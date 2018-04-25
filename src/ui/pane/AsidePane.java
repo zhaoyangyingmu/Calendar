@@ -1,18 +1,14 @@
 package ui.pane;
 
-import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import kernel.Display;
 import todoitem.util.TimeStamp;
 import ui.util.LabelAndCombo;
 
-import java.util.ArrayList;
 
 public class AsidePane extends GridPane {
     public AsidePane() {
@@ -99,7 +95,7 @@ public class AsidePane extends GridPane {
                     Display.addDetailPane(from, to);
                 }
             }catch (Exception e){
-                System.out.println("Type in number, please! ");
+                Display.showToast("Type in number, please! ");
             }
         });
         searchBt.getStyleClass().add("btn");

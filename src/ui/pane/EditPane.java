@@ -148,7 +148,7 @@ public class EditPane extends GridPane {
                 item.setDetailText(((LabelAndTextRow) infoRow).getTextField().getText());
                 Display.removeEditPane();
             }catch (Exception e) {
-                System.out.println("请输入数字与正确的类型！");
+                Display.showToast("请输入数字与正确的类型！");
             }
         });
         Button cancelBt = new Button("Cancel");
