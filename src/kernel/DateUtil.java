@@ -10,16 +10,18 @@ package kernel;/*
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class DateUtil {
     private static CalendarDate today;
+
     /**
      * get a kernel.CalendarDate instance point to today
      *
      * @return a kernel.CalendarDate object
      */
     public static CalendarDate getToday() {
-        if (today == null){
+        if (today == null) {
             Calendar calendar = Calendar.getInstance();
             today = new CalendarDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
                     calendar.get(Calendar.DAY_OF_MONTH));
@@ -42,7 +44,7 @@ public class DateUtil {
         }
         int num = getNumOfDays(date);
         int current = date.getDay();
-        List<CalendarDate> calendarList = new ArrayList<CalendarDate>();
+        List<CalendarDate> calendarList = new ArrayList<>();
         for (int i = 1; i <= num; i++) {
             if (i == current) {
                 calendarList.add(date);
@@ -53,7 +55,7 @@ public class DateUtil {
         return calendarList;
     }
 
-    public static int getNumOfDays(CalendarDate date) {
+    private static int getNumOfDays(CalendarDate date) {
         MonthType monthType = MonthType.values()[date.getMonth()];
         if ((isLeapYear(date.getYear())) && (monthType == MonthType.FEB)) {
             return 29;
@@ -68,82 +70,34 @@ public class DateUtil {
      * @return true if the date is valid, false if the date is not valid.
      */
     public static boolean isValid(CalendarDate date) {
-        if (date == null) {
-            return false;
-        }
-        if ((date.getYear() < 1800) || (date.getYear() > 2100)) {
-            return false;
-        }
-        if ((date.getMonth() < 1) || (date.getMonth() > 12)) {
-            return false;
-        }
-        if (date.getDay() < 0 ) {
-            return false;
-        }
-        MonthType monthType = MonthType.values()[date.getMonth()];
-        if ((isLeapYear(date.getYear())) && (monthType == MonthType.FEB)) {
-            if (date.getDay() <= 29) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        if ((date.getDay() <= monthType.getDays()) && (date.getDay() > 0)) {
-            return true;
-        } else {
-            return false;
-        }
+//        if ((date.getYear() < 1800) || (date.getYear() > 2100)) {
+//            return false;
+//        }
+        return (date != null && date.getMonth() >= 1 && date.getMonth() <= 12
+                && date.getDay() > 0 && date.getDay() <= getNumOfDays(date));
     }
 
     /**
      * Judge whether the input is formatted.
      * For example, 2018/2/1 is not valid and 2018-2-1 is valid.
      *
-     * @param dateString
+     * @param dateString 日期字符串
      * @return true if the input is formatted, false if the input is not formatted.
      */
-    public static boolean isFormatted(String dateString) {
-        if (dateString == null) {
-            return false;
-        }
-        String[] date_parts = dateString.split("-");
-        if (date_parts.length == 3) {
-            try {
-                int year = Integer.parseInt(date_parts[0]);
-                int month = Integer.parseInt(date_parts[1]);
-                int day = Integer.parseInt(date_parts[2]);
-                if(!(year > 0 && year <= 9999)){
-                    return false;
-                }
-                if (!(month > 0 && month <= 99 )){
-                    return false;
-                }
-                if (!(day > 0 && day <= 99)){
-                    return false;
-                }
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return false;
+    static boolean isFormatted(String dateString) {
+        return dateString != null && Pattern.matches("^\\d{1,4}-\\d{1,2}-\\d{1,2}$", dateString) &&
+                Pattern.matches(".*[1-9].*-.*[1-9].*-.*[1-9].*", dateString);
     }
 
     /**
      * Judge whether the input year is a leap year or not.
      * For example, year 2000 is a leap year, and 1900 is not.
      *
-     * @param year
+     * @param year 年份
      * @return true if the input year is a leap year, false if the input is not.
      */
-    public static boolean isLeapYear(int year) {
-        if ((year % 4 == 0) && (year % 100 != 0)) {
-            return true;
-        } else if (year % 400 == 0) {
-            return true;
-        }
-        return false;
+    private static boolean isLeapYear(int year) {
+        return (year % 400 == 0) || (year % 100 != 0 && year % 4 == 0);
     }
 
     public enum MonthType {
@@ -170,7 +124,8 @@ public class DateUtil {
         DayType(String printMark) {
             this.printMark = printMark;
         }
-        public String getPrintMark(){
+
+        public String getPrintMark() {
             return printMark;
         }
 
