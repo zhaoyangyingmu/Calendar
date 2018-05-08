@@ -2,12 +2,12 @@ package todoitem;
 
 import todoitem.util.TimeStamp;
 
-public class Item {
+public class Memo {
     private TimeStamp from;
     private TimeStamp to;
     private String detailText;
     private ItemType itemType;
-    public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType) {
+    public Memo(TimeStamp from, TimeStamp to, String detailText, ItemType itemType) {
         this.from = from;
         this.to = to;
         this.detailText = detailText;
@@ -81,9 +81,9 @@ public class Item {
 
     @Override
     public boolean equals(Object object) {
-        Item item = (Item)object;
-        return (from.equals(item.getFrom())) && (to.equals(item.getTo()))
-                && (detailText.equals(item.getDetailText())) && (itemType == item.getItemType());
+        Memo memo = (Memo)object;
+        return (from.equals(memo.getFrom())) && (to.equals(memo.getTo()))
+                && (detailText.equals(memo.getDetailText())) && (itemType == memo.getItemType());
     }
 
     @Override

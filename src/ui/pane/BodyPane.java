@@ -2,23 +2,22 @@ package ui.pane;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
-import todoitem.Item;
-import todoitem.ItemManager;
+import todoitem.Memo;
+import todoitem.MemoManager;
 import todoitem.util.TimeStamp;
 import ui.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static todoitem.Item.ItemType.DATING;
-import static todoitem.Item.ItemType.STUDY;
+import static todoitem.Memo.ItemType.DATING;
+import static todoitem.Memo.ItemType.STUDY;
 
 /**
  * Created by 谢东方xdf on 2018/3/25.
@@ -95,9 +94,9 @@ public class BodyPane extends StackPane {
                     // true day
                     if (index >= 0 && index < calendars.size()){
                         labelStr += calendars.get(index).getDay();
-                        ArrayList<Item> items = ItemManager.getInstance().getItemsByStamp(from, to);
-                        if (items.size() > 0) {
-                            Item.ItemType activityType = items.get(0).getItemType();
+                        ArrayList<Memo> memos = MemoManager.getInstance().getItemsByStamp(from, to);
+                        if (memos.size() > 0) {
+                            Memo.ItemType activityType = memos.get(0).getItemType();
                             if (activityType == STUDY) {
                                 pane.getStyleClass().add("study");
                             } else if (activityType == DATING) {
