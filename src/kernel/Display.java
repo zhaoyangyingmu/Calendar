@@ -99,7 +99,6 @@ public class Display extends Application {
         imageCalendarPane.getChildren().remove(editPane);
     }
 
-
     /**
      * paint the days of whole current month on the frame with the given kernel.CalendarDate
      * @param date a valid kernel.CalendarDate param.

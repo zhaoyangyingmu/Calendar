@@ -18,6 +18,10 @@ public class ItemManager {
         return itemManager;
     }
 
+    public ArrayList<Item> getItemList() {
+        return itemList;
+    }
+
     public static void destroy() {
         itemManager = null;
     }

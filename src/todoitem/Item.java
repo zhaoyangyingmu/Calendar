@@ -2,7 +2,9 @@ package todoitem;
 
 import todoitem.util.TimeStamp;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
     private TimeStamp from;
     private TimeStamp to;
     private String detailText;
