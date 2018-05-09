@@ -1,51 +1,63 @@
-.thead , .leisure, .dating , .study {
+.basic_day {
     -fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-font-family:Times New Roman;
-    -fx-font-size:20;
+    -fx-font-family: Times New Roman;
+    -fx-font-size: 20;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
 }
 
-.thead , .study , .dating , .leisure{
-    -fx-background-radius:10;
-    -fx-border-radius:10;
-}
+/*.basic_day:hover {*/
+/*-fx-border-color: rgba(0, 0, 0, 0.3);*/
+/*-fx-cursor: hand;*/
+/*-fx-background-color: linear-gradient(#92dbf6 0%, #11abe4 30%);*/
+/*}*/
 
-.leisure:hover , #today:hover {
-    -fx-border-color:rgba(0,0,0,0.3);
+#today:hover {
+    -fx-border-color: rgba(0, 0, 0, 0.3);
     -fx-cursor: hand;
-    -fx-background-color:linear-gradient(#92dbf6 0%, #11abe4 30%);
+    -fx-background-color: linear-gradient(#92dbf6 0%, #11abe4 30%);
 }
 
 #today {
-    -fx-text-fill:black;
-    -fx-background-color:rgba(17, 171, 228, 0.4);
+    -fx-text-fill: black;
+    -fx-background-color: rgba(17, 171, 228, 0.4);
 }
 
-.dating {
-    -fx-text-fill:black;
-    -fx-background-color: linear-gradient(#ff80bf 0%, #ff1a8c 30%);
+.type_study {
+    -fx-fill: #F54EA2;
 }
 
-.dating:hover {
-    -fx-border-color:rgba(0,0,0,0.3);
-    -fx-cursor: hand;
-    -fx-background-color:linear-gradient(#ff80bf 0%, #ff1a8c 100%);
+.type_dating {
+    -fx-fill: #A94CAF;
 }
 
-.study {
-    -fx-text-fill:black;
-    -fx-background-color:linear-gradient(#b3ffb3 0%, #4dff4d 20%);
+.type_leisure {
+    -fx-fill: #42218E;
 }
 
-.study:hover {
-    -fx-border-color:rgba(0,0,0,0.3);
-    -fx-cursor: hand;
-    -fx-background-color:linear-gradient(#b3ffb3 0%, #4dff4d 100%);
+.not_this_month_day {
+    -fx-background-color: #667572;
+    -fx-text-fill: #252c41;
+}
+
+.weekend {
+    -fx-text-fill: #cc0000;
+}
+
+.festival_label {
+    -fx-font-size: 14;
+    -fx-text-fill: dimgrey;
+}
+
+.day_off_label {
+    -fx-font-size: 10;
 }
 
 .none {
     -fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-font-family:Times New Roman;
-    -fx-font-size:20;
-    -fx-background-radius:10;
-    -fx-border-radius:10;
+    -fx-font-family: Times New Roman;
+    -fx-font-size: 20;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }

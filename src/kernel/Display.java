@@ -10,7 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import todoitem.Item;
+import todoitem.Memo;
 import todoitem.util.TimeStamp;
 import ui.Config;
 import ui.pane.*;
@@ -88,8 +88,8 @@ public class Display extends Application {
         imageCalendarPane.getChildren().add(detailPane);
     }
 
-    public static void addEditPane(Item item , boolean fromAdd) {
-        editPane = new EditPane(item, fromAdd);
+    public static void addEditPane(Memo memo, boolean fromAdd) {
+        editPane = new EditPane(memo, fromAdd);
         imageCalendarPane.getChildren().add(editPane);
         editPane.setAlignment(Pos.CENTER);
     }
@@ -98,7 +98,6 @@ public class Display extends Application {
         BodyPane.getInstance().refresh();
         imageCalendarPane.getChildren().remove(editPane);
     }
-
 
     /**
      * paint the days of whole current month on the frame with the given kernel.CalendarDate

@@ -22,24 +22,27 @@ import java.util.ArrayList;
  * Created by 谢东方xdf on 2018/3/25.
  */
 public class MenuPane extends StackPane {
-    private static MenuPane menuPane;
-    private GridPane contentGrid = new GridPane();
+    private static volatile MenuPane menuPane;
     private GridPane yearUnit;
     private GridPane monthUnit;
 
     public static MenuPane getInstance() {
         if (menuPane == null) {
-            menuPane = new MenuPane();
-            menuPane.setPadding(new Insets(0, 0, 10, 0));
-            menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/buttonAndLabel.css").toString());
+            synchronized (MenuPane.class) {
+                if (menuPane == null) {
+                    menuPane = new MenuPane();
+                    menuPane.setPadding(new Insets(0, 0, 10, 0));
+                    menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/buttonAndLabel.css").toString());
+                }
+            }
         }
         return menuPane;
     }
 
-    public MenuPane() {
+    private MenuPane() {
         yearUnit = LabelAndCombo.getInstance("Year:   ", 1800, 2100);
         ((LabelAndCombo) yearUnit).getComboBox().setMaxSize(70, 25);
-        ((LabelAndCombo) yearUnit).getComboBox().setMinSize(70 , 25);
+        ((LabelAndCombo) yearUnit).getComboBox().setMinSize(70, 25);
         ((LabelAndCombo) yearUnit).getComboBox().setValue(DateUtil.getToday().getYear() + "");
 
         monthUnit = LabelAndCombo.getInstance("Month:   ", 1, 12);
@@ -59,7 +62,7 @@ public class MenuPane extends StackPane {
                 Display.paintDays(date);
             } catch (InvalidDateException e) {
                 Display.showToast(e.toString());
-            }catch (Exception e){
+            } catch (Exception e) {
                 Display.showToast("Type in number, please! ");
             }
         });
@@ -74,6 +77,7 @@ public class MenuPane extends StackPane {
         });
 
         int colIndex = 0;
+        GridPane contentGrid = new GridPane();
         contentGrid.add(yearUnit, colIndex++, 0);
         contentGrid.add(monthUnit, colIndex++, 0);
         contentGrid.add(checkBt, colIndex++, 0);
@@ -84,7 +88,7 @@ public class MenuPane extends StackPane {
     }
 
     public void changeChoice(CalendarDate date) {
-        ((LabelAndCombo)yearUnit).getComboBox().setValue(""+date.getYear());
-        ((LabelAndCombo)monthUnit).getComboBox().setValue("" + date.getMonth());
+        ((LabelAndCombo) yearUnit).getComboBox().setValue("" + date.getYear());
+        ((LabelAndCombo) monthUnit).getComboBox().setValue("" + date.getMonth());
     }
 }
