@@ -20,7 +20,7 @@ public interface ItemInterface {
 
     void setDetailText(String detailText);
 
-    Item.ItemType getItemType();
+    Memo.ItemType getItemType();
 
-    void setItemType(Item.ItemType itemType);
+    void setItemType(Memo.ItemType itemType);
 }

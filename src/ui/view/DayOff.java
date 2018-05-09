@@ -10,9 +10,11 @@ import javafx.scene.control.Label;
 
 /*假日、休息日*/
 public class DayOff extends Special {
+    private String content;
 
-    public DayOff(DayItem item) {
+    public DayOff(DayItem item, String content) {
         super(item);
+        this.content = content;
         init();
     }
 
@@ -29,7 +31,7 @@ public class DayOff extends Special {
 
     @Override
     protected void paint() {
-        Label offLabel = new Label("休");
+        Label offLabel = new Label(content);
         offLabel.getStyleClass().add("day_off_label");
         //TODO label属性
         dayItem.setRightNode(offLabel);

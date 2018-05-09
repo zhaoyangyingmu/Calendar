@@ -49,7 +49,7 @@ public abstract class DayItem extends BorderPane {
 //    public abstract void setCenterNode(Label label);
 //    @Override
     public void setTopNode(HBox hBox) {
-        hBox.setPrefSize(Config.getRectangleWidth(), Config.getRectangleHeight() / 4);
+        hBox.setPrefSize(Config.getRectangleWidth(), 18);
         this.setTop(hBox);
     }
 

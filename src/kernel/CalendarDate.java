@@ -27,7 +27,7 @@ public class CalendarDate {
      * Before using this constructor, one must make sure dateString is correct.
      */
     public CalendarDate(String dateString) throws InvalidDateException {
-        if (!DateUtil.isFormatted(dateString)){
+        if (!DateUtil.isFormatted(dateString)) {
             throw new InvalidDateException("Date format is invalid!");
         }
         String[] date_parts = dateString.split("-");
@@ -48,6 +48,10 @@ public class CalendarDate {
         return day;
     }
 
+    public String getDateString() {
+        return year + "-" + month + "-" + day;
+    }
+
     /**
      * Get index of the day in a week for one date.
      * <p>
@@ -57,7 +61,7 @@ public class CalendarDate {
      * @return 1-7, 1 stands for Monday and 7 stands for Sunday
      */
     public int getDayOfWeek() {
-        if (!DateUtil.isValid(this)){
+        if (!DateUtil.isConsidered(this)) {
             return -1;
         }
         int C = year / 100;
@@ -77,9 +81,9 @@ public class CalendarDate {
 
     @Override
     public boolean equals(Object date) {
-        int year = ((CalendarDate)date).getYear();
-        int month = ((CalendarDate)date).getMonth();
-        int day = ((CalendarDate)date).getDay();
+        int year = ((CalendarDate) date).getYear();
+        int month = ((CalendarDate) date).getMonth();
+        int day = ((CalendarDate) date).getDay();
         if ((this.getYear() == year) && (this.getMonth() == month) && (this.getDay() == day)) {
             return true;
         }

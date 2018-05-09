@@ -18,10 +18,10 @@ public class DayManager {
         holidays = new ArrayList<Holiday>();
         workdays = new ArrayList<Calendar>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("Holiday.json"));// 读取原始json文件
-            String line,s,ws;
+            BufferedReader br = new BufferedReader(new FileReader("holiday.json"));// 读取原始json文件
+            String line, s, ws;
             s = "";
-            while ((line = br.readLine())!=null){
+            while ((line = br.readLine()) != null) {
                 s += line;
             }
             try {
@@ -34,7 +34,7 @@ public class DayManager {
                     String holiday_time = info.getString("holiday_time");
                     String start_time = info.getString("start_time");
                     String end_time = info.getString("end_time");
-                    holidays.add(new Holiday(name,zh_name,holiday_time,start_time,end_time));
+                    holidays.add(new Holiday(name, zh_name, holiday_time, start_time, end_time));
 //                    System.out.println(name + " " + zh_name + " " + holiday_time + " " + start_time + " " + end_time + " "  );
                 }
                 JSONArray workdayJson = dataJson.getJSONArray("workday");// 找到holiday的json数组
@@ -52,57 +52,67 @@ public class DayManager {
         }
     }
 
+    public static boolean isFestival(String str) {
+        String name = judgeDays(str).getName();
+        return !name.equals(DayType.REST.getName()) &&
+                !name.equals(DayType.WORKDAY.getName()) && !name.equals(DayType.NORMAL.getName());
+    }
+
+    public static boolean isRest_WorkDay(String str) {
+        String name = judgeDays(str).getName();
+        return name.equals(DayType.REST.getName()) || name.equals(DayType.WORKDAY.getName());
+    }
 
     //如果是节假日当天，返回枚举类型节假日/工作/休息/正常。
-    public static  DayType judgeDays(String str){
-        if(dayManager == null){
+    public static DayType judgeDays(String str) {
+        if (dayManager == null) {
             dayManager = new DayManager();
         }
         //判断是否为工作
         Calendar cal = Holiday.strToCal(str);
-        for(int i=0;i<dayManager.workdays.size();i++){
-            if (areSameDay(cal,dayManager.workdays.get(i))){
+        for (int i = 0; i < dayManager.workdays.size(); i++) {
+            if (areSameDay(cal, dayManager.workdays.get(i))) {
                 DayType dayType = DayType.WORKDAY;
                 dayType.setName("班");
                 return dayType;
             }
         }
         //判断是否为节假日当天
-        for(int i=0;i<dayManager.holidays.size();i++){
-            if (areSameDay(cal,dayManager.holidays.get(i).getHolidayTime())){
+        for (int i = 0; i < dayManager.holidays.size(); i++) {
+            if (areSameDay(cal, dayManager.holidays.get(i).getHolidayTime())) {
                 DayType dayType = DayType.HOLIDAY;
                 dayType.setName(dayManager.holidays.get(i).getZh_name());
                 return dayType;
             }
         }
         //判断是否为节假日中的休息
-        for(int i=0;i<dayManager.holidays.size();i++){
-            if (before(cal,dayManager.holidays.get(i).getEndTime()) && after(cal,dayManager.holidays.get(i).getStartTime())){
+        for (int i = 0; i < dayManager.holidays.size(); i++) {
+            if (before(cal, dayManager.holidays.get(i).getEndTime()) && after(cal, dayManager.holidays.get(i).getStartTime())) {
                 DayType dayType = DayType.REST;
                 dayType.setName("休");
                 return dayType;
             }
         }
         //为其他正常日子
-        return  DayType.NORMAL;
+        return DayType.NORMAL;
     }
 
     //返回节日信息
-    public static Holiday holidayDetail(String str){
-        if(dayManager == null){
+    public static Holiday holidayDetail(String str) {
+        if (dayManager == null) {
             dayManager = new DayManager();
         }
         Calendar cal = Holiday.strToCal(str);
 
-        for(int i=0;i<dayManager.holidays.size();i++){
-            if (before(cal,dayManager.holidays.get(i).getEndTime()) && after(cal,dayManager.holidays.get(i).getStartTime())){
+        for (int i = 0; i < dayManager.holidays.size(); i++) {
+            if (before(cal, dayManager.holidays.get(i).getEndTime()) && after(cal, dayManager.holidays.get(i).getStartTime())) {
                 return dayManager.holidays.get(i);
             }
         }
-        return  null;
+        return null;
     }
 
-//    //打印所有节日
+    //    //打印所有节日
 //    private void printHolidays(){
 //        for(int i=0;i<holidays.size();i++){
 //            System.out.print(holidays.get(i).getName() + " " + holidays.get(i).getZh_name() + " ");
@@ -121,36 +131,39 @@ public class DayManager {
 //        }
 //    }
 //
-    public static String print(Calendar cal){
-       return (cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)+1) + "-" + cal.get(Calendar.DAY_OF_MONTH)+" ");
+    public static String print(Calendar cal) {
+        return (cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DAY_OF_MONTH) + " ");
     }
+
     //判断两天是不是同一天
-    private static Boolean areSameDay(Calendar calA,Calendar calB){
+    private static Boolean areSameDay(Calendar calA, Calendar calB) {
         return calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR)
                 && calA.get(Calendar.MONTH) == calB.get(Calendar.MONTH)
-                &&  calA.get(Calendar.DAY_OF_MONTH) == calB.get(Calendar.DAY_OF_MONTH);
+                && calA.get(Calendar.DAY_OF_MONTH) == calB.get(Calendar.DAY_OF_MONTH);
     }
+
     //判断calA在不在calB前
-    private static Boolean before(Calendar calA,Calendar calB){
-        if(calA.get(Calendar.YEAR) < calB.get(Calendar.YEAR)){//如果年份在前面肯定在前面
+    private static Boolean before(Calendar calA, Calendar calB) {
+        if (calA.get(Calendar.YEAR) < calB.get(Calendar.YEAR)) {//如果年份在前面肯定在前面
             return true;
-        }else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) < calB.get(Calendar.MONTH)){
+        } else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) < calB.get(Calendar.MONTH)) {
             return true;//年份一样，月份在前面
-        }else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) == calB.get(Calendar.MONTH) && calA.get(Calendar.DAY_OF_MONTH) <= calB.get(Calendar.DAY_OF_MONTH)){
+        } else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) == calB.get(Calendar.MONTH) && calA.get(Calendar.DAY_OF_MONTH) <= calB.get(Calendar.DAY_OF_MONTH)) {
             return true;//年份月份都一样，日期在前面或相等
-        }else {
+        } else {
             return false;
         }
     }
+
     //判断calA在不在calB后
-    private static Boolean after(Calendar calA,Calendar calB){
-        if(calA.get(Calendar.YEAR) > calB.get(Calendar.YEAR)){
+    private static Boolean after(Calendar calA, Calendar calB) {
+        if (calA.get(Calendar.YEAR) > calB.get(Calendar.YEAR)) {
             return true;
-        }else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) > calB.get(Calendar.MONTH)){
+        } else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) > calB.get(Calendar.MONTH)) {
             return true;
-        }else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) == calB.get(Calendar.MONTH) && calA.get(Calendar.DAY_OF_MONTH) >= calB.get(Calendar.DAY_OF_MONTH)){
+        } else if (calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) && calA.get(Calendar.MONTH) == calB.get(Calendar.MONTH) && calA.get(Calendar.DAY_OF_MONTH) >= calB.get(Calendar.DAY_OF_MONTH)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }

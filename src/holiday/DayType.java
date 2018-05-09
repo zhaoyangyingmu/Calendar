@@ -1,6 +1,6 @@
 package holiday;
 public enum DayType {
-    WORKDAY("work"), HOLIDAY("holiday"), REST("rest"),NORMAL("normal");
+    WORKDAY("work"), HOLIDAY("holiday"), REST("rest"),NORMAL("");
     private String name;
 
     DayType(String name) {

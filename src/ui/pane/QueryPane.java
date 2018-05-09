@@ -38,7 +38,7 @@ public class QueryPane extends StackPane {
         TextField dateText = new TextField("Search format : 2018-1-1");
         dateText.setMaxSize(200, 30);
         dateText.setMinSize(200, 30);
-        Button searchBt = new Button("Search");
+        Button searchBt = new Button("Jump");
         searchBt.getStyleClass().add("btn");
         searchBt.setMaxSize(80, 30);
         searchBt.setMinSize(80, 30);

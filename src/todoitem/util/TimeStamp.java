@@ -142,7 +142,7 @@ public class TimeStamp {
 
     public boolean isValid() {
         CalendarDate date = new CalendarDate(year,month,day);
-        if (!DateUtil.isValid(date)) {
+        if (!DateUtil.isConsidered(date)) {
             return false;
         }
         if (hour < 0 || hour >= 24) {

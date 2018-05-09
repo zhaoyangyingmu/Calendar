@@ -1,9 +1,9 @@
 .basic_day {
-    -fx-background-color: rgba(0, 0, 0, 0.5);
     -fx-font-family: Times New Roman;
     -fx-font-size: 20;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
+    -fx-background-color: rgba(0, 0, 0, .2);
     -fx-text-fill: white;
 }
 
@@ -13,15 +13,16 @@
 /*-fx-background-color: linear-gradient(#92dbf6 0%, #11abe4 30%);*/
 /*}*/
 
-#today:hover {
-    -fx-border-color: rgba(0, 0, 0, 0.3);
-    -fx-cursor: hand;
-    -fx-background-color: linear-gradient(#92dbf6 0%, #11abe4 30%);
-}
+/*#today:hover {*/
+/*-fx-border-color: rgba(0, 0, 0, 0.3);*/
+/*-fx-cursor: hand;*/
+/*-fx-background-color: linear-gradient(#92dbf6 0%, #11abe4 30%);*/
+/*}*/
 
 #today {
-    -fx-text-fill: black;
-    -fx-background-color: rgba(17, 171, 228, 0.4);
+    -fx-text-fill: rgba(245, 247, 250, 1);
+    /*-fx-background-color: rgba(17, 171, 228, 0.4);*/
+    -fx-background-color: rgba(122,87,209,1);
 }
 
 .type_study {
@@ -37,8 +38,8 @@
 }
 
 .not_this_month_day {
-    -fx-background-color: #667572;
-    -fx-text-fill: #252c41;
+    -fx-background-color: rgba(255, 255, 255, .3);
+    -fx-text-fill: rgba(255, 255, 255, .1);
 }
 
 .weekend {
@@ -46,18 +47,19 @@
 }
 
 .festival_label {
-    -fx-font-size: 14;
+    -fx-font-size: 10;
     -fx-text-fill: dimgrey;
 }
 
 .day_off_label {
     -fx-font-size: 10;
+    -fx-text-fill: #7A57D1;
 }
 
-.none {
-    -fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-font-family: Times New Roman;
-    -fx-font-size: 20;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-}
+/*.none {*/
+/*-fx-background-color: rgba(0, 0, 0, 0.5);*/
+/*-fx-font-family: Times New Roman;*/
+/*-fx-font-size: 20;*/
+/*-fx-background-radius: 10;*/
+/*-fx-border-radius: 10;*/
+/*}*/

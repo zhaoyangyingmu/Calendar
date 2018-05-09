@@ -1,6 +1,9 @@
 package ui.pane;
 
+import holiday.DayManager;
+import holiday.DayType;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -64,6 +67,8 @@ public class BodyPane extends StackPane {
         // this
         // table head
         HBox hBox = new HBox();
+        hBox.setSpacing(Config.gethGap());
+        hBox.setPadding(new Insets(10,0,10,0));
         for (int i = 0; i < 7; i++) {
             BorderPane pane = new BorderPane();
             Label label = new Label("" + DateUtil.DayType.values()[i].getPrintMark());
@@ -100,17 +105,16 @@ public class BodyPane extends StackPane {
                 j = i + lastSize;
                 DayItem item = new OrdinaryDay(calendars.get(i));
                 ArrayList<Memo> memos = MemoManager.getInstance().getItemsByStamp(from, to);
-//                if (memos.size() > 0) {
+                if (memos.size() > 0) {
                     item = new MemoDay(item, memos).getItem();
-//                }
-                //TODO 节日
-                if (true) {
-                    item = new Festival(item, "五一").getItem(); //获取节日名称
                 }
-                //TODO 假日
-                if (true) {
-                    item = new DayOff(item).getItem();
+                String dateString = calendars.get(i).getDateString();
+                if (DayManager.isFestival(dateString)) {
+                    item = new Festival(item, DayManager.judgeDays(dateString).getName()).getItem(); //获取节日名称}}
                 }
+
+                if (DayManager.isRest_WorkDay(dateString))
+                    item = new DayOff(item, DayManager.judgeDays(dateString).getName()).getItem();
                 item.setOnMouseClicked(new SquareClickHandler(from, to));
 
                 from = new TimeStamp(from.getYear(), from.getMonth(),

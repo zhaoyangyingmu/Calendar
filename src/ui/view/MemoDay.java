@@ -52,13 +52,10 @@ public class MemoDay extends Special {
         HBox hBox = new HBox();
         hBox.setSpacing(5);
         hBox.setPadding(new Insets(5, 5, 5, 5));
-//        for (Memo.ItemType type : types) {    //TODO
-        for (int i = 0; i < 3; i++) {   //test
+        for (Memo.ItemType type : types) {
             Circle circle = new Circle();
             circle.setRadius(4);
-            //TODO  label属性
-            circle.getStyleClass().add("type_study");
-//            circle.getStyleClass().add("type_" + type.getTypeStr());
+            circle.getStyleClass().add("type_" + type.getTypeStr());
             hBox.getChildren().add(circle);
         }
         dayItem.setTopNode(hBox);

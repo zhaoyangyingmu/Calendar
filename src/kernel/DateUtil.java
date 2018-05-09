@@ -36,12 +36,8 @@ public class DateUtil {
      * @return a list of days in a whole month
      */
     public static List<CalendarDate> getDaysInMonth(CalendarDate date) {
-        if (date == null) {
+        if (!isConsidered(date))
             return null;
-        }
-        if (!isValid(date)) {
-            return null;
-        }
         int num = getNumOfDays(date);
         int current = date.getDay();
         List<CalendarDate> calendarList = new ArrayList<>();
@@ -53,6 +49,45 @@ public class DateUtil {
             calendarList.add(new CalendarDate(date.getYear(), date.getMonth(), i));
         }
         return calendarList;
+    }
+
+    public static List<CalendarDate> getHeadOfCalendar(CalendarDate date) {
+        if (!isConsidered(date))
+            return null;
+        List<CalendarDate> list = new ArrayList<>();
+        int year = date.getYear();
+        int month = date.getMonth();
+        int daysOfLastMonth;
+        if (month == 1) {
+            year--;
+            month = 12;
+            daysOfLastMonth = 31;
+        } else {
+            month--;
+            daysOfLastMonth = getNumOfDays(new CalendarDate(year, month, 1));
+        }
+        int w = new CalendarDate(date.getYear(), date.getMonth(), 1).getDayOfWeek() % 7;
+        int index = daysOfLastMonth - w;
+        for (int i = daysOfLastMonth; i > index; i--)
+            list.add(0, new CalendarDate(year, month, i));
+        return list;
+    }
+
+    public static List<CalendarDate> getTailOfCalendar(CalendarDate date, int index) {
+        if (!isConsidered(date))
+            return null;
+        List<CalendarDate> list = new ArrayList<>();
+        int year = date.getYear();
+        int month = date.getMonth();
+        if (month == 12) {
+            year++;
+            month = 1;
+        } else
+            month++;
+        for (int i = index, j = 1; i < 42; i++, j++)
+            list.add(new CalendarDate(year, month, j));
+
+        return list;
     }
 
     private static int getNumOfDays(CalendarDate date) {
@@ -77,6 +112,10 @@ public class DateUtil {
                 && date.getDay() > 0 && date.getDay() <= getNumOfDays(date));
     }
 
+    public static boolean isConsidered(CalendarDate date) {
+        return isValid(date) && date.getYear() >= 1800 && date.getYear() <= 2300;
+    }
+
     /**
      * Judge whether the input is formatted.
      * For example, 2018/2/1 is not valid and 2018-2-1 is valid.
@@ -96,7 +135,7 @@ public class DateUtil {
      * @param year 年份
      * @return true if the input year is a leap year, false if the input is not.
      */
-    private static boolean isLeapYear(int year) {
+    public static boolean isLeapYear(int year) {
         return (year % 400 == 0) || (year % 100 != 0 && year % 4 == 0);
     }
 
