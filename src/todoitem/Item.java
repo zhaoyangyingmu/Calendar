@@ -1,14 +1,13 @@
 package todoitem;
 
 import todoitem.util.TimeStamp;
-
 import java.io.Serializable;
 
-public class Item implements Serializable {
+public abstract class Item implements Serializable, ItemInterFace {
     private TimeStamp from;
     private TimeStamp to;
-    private String detailText;
     private ItemType itemType;
+    private String detailText;
     public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType) {
         this.from = from;
         this.to = to;
@@ -16,6 +15,7 @@ public class Item implements Serializable {
         this.itemType = itemType;
     }
 
+    @Override
     public boolean isDuringTime(TimeStamp from, TimeStamp to){
         if ((this.from.isBefore(to)) && (this.to.isAfter(from))) {
             return true;
@@ -23,34 +23,42 @@ public class Item implements Serializable {
         return false;
     }
 
+    @Override
     public TimeStamp getFrom() {
         return from;
     }
 
+    @Override
     public void setFrom(TimeStamp from) {
         this.from = from;
     }
 
+    @Override
     public TimeStamp getTo() {
         return to;
     }
 
+    @Override
     public void setTo(TimeStamp to) {
         this.to = to;
     }
 
+    @Override
     public String getDetailText() {
         return detailText;
     }
 
+    @Override
     public void setDetailText(String detailText) {
         this.detailText = detailText;
     }
 
+    @Override
     public ItemType getItemType() {
         return itemType;
     }
 
+    @Override
     public void setItemType(ItemType itemType) {
         this.itemType = itemType;
     }
