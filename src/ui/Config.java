@@ -1,8 +1,8 @@
 package ui;
 
 public class Config {
-    private static final int rectangleHeight = 40;
-    private static final int rectangleWidth = 55;
+    private static final int rectangleHeight = 80;
+    private static final int rectangleWidth = 100;
 
     private static final int vGap = 5;//for content grid
     private static final int hGap = 6;//for content grid
@@ -13,9 +13,11 @@ public class Config {
     private Config() {
 
     }
-    public static int getWindowWidth(){
+
+    public static int getWindowWidth() {
         return windowWidth;
     }
+
     public static int getWindowHeight() {
         return windowHeight;
     }
@@ -23,6 +25,7 @@ public class Config {
     public static int getRectangleWidth() {
         return rectangleWidth;
     }
+
     public static int getRectangleHeight() {
         return rectangleHeight;
     }
@@ -30,6 +33,7 @@ public class Config {
     public static int getvGap() {
         return vGap;
     }
+
     public static int gethGap() {
         return hGap;
     }

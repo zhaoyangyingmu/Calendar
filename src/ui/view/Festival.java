@@ -10,10 +10,10 @@ import javafx.scene.control.Label;
  */
 
 /*节日*/
-public class Holiday extends Special {
+public class Festival extends Special {
     private String holiday;
 
-    public Holiday(DayItem item, String holiday) {
+    public Festival(DayItem item, String holiday) {
         super(item);
         this.holiday = holiday;
         init();
@@ -27,14 +27,15 @@ public class Holiday extends Special {
 
     @Override
     protected void setStyleClass() {
-        this.getStyleClass().add("holiday");
+        dayItem.addStyleClass("festival");
     }
 
     @Override
     protected void paint() {
         Label holidayLabel = new Label(holiday);
+        holidayLabel.getStyleClass().add("festival_label");
         //TODO label属性
-        this.setBottom(holidayLabel);
+        dayItem.setBottomNode(holidayLabel);
 
     }
 }

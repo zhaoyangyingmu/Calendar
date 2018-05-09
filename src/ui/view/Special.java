@@ -9,16 +9,14 @@ package ui.view;
 
 
 abstract class Special extends DayItem {
-    private DayItem dayItem;
+    protected DayItem dayItem;
 
     Special(DayItem item) {
         this.dayItem = item;
     }
 
-    protected abstract void init();
-
-    protected abstract void setStyleClass();
-
-    protected abstract void paint();
-
+    @Override
+    public DayItem getItem() {
+        return dayItem.getItem();
+    }
 }

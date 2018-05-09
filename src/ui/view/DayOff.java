@@ -24,14 +24,15 @@ public class DayOff extends Special {
 
     @Override
     protected void setStyleClass() {
-        this.getStyleClass().add("day_off");
+        dayItem.addStyleClass("day_off");
     }
 
     @Override
     protected void paint() {
-        Label offLabel = new Label();
+        Label offLabel = new Label("休");
+        offLabel.getStyleClass().add("day_off_label");
         //TODO label属性
-        this.setLeft(offLabel);
+        dayItem.setRightNode(offLabel);
     }
 
 }
