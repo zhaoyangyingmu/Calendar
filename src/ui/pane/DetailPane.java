@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
+import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class DetailPane extends BorderPane {
         HBox btRow = new HBox();
         Button addBt = new Button("add");
         addBt.setOnMouseClicked(event -> {
-            Item item = new Item(from, to , "" , Item.ItemType.LEISURE);
+            Item item = new OtherItem(from, to , "" , Item.ItemType.LEISURE);
             ItemManager.getInstance().addItem(item);
             Display.removeDetailPane();
             Display.addEditPane(item, true);
