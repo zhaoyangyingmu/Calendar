@@ -1,12 +1,12 @@
 package todoitem.itemSub;
 
-import todoitem.Memo;
+import todoitem.Item;
 import todoitem.util.TimeStamp;
 
 /**
  * Created by Bing Chen on 2018/5/9.
  */
-public class Appointment extends Memo {
+public class Appointment extends Item {
     private String participants;
     private String location;
     public Appointment(TimeStamp from, TimeStamp to, String detailText, ItemType itemType,String participants,String location) {
