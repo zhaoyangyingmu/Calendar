@@ -10,7 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import todoitem.Memo;
+import todoitem.Item;
 import todoitem.util.TimeStamp;
 import ui.Config;
 import ui.pane.*;
@@ -51,7 +51,7 @@ public class Display extends Application {
         calendarWithAside.setHgap(10);
 
         calendarWithAside.setTranslateX(250);
-        calendarWithAside.setTranslateY(60);
+        calendarWithAside.setTranslateY(40);
 
         backgroundImage = new ImageView(Config.class.getResource("/res/" + DateUtil.getToday().getMonth() + ".jpg").toString());
         backgroundImage.setFitHeight(Config.getWindowHeight());
@@ -89,8 +89,8 @@ public class Display extends Application {
         imageCalendarPane.getChildren().add(detailPane);
     }
 
-    public static void addEditPane(Memo memo, boolean fromAdd) {
-        editPane = new EditPane(memo, fromAdd);
+    public static void addEditPane(Item item, boolean fromAdd) {
+        editPane = new EditPane(item, fromAdd);
         imageCalendarPane.getChildren().add(editPane);
         editPane.setAlignment(Pos.CENTER);
     }
