@@ -4,7 +4,9 @@ package todoitem.util;
 import kernel.CalendarDate;
 import kernel.DateUtil;
 
-public class TimeStamp {
+import java.io.Serializable;
+
+public class TimeStamp implements Serializable {
     private int year;
     private int month;
     private int day;
@@ -17,6 +19,14 @@ public class TimeStamp {
         this.day = day;
         this.hour = hour;
         this.minute = minute;
+    }
+
+    public static TimeStamp createStampDayStart(int year, int month , int day) {
+        return new TimeStamp(year, month , day , 0 , 0);
+    }
+
+    public static TimeStamp createStampDayEnd(int year, int month , int day) {
+        return new TimeStamp(year, month , day , 23, 59);
     }
 
     public int getYear() {

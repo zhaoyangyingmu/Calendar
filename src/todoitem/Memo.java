@@ -1,13 +1,14 @@
 package todoitem;
 
 import todoitem.util.TimeStamp;
+import java.io.Serializable;
 
-public abstract class Memo implements ItemInterface {
+public abstract class Item implements Serializable, ItemInterFace {
     private TimeStamp from;
     private TimeStamp to;
     private ItemType itemType;
     private String detailText;
-    public Memo(TimeStamp from, TimeStamp to, String detailText, ItemType itemType) {
+    public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType) {
         this.from = from;
         this.to = to;
         this.detailText = detailText;
@@ -90,9 +91,9 @@ public abstract class Memo implements ItemInterface {
 
     @Override
     public boolean equals(Object object) {
-        Memo memo = (Memo)object;
-        return (from.equals(memo.getFrom())) && (to.equals(memo.getTo()))
-                && (detailText.equals(memo.getDetailText())) && (itemType == memo.getItemType());
+        Item item = (Item)object;
+        return (from.equals(item.getFrom())) && (to.equals(item.getTo()))
+                && (detailText.equals(item.getDetailText())) && (itemType == item.getItemType());
     }
 
     @Override
