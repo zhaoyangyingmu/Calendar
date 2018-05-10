@@ -27,7 +27,7 @@ public class Festival extends Special {
 
     @Override
     protected void setStyleClass() {
-        dayItem.addStyleClass("festival");
+        addStyleClass("festival");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Festival extends Special {
         Label holidayLabel = new Label(holiday);
         holidayLabel.getStyleClass().add("festival_label");
         //TODO label属性
-        dayItem.setBottomNode(holidayLabel);
+        setBottomNode(holidayLabel);
 
     }
 }

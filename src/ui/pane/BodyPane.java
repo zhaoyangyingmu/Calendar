@@ -11,8 +11,8 @@ import javafx.scene.layout.*;
 import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
-import todoitem.Memo;
-import todoitem.MemoManager;
+import todoitem.Item;
+import todoitem.ItemManager;
 import todoitem.util.TimeStamp;
 import ui.Config;
 import ui.view.*;
@@ -68,7 +68,7 @@ public class BodyPane extends StackPane {
         // table head
         HBox hBox = new HBox();
         hBox.setSpacing(Config.gethGap());
-        hBox.setPadding(new Insets(10,0,10,0));
+        hBox.setPadding(new Insets(10, 0, 10, 0));
         for (int i = 0; i < 7; i++) {
             BorderPane pane = new BorderPane();
             Label label = new Label("" + DateUtil.DayType.values()[i].getPrintMark());
@@ -91,9 +91,12 @@ public class BodyPane extends StackPane {
 
             List<CalendarDate> lastCalendars = DateUtil.getHeadOfCalendar(date);
             List<CalendarDate> calendars = DateUtil.getDaysInMonth(date);
-            List<CalendarDate> nextCalendars = DateUtil.getTailOfCalendar(date, lastCalendars.size() + calendars.size());
+            assert lastCalendars != null;
+            assert calendars != null;
             int lastSize = lastCalendars.size();
             int curSize = calendars.size();
+            List<CalendarDate> nextCalendars = DateUtil.getTailOfCalendar(date, lastSize + curSize);
+            assert nextCalendars != null;
             int nextSize = nextCalendars.size();
 
             for (int i = 0; i < lastSize; i++) {
@@ -104,17 +107,21 @@ public class BodyPane extends StackPane {
             for (int i = 0; i < curSize; i++) {
                 j = i + lastSize;
                 DayItem item = new OrdinaryDay(calendars.get(i));
-                ArrayList<Memo> memos = MemoManager.getInstance().getItemsByStamp(from, to);
-                if (memos.size() > 0) {
-                    item = new MemoDay(item, memos).getItem();
+                ArrayList<Item> items = ItemManager.getInstance().getItemsByStamp(from, to);
+                if (items.size() > 0) {
+                    item = new MemoDay(item, items).getItem();
                 }
                 String dateString = calendars.get(i).getDateString();
-                if (DayManager.isFestival(dateString)) {
-                    item = new Festival(item, DayManager.judgeDays(dateString).getName()).getItem(); //获取节日名称}}
+                DayType type;
+                if ((type = DayManager.isFestival(dateString)) != null) {
+                    item = new Festival(item, type.getName()).getItem(); //获取节日名称
                 }
-
-                if (DayManager.isRest_WorkDay(dateString))
-                    item = new DayOff(item, DayManager.judgeDays(dateString).getName()).getItem();
+                if ((type = DayManager.isRest(dateString)) != null
+                        || (type = DayManager.isWorkDay(dateString)) != null)
+                    item = new DayOff(item, type.getName()).getItem();
+                if (j % 7 == 0 || j % 7 == 6) {
+                    item = new Weekend(item).getItem();
+                }
                 item.setOnMouseClicked(new SquareClickHandler(from, to));
 
                 from = new TimeStamp(from.getYear(), from.getMonth(),

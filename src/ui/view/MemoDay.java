@@ -1,10 +1,9 @@
 package ui.view;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
-import todoitem.Memo;
+import todoitem.Item;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,18 +16,18 @@ import java.util.Set;
  */
 
 public class MemoDay extends Special {
-    private ArrayList<Memo> memos;
-    private Set<Memo.ItemType> types;
+    private ArrayList<Item> items;
+    private Set<Item.ItemType> types;
 
-    public MemoDay(DayItem item, ArrayList<Memo> memos) {
+    public MemoDay(DayItem item, ArrayList<Item> items) {
         super(item);
-        this.memos = memos;
+        this.items = items;
         init();
     }
 
     private void setTypes() {
-        for (Memo memo : memos) {
-            types.add(memo.getItemType());
+        for (Item item : items) {
+            types.add(item.getItemType());
         }
     }
 
@@ -42,8 +41,8 @@ public class MemoDay extends Special {
 
     @Override
     protected void setStyleClass() {
-        for (Memo.ItemType type : types) {
-            dayItem.addStyleClass(type.getTypeStr());
+        for (Item.ItemType type : types) {
+            addStyleClass(type.getTypeStr());
         }
     }
 
@@ -52,12 +51,12 @@ public class MemoDay extends Special {
         HBox hBox = new HBox();
         hBox.setSpacing(5);
         hBox.setPadding(new Insets(5, 5, 5, 5));
-        for (Memo.ItemType type : types) {
+        for (Item.ItemType type : types) {
             Circle circle = new Circle();
             circle.setRadius(4);
             circle.getStyleClass().add("type_" + type.getTypeStr());
             hBox.getChildren().add(circle);
         }
-        dayItem.setTopNode(hBox);
+        setTopNode(hBox);
     }
 }

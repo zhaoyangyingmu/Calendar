@@ -35,7 +35,8 @@ public class QueryPane extends StackPane {
     private QueryPane() {
         Label hintLabel = new Label("HintLabel");
         hintLabel.setStyle("-fx-text-fill: white ; -fx-font-size: 20");
-        TextField dateText = new TextField("Search format : 2018-1-1");
+        TextField dateText = new TextField();
+        dateText.setPromptText("Search format : 2018-1-1");
         dateText.setMaxSize(200, 30);
         dateText.setMinSize(200, 30);
         Button searchBt = new Button("Jump");

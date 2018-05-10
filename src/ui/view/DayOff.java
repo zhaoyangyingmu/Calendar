@@ -26,7 +26,7 @@ public class DayOff extends Special {
 
     @Override
     protected void setStyleClass() {
-        dayItem.addStyleClass("day_off");
+        addStyleClass("day_off");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class DayOff extends Special {
         Label offLabel = new Label(content);
         offLabel.getStyleClass().add("day_off_label");
         //TODO label属性
-        dayItem.setRightNode(offLabel);
+        setRightNode(offLabel);
     }
 
 }

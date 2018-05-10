@@ -11,9 +11,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import kernel.Display;
-import todoitem.Memo;
-import todoitem.MemoManager;
-import todoitem.itemSub.OtherMemo;
+import todoitem.Item;
+import todoitem.ItemManager;
+import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 
 import java.util.ArrayList;
@@ -32,10 +32,10 @@ public class DetailPane extends BorderPane {
         this.setAlignment(title, Pos.CENTER);
         this.setMargin(title, new Insets(20, 0 , 0 , 0 ));
 
-        ArrayList<Memo> memoList = MemoManager.getInstance().getItemsByStamp(from, to);
+        ArrayList<Item> itemList = ItemManager.getInstance().getItemsByStamp(from, to);
         GridPane detailContent = new GridPane();
-        for (int i = 0; i < memoList.size(); i++) {
-            ItemPane itemPane = new ItemPane(memoList.get(i));
+        for (int i = 0; i < itemList.size(); i++) {
+            ItemPane itemPane = new ItemPane(itemList.get(i));
             detailContent.add(itemPane, 0, i);
         }
         ScrollPane scrollContent = new ScrollPane();
@@ -47,10 +47,10 @@ public class DetailPane extends BorderPane {
         HBox btRow = new HBox();
         Button addBt = new Button("add");
         addBt.setOnMouseClicked(event -> {
-            Memo memo = new OtherMemo(from, to , "" , Memo.ItemType.LEISURE);
-            MemoManager.getInstance().addItem(memo);
+            Item item = new OtherItem(from, to , "" , Item.ItemType.LEISURE);
+            ItemManager.getInstance().addItem(item);
             Display.removeDetailPane();
-            Display.addEditPane(memo, true);
+            Display.addEditPane(item, true);
         });
         addBt.getStyleClass().add("btn");
         addBt.setMaxSize(45 , 30);
@@ -74,25 +74,25 @@ public class DetailPane extends BorderPane {
     }
 
     private class ItemPane extends GridPane {
-        private Memo memo;
-        public ItemPane(Memo memo) {
-            this.memo = memo;
+        private Item item;
+        public ItemPane(Item item) {
+            this.item = item;
             int rowIndex = 0;
             Line line = new Line(0 , 0 , 500 , 0);
             line.setStroke(Color.YELLOW);
             this.add(line , 0, rowIndex++);
 
-            Text fromToText = new Text("From: " + memo.getFrom().toString() + " To: " + memo.getTo().toString());
+            Text fromToText = new Text("From: " + item.getFrom().toString() + " To: " + item.getTo().toString());
             this.add(fromToText,0 , rowIndex++);
             this.setMargin(fromToText, new Insets(5, 0 , 0 , 0 ));
 
-            String typeStr = "Type: " + memo.getItemType().getTypeStr();
+            String typeStr = "Type: " + item.getItemType().getTypeStr();
             Text typeText = new Text(typeStr);
             this.add(typeText,0 , rowIndex++);
             this.setMargin(typeText, new Insets(5, 0 , 0 , 0 ));
 
 
-            Text detailText = new Text("Detail: " + memo.getDetailText());
+            Text detailText = new Text("Detail: " + item.getDetailText());
             this.add(detailText, 0 , rowIndex++);
             this.setMargin(detailText, new Insets(5, 0 , 0 , 0 ));
 
@@ -102,7 +102,7 @@ public class DetailPane extends BorderPane {
             removeBt.setMaxSize(80, 23);
             removeBt.setMinSize(80, 23);
             removeBt.setOnMouseClicked(event -> {
-                MemoManager.getInstance().deleteItem(memo);
+                ItemManager.getInstance().deleteItem(item);
                 Display.refreshDetailPane();
                 BodyPane.getInstance().refresh();
             });
@@ -112,7 +112,7 @@ public class DetailPane extends BorderPane {
             editBt.getStyleClass().add("greenInDetail");
             editBt.setOnMouseClicked(event -> {
                 Display.removeDetailPane();
-                Display.addEditPane(memo, false);
+                Display.addEditPane(item, false);
             });
             editBt.setMaxSize(80, 23);
             editBt.setMinSize(80, 23);

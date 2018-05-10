@@ -40,6 +40,7 @@ public class OrdinaryDay extends DayItem {
     @Override
     protected void paint() {
         this.dayLabel.setText(getDate().getDay() + "");
+        this.dayLabel.getStyleClass().add("basic_label");
         this.setPrefSize(Config.getRectangleWidth(), Config.getRectangleHeight());
 
         setTopNode(new HBox());

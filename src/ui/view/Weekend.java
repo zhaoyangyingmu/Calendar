@@ -2,7 +2,7 @@ package ui.view;
 
 public class Weekend extends Special {
 
-    Weekend(DayItem item) {
+    public Weekend(DayItem item) {
         super(item);
         init();
     }
@@ -15,7 +15,7 @@ public class Weekend extends Special {
 
     @Override
     protected void setStyleClass() {
-        dayItem.addStyleClass("weekend");
+        addStyleClass("weekend");
     }
 
     @Override

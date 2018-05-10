@@ -15,7 +15,7 @@ public class NThisMonthDay extends Special{
 
     @Override
     protected void setStyleClass() {
-        dayItem.addStyleClass("not_this_month_day");
+        addStyleClass("not_this_month_day");
     }
 
     @Override

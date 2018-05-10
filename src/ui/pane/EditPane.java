@@ -6,8 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import kernel.Display;
-import todoitem.Memo;
-import todoitem.MemoManager;
+import todoitem.Item;
+import todoitem.ItemManager;
 import todoitem.util.TimeStamp;
 import ui.util.LabelAndCombo;
 
@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class EditPane extends GridPane {
 
-    public EditPane(Memo memo, boolean fromAdd) {
+    public EditPane(Item item, boolean fromAdd) {
         /**
          * from timeStamp information
          * */
         GridPane fromFirstRow = new GridPane();
-        TimeStamp from = memo.getFrom();
+        TimeStamp from = item.getFrom();
         Label fromLabel = new Label("From: ");
         fromFirstRow.add(fromLabel , 0 , 0);
 
@@ -56,7 +56,7 @@ public class EditPane extends GridPane {
          * to timeStamp information
          * */
         GridPane toFirstRow = new GridPane();
-        TimeStamp to = memo.getTo();
+        TimeStamp to = item.getTo();
         Label toLabel = new Label("To: ");
         toFirstRow.add(toLabel , 0 , 0);
 
@@ -90,11 +90,11 @@ public class EditPane extends GridPane {
          * type information
          * */
         ArrayList<String> typeList = new ArrayList<>();
-        for(int i = 0; i < Memo.ItemType.values().length; i++) {
-            typeList.add(Memo.ItemType.values()[i].toString());
+        for(int i = 0; i < Item.ItemType.values().length; i++) {
+            typeList.add(Item.ItemType.values()[i].toString());
         }
         GridPane typeRow = LabelAndCombo.getInstance("type: " , typeList);
-        ((LabelAndCombo) typeRow).getComboBox().setValue(memo.getItemType().toString());
+        ((LabelAndCombo) typeRow).getComboBox().setValue(item.getItemType().toString());
         ((LabelAndCombo) typeRow).getComboBox().setMinSize(100 , 25);
         ((LabelAndCombo) typeRow).getComboBox().setMaxSize(100 , 25);
         this.add(typeRow, 0 , 4);
@@ -103,7 +103,7 @@ public class EditPane extends GridPane {
         /**
          * Detail information
          * */
-        GridPane infoRow = new LabelAndTextRow("Info: ", memo.getDetailText());
+        GridPane infoRow = new LabelAndTextRow("Info: ", item.getDetailText());
         this.add(infoRow , 0, 5);
         infoRow.setAlignment(Pos.CENTER);
 
@@ -137,15 +137,15 @@ public class EditPane extends GridPane {
                 if (!toStamp.isValid() || !fromStamp.isValid() ) {
                     throw new Exception("TimeStamp not valid! ");
                 }
-                memo.setFrom(fromStamp);
-                memo.setTo(toStamp);
-                Memo.ItemType tmpType = Memo.ItemType.parseItemType(((LabelAndCombo) typeRow).getComboBox().getValue());
+                item.setFrom(fromStamp);
+                item.setTo(toStamp);
+                Item.ItemType tmpType = Item.ItemType.parseItemType(((LabelAndCombo) typeRow).getComboBox().getValue());
                 if(tmpType != null) {
-                    memo.setItemType(tmpType);
+                    item.setItemType(tmpType);
                 } else {
-                    throw new Exception("No such memo type!");
+                    throw new Exception("No such item type!");
                 }
-                memo.setDetailText(((LabelAndTextRow) infoRow).getTextField().getText());
+                item.setDetailText(((LabelAndTextRow) infoRow).getTextField().getText());
                 Display.removeEditPane();
             }catch (Exception e) {
                 Display.showToast("请输入数字与正确的类型！");
@@ -158,7 +158,7 @@ public class EditPane extends GridPane {
 
         cancelBt.setOnMouseClicked(event -> {
             if (fromAdd) {
-                MemoManager.getInstance().deleteItem(memo);
+                ItemManager.getInstance().deleteItem(item);
             }
             Display.removeEditPane();
         });
