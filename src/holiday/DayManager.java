@@ -12,7 +12,7 @@ import java.util.Calendar;
 public class DayManager {
     private ArrayList<Holiday> holidays;
     private ArrayList<Calendar> workdays;
-    private static DayManager dayManager;
+    private final static DayManager dayManager = new DayManager();
 
     private DayManager() {
         holidays = new ArrayList<Holiday>();
@@ -52,23 +52,18 @@ public class DayManager {
         }
     }
 
-    public static boolean isFestival(String str) {
-        String name = judgeDays(str).getName();
-        return !name.equals(DayType.REST.getName()) &&
-                !name.equals(DayType.WORKDAY.getName()) && !name.equals(DayType.NORMAL.getName());
+    public static DayType isFestival(String str) {
+        Calendar cal = Holiday.strToCal(str);
+        for (int i = 0; i < dayManager.holidays.size(); i++)
+            if (areSameDay(cal, dayManager.holidays.get(i).getHolidayTime())) {
+                DayType dayType = DayType.HOLIDAY;
+                dayType.setName(dayManager.holidays.get(i).getZh_name());
+                return dayType;
+            }
+        return null;
     }
 
-    public static boolean isRest_WorkDay(String str) {
-        String name = judgeDays(str).getName();
-        return name.equals(DayType.REST.getName()) || name.equals(DayType.WORKDAY.getName());
-    }
-
-    //如果是节假日当天，返回枚举类型节假日/工作/休息/正常。
-    public static DayType judgeDays(String str) {
-        if (dayManager == null) {
-            dayManager = new DayManager();
-        }
-        //判断是否为工作
+    public static DayType isWorkDay(String str) {
         Calendar cal = Holiday.strToCal(str);
         for (int i = 0; i < dayManager.workdays.size(); i++) {
             if (areSameDay(cal, dayManager.workdays.get(i))) {
@@ -77,15 +72,11 @@ public class DayManager {
                 return dayType;
             }
         }
-        //判断是否为节假日当天
-        for (int i = 0; i < dayManager.holidays.size(); i++) {
-            if (areSameDay(cal, dayManager.holidays.get(i).getHolidayTime())) {
-                DayType dayType = DayType.HOLIDAY;
-                dayType.setName(dayManager.holidays.get(i).getZh_name());
-                return dayType;
-            }
-        }
-        //判断是否为节假日中的休息
+        return null;
+    }
+
+    public static DayType isRest(String str) {
+        Calendar cal = Holiday.strToCal(str);
         for (int i = 0; i < dayManager.holidays.size(); i++) {
             if (before(cal, dayManager.holidays.get(i).getEndTime()) && after(cal, dayManager.holidays.get(i).getStartTime())) {
                 DayType dayType = DayType.REST;
@@ -93,15 +84,30 @@ public class DayManager {
                 return dayType;
             }
         }
+        return null;
+    }
+
+    //如果是节假日当天，返回枚举类型节假日/工作/休息/正常。
+    public static DayType judgeDays(String str) {
+        DayType dayType;
+        //判断是否为工作
+        if ((dayType = isWorkDay(str)) != null) {
+            return dayType;
+        }
+        //判断是否为节假日当天
+        if ((dayType = isFestival(str)) != null) {
+            return dayType;
+        }
+        //判断是否为节假日中的休息
+        if ((dayType = isRest(str)) != null) {
+            return dayType;
+        }
         //为其他正常日子
         return DayType.NORMAL;
     }
 
     //返回节日信息
     public static Holiday holidayDetail(String str) {
-        if (dayManager == null) {
-            dayManager = new DayManager();
-        }
         Calendar cal = Holiday.strToCal(str);
 
         for (int i = 0; i < dayManager.holidays.size(); i++) {
