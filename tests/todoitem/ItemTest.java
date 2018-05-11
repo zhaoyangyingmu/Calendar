@@ -3,8 +3,8 @@ package todoitem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import todoitem.itemSub.Appointment;
-import todoitem.itemSub.Meeting;
+import todoitem.itemSub.AppointmentItem;
+import todoitem.itemSub.MeetingItem;
 import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 
@@ -43,17 +43,17 @@ public class ItemTest {
         };
         List<Item> itemsDuringThisPeriod = new ArrayList<Item>() {
             {
-                add(new Appointment(new TimeStamp(2016, 2,29, 0 , 1),
+                add(new AppointmentItem(new TimeStamp(2016, 2,29, 0 , 1),
                              new TimeStamp(2016, 2,29, 0 , 2),
-                        "", Item.ItemType.LEISURE, "" , ""));
+                        "", "" , ""));
 
-                add(new Appointment(new TimeStamp(2013, 1,31, 23 , 1),
+                add(new AppointmentItem(new TimeStamp(2013, 1,31, 23 , 1),
                         new TimeStamp(2014, 1,31, 16 , 6),
-                        "", Item.ItemType.LEISURE, "" , ""));
+                        "",  "" , ""));
 
-                add(new Appointment(new TimeStamp(2018, 6,30, 5 , 42),
+                add(new AppointmentItem(new TimeStamp(2018, 6,30, 5 , 42),
                         new TimeStamp(2018, 6,30, 5 , 43),
-                        "", Item.ItemType.LEISURE, "" , ""));
+                        "",  "" , ""));
             }
         };
         for (int i = 0; i < fromCases.size(); i++) {
@@ -63,9 +63,9 @@ public class ItemTest {
 
     @Test
     public void setFrom() {
-        Item item = new Meeting(new TimeStamp(2016, 2,29, 0 , 1),
+        Item item = new MeetingItem(new TimeStamp(2016, 2,29, 0 , 1),
                 new TimeStamp(2016, 2,29, 0 , 2),
-                "", Item.ItemType.LEISURE, "" , "");
+                "", "" , "");
         TimeStamp timeStamp = new TimeStamp(2018,4,14,20,25);
         item.setFrom(timeStamp);
         assertEquals(timeStamp,item.getFrom());
@@ -74,7 +74,7 @@ public class ItemTest {
     @Test
     public void setTo() {
         Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE);
+                new TimeStamp(2016, 2,29, 0 , 2), "");
         TimeStamp timeStamp = new TimeStamp(2018,4,14,20,25);
         item.setTo(timeStamp);
         assertEquals(timeStamp,item.getTo());
@@ -83,7 +83,7 @@ public class ItemTest {
     @Test
     public void setDetailText() {
         Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE);
+                new TimeStamp(2016, 2,29, 0 , 2), "");
         String detailText = "HANG ON!";
         item.setDetailText(detailText);
         assertEquals(detailText,item.getDetailText());
@@ -92,9 +92,9 @@ public class ItemTest {
     @Test
     public void setItemType() {
         Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE);
-        Item.ItemType type = Item.ItemType.DATING;
-        item.setItemType(Item.ItemType.DATING);
+                new TimeStamp(2016, 2,29, 0 , 2), "");
+        Item.ItemType type = Item.ItemType.APPOINTMENT;
+        item.setItemType(Item.ItemType.APPOINTMENT);
         assertEquals(type,item.getItemType());
     }
 }
