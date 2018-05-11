@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class ItemIOTest {
     @Test
-    public void outputAndInput() {
+    public void outputAndInput() throws Exception {
         final int testSize = 100;
         // expected item list
         TimeStamp start = TimeStamp.createStampDayStart(2018, 1, 1);
