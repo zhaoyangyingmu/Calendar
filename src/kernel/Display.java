@@ -1,9 +1,8 @@
 package kernel;
 
 import javafx.application.Application;
-import javafx.scene.effect.BoxBlur;
+import javafx.geometry.Insets;
 import javafx.scene.effect.GaussianBlur;
-import ui.pane.AsidePane;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -57,7 +56,7 @@ public class Display extends Application {
         backgroundImage = new ImageView(Config.class.getResource("/res/" + DateUtil.getToday().getMonth() + ".jpg").toString());
         backgroundImage.setFitHeight(Config.getWindowHeight());
         backgroundImage.setFitWidth(Config.getWindowWidth());
-        backgroundImage.setEffect(new GaussianBlur(20));
+        backgroundImage.setEffect(new GaussianBlur(40));
         imageCalendarPane.getChildren().add(backgroundImage);
         imageCalendarPane.getChildren().add(calendarPane);
         Scene scene = new Scene(imageCalendarPane, Config.getWindowWidth(), Config.getWindowHeight());
