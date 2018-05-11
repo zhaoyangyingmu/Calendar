@@ -1,5 +1,6 @@
 package ui.pane;
 
+import io.ItemIO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -49,6 +50,7 @@ public class DetailPane extends BorderPane {
         addBt.setOnMouseClicked(event -> {
             Item item = new OtherItem(from, to , "" , Item.ItemType.LEISURE);
             ItemManager.getInstance().addItem(item);
+            ItemIO.output();
             Display.removeDetailPane();
             Display.addEditPane(item, true);
         });
@@ -76,6 +78,7 @@ public class DetailPane extends BorderPane {
     private class ItemPane extends GridPane {
         private Item item;
         public ItemPane(Item item) {
+            // TODO: 2018/5/11
             this.item = item;
             int rowIndex = 0;
             Line line = new Line(0 , 0 , 500 , 0);
@@ -103,6 +106,7 @@ public class DetailPane extends BorderPane {
             removeBt.setMinSize(80, 23);
             removeBt.setOnMouseClicked(event -> {
                 ItemManager.getInstance().deleteItem(item);
+                ItemIO.output();
                 Display.refreshDetailPane();
                 BodyPane.getInstance().refresh();
             });

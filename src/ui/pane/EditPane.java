@@ -1,5 +1,6 @@
 package ui.pane;
 
+import io.ItemIO;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -89,6 +90,7 @@ public class EditPane extends GridPane {
         /**
          * type information
          * */
+        // TODO: 2018/5/11  
         ArrayList<String> typeList = new ArrayList<>();
         for(int i = 0; i < Item.ItemType.values().length; i++) {
             typeList.add(Item.ItemType.values()[i].toString());
@@ -146,6 +148,7 @@ public class EditPane extends GridPane {
                     throw new Exception("No such item type!");
                 }
                 item.setDetailText(((LabelAndTextRow) infoRow).getTextField().getText());
+                ItemIO.output();
                 Display.removeEditPane();
             }catch (Exception e) {
                 Display.showToast("请输入数字与正确的类型！");
@@ -159,6 +162,7 @@ public class EditPane extends GridPane {
         cancelBt.setOnMouseClicked(event -> {
             if (fromAdd) {
                 ItemManager.getInstance().deleteItem(item);
+                ItemIO.output();
             }
             Display.removeEditPane();
         });

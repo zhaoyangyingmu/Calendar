@@ -14,12 +14,12 @@ import static org.junit.Assert.*;
 public class ItemManagerTest {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         System.out.println("Class ItemManager tests begin! Good Luck!");
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(){
         System.out.println("Class ItemManager tests end! Are you satisfied?");
         ItemManager.destroy();
     }
@@ -27,30 +27,30 @@ public class ItemManagerTest {
     @Test
     public void addItem() {
         boolean noSuchItem = false;
-        List<OtherItem> memos = new ArrayList<OtherItem>() {
+        List<Item> items = new ArrayList<Item>() {
             {
                 add(new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                        new TimeStamp(2016, 2,29, 0 , 2), "", OtherItem.ItemType.LEISURE));
+                        new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE));
 
                 add(new OtherItem(new TimeStamp(2013, 1,31, 23 , 1),
-                        new TimeStamp(2014, 1,31, 16 , 6), "", OtherItem.ItemType.LEISURE));
+                        new TimeStamp(2014, 1,31, 16 , 6), "", Item.ItemType.LEISURE));
 
                 add(new OtherItem(new TimeStamp(2018, 6,30, 5 , 42),
-                        new TimeStamp(2018, 6,30, 5 , 43), "", OtherItem.ItemType.LEISURE));
+                        new TimeStamp(2018, 6,30, 5 , 43), "", Item.ItemType.LEISURE));
             }
         };
-        for (int i = 0; i < memos.size(); i++) {
-            ItemManager.getInstance().addItem(memos.get(i));
+        for (int i = 0;i < items.size();i++) {
+            ItemManager.getInstance().addItem(items.get(i));
         }
         here:
-        for (int i = 0; i < memos.size(); i++) {
-            List<Item> resultList = ItemManager.getInstance().getItemsByStamp(memos.get(i).getFrom(), memos.get(i).getTo());
+        for (int i = 0 ; i < items.size();i++) {
+            List<Item> resultList = ItemManager.getInstance().getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
             if (resultList.size() == 0) {
                 noSuchItem = true;
                 break;
             }
             for (int j = 0 ; j < resultList.size(); j++) {
-                if (resultList.get(j).equals(memos.get(i))){
+                if (resultList.get(j).equals(items.get(i))){
                     continue here;
                 }
             }
@@ -76,22 +76,22 @@ public class ItemManagerTest {
                 add(new TimeStamp(2019, 6,30, 5 , 43));
             }
         };
-        List<OtherItem> memos = new ArrayList<OtherItem>() {
+        List<Item> items = new ArrayList<Item>() {
             {
                 for (int i = 0 ; i < fromCases.size(); i++){
-                    add(new OtherItem(fromCases.get(i),toCases.get(i),"" , OtherItem.ItemType.LEISURE));
+                    add(new OtherItem(fromCases.get(i),toCases.get(i),"" , Item.ItemType.LEISURE));
                 }
             }
         };
 
-        for (int i = 0; i < memos.size(); i++) {
-            ItemManager.getInstance().addItem(memos.get(i));
+        for (int i = 0 ; i < items.size();i++) {
+            ItemManager.getInstance().addItem(items.get(i));
         }
         boolean pass = true;
-        for (int i = 0; i < memos.size(); i++){
+        for (int i = 0 ; i < items.size();i++){
             List<Item> actualList = ItemManager.getInstance()
-                    .getItemsByStamp(memos.get(i).getFrom(), memos.get(i).getTo());
-            if (!actualList.get(0).equals(memos.get(i))){
+                    .getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
+            if (!actualList.get(0).equals(items.get(i))){
                 pass = false;
                 break;
             }
@@ -115,23 +115,23 @@ public class ItemManagerTest {
                 add(new TimeStamp(2019, 6,30, 5 , 43));
             }
         };
-        List<OtherItem> memos = new ArrayList<OtherItem>() {
+        List<Item> items = new ArrayList<Item>() {
             {
                 for (int i = 0 ; i < fromCases.size(); i++){
-                    add(new OtherItem(fromCases.get(i),toCases.get(i),"" , OtherItem.ItemType.LEISURE));
+                    add(new OtherItem(fromCases.get(i),toCases.get(i),"" , Item.ItemType.LEISURE));
                 }
             }
         };
-        for (int i = 0; i < memos.size(); i++) {
-            ItemManager.getInstance().addItem(memos.get(i));
+        for (int i = 0 ; i < items.size();i++) {
+            ItemManager.getInstance().addItem(items.get(i));
         }
         boolean pass = true;
-        for (int i = 0; i < memos.size(); i++){
+        for (int i = 0 ; i < items.size();i++){
             List<Item> actualList = ItemManager.getInstance()
-                    .getItemsByStamp(memos.get(i).getFrom(), memos.get(i).getTo());
+                    .getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
             ItemManager.getInstance().deleteItem(actualList.get(0));
             List<Item> listAfterDelete = ItemManager.getInstance()
-                    .getItemsByStamp(memos.get(i).getFrom(), memos.get(i).getTo());
+                    .getItemsByStamp(items.get(i).getFrom(),items.get(i).getTo());
             if (listAfterDelete.size() != 0) {
                 pass = false;
                 break;

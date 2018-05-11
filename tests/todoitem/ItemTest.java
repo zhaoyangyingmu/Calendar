@@ -3,6 +3,8 @@ package todoitem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import todoitem.itemSub.Appointment;
+import todoitem.itemSub.Meeting;
 import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 
@@ -39,16 +41,19 @@ public class ItemTest {
                 add(new TimeStamp(2018, 6,30, 5 , 43));
             }
         };
-        List<OtherItem> itemsDuringThisPeriod = new ArrayList<OtherItem>() {
+        List<Item> itemsDuringThisPeriod = new ArrayList<Item>() {
             {
-                add(new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                             new TimeStamp(2016, 2,29, 0 , 2), "", OtherItem.ItemType.LEISURE));
+                add(new Appointment(new TimeStamp(2016, 2,29, 0 , 1),
+                             new TimeStamp(2016, 2,29, 0 , 2),
+                        "", Item.ItemType.LEISURE, "" , ""));
 
-                add(new OtherItem(new TimeStamp(2013, 1,31, 23 , 1),
-                        new TimeStamp(2014, 1,31, 16 , 6), "", OtherItem.ItemType.LEISURE));
+                add(new Appointment(new TimeStamp(2013, 1,31, 23 , 1),
+                        new TimeStamp(2014, 1,31, 16 , 6),
+                        "", Item.ItemType.LEISURE, "" , ""));
 
-                add(new OtherItem(new TimeStamp(2018, 6,30, 5 , 42),
-                        new TimeStamp(2018, 6,30, 5 , 43), "", OtherItem.ItemType.LEISURE));
+                add(new Appointment(new TimeStamp(2018, 6,30, 5 , 42),
+                        new TimeStamp(2018, 6,30, 5 , 43),
+                        "", Item.ItemType.LEISURE, "" , ""));
             }
         };
         for (int i = 0; i < fromCases.size(); i++) {
@@ -58,37 +63,38 @@ public class ItemTest {
 
     @Test
     public void setFrom() {
-        OtherItem memo = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "", OtherItem.ItemType.LEISURE);
+        Item item = new Meeting(new TimeStamp(2016, 2,29, 0 , 1),
+                new TimeStamp(2016, 2,29, 0 , 2),
+                "", Item.ItemType.LEISURE, "" , "");
         TimeStamp timeStamp = new TimeStamp(2018,4,14,20,25);
-        memo.setFrom(timeStamp);
-        assertEquals(timeStamp, memo.getFrom());
+        item.setFrom(timeStamp);
+        assertEquals(timeStamp,item.getFrom());
     }
 
     @Test
     public void setTo() {
-        OtherItem memo = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "", OtherItem.ItemType.LEISURE);
+        Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
+                new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE);
         TimeStamp timeStamp = new TimeStamp(2018,4,14,20,25);
-        memo.setTo(timeStamp);
-        assertEquals(timeStamp, memo.getTo());
+        item.setTo(timeStamp);
+        assertEquals(timeStamp,item.getTo());
     }
 
     @Test
     public void setDetailText() {
-        OtherItem memo = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "", OtherItem.ItemType.LEISURE);
+        Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
+                new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE);
         String detailText = "HANG ON!";
-        memo.setDetailText(detailText);
-        assertEquals(detailText, memo.getDetailText());
+        item.setDetailText(detailText);
+        assertEquals(detailText,item.getDetailText());
     }
 
     @Test
     public void setItemType() {
-        OtherItem memo = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "", OtherItem.ItemType.LEISURE);
-        OtherItem.ItemType type = OtherItem.ItemType.DATING;
-        memo.setItemType(OtherItem.ItemType.DATING);
-        assertEquals(type, memo.getItemType());
+        Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
+                new TimeStamp(2016, 2,29, 0 , 2), "", Item.ItemType.LEISURE);
+        Item.ItemType type = Item.ItemType.DATING;
+        item.setItemType(Item.ItemType.DATING);
+        assertEquals(type,item.getItemType());
     }
 }
