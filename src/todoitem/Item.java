@@ -67,7 +67,7 @@ public abstract class Item implements Serializable, ItemInterface {
 
 
     public enum ItemType {
-        LEISURE("leisure"), DATING("dating"), STUDY("study");
+        OTHER("other"), MEETING("meeting"), APPOINTMENT("appointment");
         private String typeStr;
 
         ItemType(String typeStr) {
@@ -80,12 +80,12 @@ public abstract class Item implements Serializable, ItemInterface {
 
         public static ItemType parseItemType(String typeStr) {
             switch (typeStr) {
-                case "LEISURE":
-                    return LEISURE;
-                case "DATING":
-                    return DATING;
-                case "STUDY":
-                    return STUDY;
+                case "MEETING":
+                    return MEETING;
+                case "APPOINTMENT":
+                    return APPOINTMENT;
+                case "OTHER":
+                    return OTHER;
             }
             return null;
         }
