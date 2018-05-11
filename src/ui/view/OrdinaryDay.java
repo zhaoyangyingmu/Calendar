@@ -1,6 +1,7 @@
 package ui.view;
 
 import javafx.scene.control.Label;
+import javafx.scene.effect.*;
 import javafx.scene.layout.HBox;
 import kernel.CalendarDate;
 import ui.Config;
@@ -41,6 +42,7 @@ public class OrdinaryDay extends DayItem {
     protected void paint() {
         this.dayLabel.setText(getDate().getDay() + "");
         this.dayLabel.getStyleClass().add("basic_label");
+        this.dayLabel.setEffect(new Glow(.6));
         this.setPrefSize(Config.getRectangleWidth(), Config.getRectangleHeight());
 
         setTopNode(new HBox());

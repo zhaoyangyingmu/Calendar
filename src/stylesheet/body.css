@@ -39,12 +39,12 @@
 }
 
 .not_this_month_day {
-    -fx-background-color: rgba(255, 255, 255, .4);
-    -fx-text-fill: rgba(255, 255, 255, .1);
+    -fx-background-color: rgba(0, 0, 0, .1);
+    -fx-text-fill: rgba(255, 255, 255, .5);
 }
 
 .not_this_month_day:hover {
-    -fx-background-color: rgba(255, 255, 255, .5);
+    -fx-background-color: rgba(0, 0, 0, .25);
 }
 
 .festival .festival_label {

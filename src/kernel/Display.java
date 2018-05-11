@@ -1,6 +1,8 @@
 package kernel;
 
 import javafx.application.Application;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.GaussianBlur;
 import ui.pane.AsidePane;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -42,11 +44,11 @@ public class Display extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        calendarPane.add(MenuPane.getInstance(), 0 , 0);
+        calendarPane.add(MenuPane.getInstance(), 0, 0);
         calendarPane.add(BodyPane.getInstance(), 0, 1);
-        calendarPane.add(QueryPane.getInstance(), 0 , 2);
+        calendarPane.add(QueryPane.getInstance(), 0, 2);
 
-        calendarWithAside.add(new AsidePane(),0,0);
+        calendarWithAside.add(new AsidePane(), 0, 0);
         calendarWithAside.add(calendarPane, 1, 0);
         calendarWithAside.setHgap(10);
 
@@ -56,6 +58,7 @@ public class Display extends Application {
         backgroundImage = new ImageView(Config.class.getResource("/res/" + DateUtil.getToday().getMonth() + ".jpg").toString());
         backgroundImage.setFitHeight(Config.getWindowHeight());
         backgroundImage.setFitWidth(Config.getWindowWidth());
+        backgroundImage.setEffect(new GaussianBlur(20));
         imageCalendarPane.getChildren().add(backgroundImage);
         imageCalendarPane.getChildren().add(calendarWithAside);
         Scene scene = new Scene(imageCalendarPane, Config.getWindowWidth(), Config.getWindowHeight());
