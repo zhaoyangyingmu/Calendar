@@ -29,7 +29,7 @@ public class ItemTest {
     public void NullItemInstance() {
         TimeStamp from = new TimeStamp(2018, 5, 11, 0, 0);
         TimeStamp to = new TimeStamp(2018, 5, 10, 0, 0); //非法时间段，不应该创建待办事项实例
-        Item item = new OtherItem(from, to, "", Item.ItemType.LEISURE);
+        Item item = new OtherItem(from, to, "");
         assertNull(item);
     }
 
