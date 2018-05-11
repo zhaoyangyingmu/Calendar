@@ -35,7 +35,7 @@ public class Display extends Application {
     private static TimeStamp toStatic;
     private static ImageView backgroundImage;
     private static EditPane editPane;
-
+    private static boolean hasEdit=false;
 
     public Display() {
 
@@ -70,6 +70,9 @@ public class Display extends Application {
     }
 
     public static void addDetailPane(TimeStamp from, TimeStamp to) {
+        if (hasEdit){
+            return;
+        }
         if (detailPane != null) {
             removeDetailPane();
         }
@@ -93,12 +96,14 @@ public class Display extends Application {
     public static void addEditPane(Item item, boolean fromAdd) {
         editPane = new EditPane(item, fromAdd);
         imageCalendarPane.getChildren().add(editPane);
+        hasEdit=true;
         editPane.setAlignment(Pos.CENTER);
     }
 
     public static void removeEditPane() {
         BodyPane.getInstance().refresh();
         imageCalendarPane.getChildren().remove(editPane);
+        hasEdit=false;
     }
 
     public static void addSearchPane() {
