@@ -8,7 +8,8 @@ import todoitem.util.TimeStampTest;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TimeStampTest.class, ItemTest.class , ItemManagerTest.class, CalendarDateTest.class, DateUtilTest.class})
+@Suite.SuiteClasses({IntegrationTestIO.class,TimeStampTest.class, ItemTest.class , ItemManagerTest.class,IntegrationTest.class,
+        CalendarDateTest.class, DateUtilTest.class})
 public class TestAll {
 
 }
