@@ -76,6 +76,7 @@ public class DetailPane extends BorderPane {
     private class ItemPane extends GridPane {
         private Item item;
         public ItemPane(Item item) {
+            // TODO: 2018/5/11  
             this.item = item;
             int rowIndex = 0;
             Line line = new Line(0 , 0 , 500 , 0);

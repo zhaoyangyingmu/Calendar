@@ -89,6 +89,7 @@ public class EditPane extends GridPane {
         /**
          * type information
          * */
+        // TODO: 2018/5/11  
         ArrayList<String> typeList = new ArrayList<>();
         for(int i = 0; i < Item.ItemType.values().length; i++) {
             typeList.add(Item.ItemType.values()[i].toString());
