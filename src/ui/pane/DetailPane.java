@@ -14,6 +14,8 @@ import javafx.scene.text.Text;
 import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
+import todoitem.itemSub.AppointmentItem;
+import todoitem.itemSub.MeetingItem;
 import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 
@@ -48,7 +50,7 @@ public class DetailPane extends BorderPane {
         HBox btRow = new HBox();
         Button addBt = new Button("add");
         addBt.setOnMouseClicked(event -> {
-            Item item = new OtherItem(from, to , "" , Item.ItemType.LEISURE);
+            Item item = new MeetingItem(from, to , "","","" );
             ItemManager.getInstance().addItem(item);
             ItemIO.output();
             Display.removeDetailPane();
