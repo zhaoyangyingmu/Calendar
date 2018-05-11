@@ -101,6 +101,9 @@ public class DetailPane extends BorderPane {
             this.add(detailText, 0 , rowIndex++);
             this.setMargin(detailText, new Insets(5, 0 , 0 , 0 ));
 
+
+            rowIndex = addOtherInfo(this,item,rowIndex);
+
             GridPane buttonPane = new GridPane();
             Button removeBt = new Button("remove");
             removeBt.getStyleClass().add("redInDetail");
@@ -131,6 +134,33 @@ public class DetailPane extends BorderPane {
             this.setMargin(buttonPane, new Insets(5, 0 , 0 , 0 ));
             this.setPadding(new Insets(10, 10,0 , 10));
             this.getStylesheets().add("/stylesheet/greenAndRed.css");
+        }
+
+        private int addOtherInfo(ItemPane itemPane,Item item,int rowIndex){
+            if (item.getItemType() == Item.ItemType.APPOINTMENT){//约会则还需显示人员和地点
+                Text participantText = new Text("Participants: " + ((AppointmentItem)item).getParticipants());
+                itemPane.add(participantText, 0 , rowIndex++);
+                itemPane.setMargin(participantText, new Insets(5, 0 , 0 , 0 ));
+
+                Text locationText = new Text("Location: " + ((AppointmentItem)item).getLocation());
+                itemPane.add(locationText, 0 , rowIndex++);
+                itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
+                return rowIndex;
+            }else if(item.getItemType() == Item.ItemType.MEETING){//会议还需显示地点和主题
+                Text locationText = new Text("Location: " + ((MeetingItem)item).getLocation());
+                itemPane.add(locationText, 0 , rowIndex++);
+                itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
+
+                Text topicText = new Text("Topic: " + ((MeetingItem)item).getTopic());
+                itemPane.add(topicText, 0 , rowIndex++);
+                itemPane.setMargin(topicText, new Insets(5, 0 , 0 , 0 ));
+                return rowIndex;
+            }else{
+                //其他则什么都不干,直接返回rowIndex
+
+                return rowIndex;
+            }
+
         }
     }
 }
