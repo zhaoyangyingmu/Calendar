@@ -9,12 +9,15 @@ import java.util.ArrayList;
 public class ItemIO {
     public static void output(String path) {
         ArrayList<Item> list = ItemManager.getInstance().getItemList();
-        if (list.isEmpty()) {
-            return;
-        }
+//        if (list.isEmpty()) {
+//            return;
+//        }
 
         File file = new File(path);
-
+        if (file.exists()) {
+            file.delete();
+            file = new File(path);
+        }
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)
@@ -22,8 +25,12 @@ public class ItemIO {
             for(int i = 0 ; i < list.size() ; i++) {
                 objectOutputStream.writeObject(list.get(i));
             }
+
         }catch (Exception e) {
             e.printStackTrace();
+        }
+        if(list.size() == 0) {
+            file.delete();
         }
 
     }
