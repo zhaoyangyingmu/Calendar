@@ -1,5 +1,6 @@
 package kernel;
 
+import io.ItemIO;
 import javafx.application.Application;
 
 /*
@@ -8,6 +9,7 @@ import javafx.application.Application;
 * */
 public class Main {
     public static void main(String[] args) {
+        ItemIO.input();
         Application.launch(Display.class,args);
     }
 }
