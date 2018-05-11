@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ItemManager {
     private static volatile ItemManager itemManager;    //volatile关键字保证不能同时对itemManager的读写
-    private ArrayList<Item> itemList = new ArrayList<>();
+    private static ArrayList<Item> itemList = new ArrayList<>();;
 
     private ItemManager() {
 
@@ -28,7 +28,8 @@ public class ItemManager {
     }
 
     public static void destroy() {
-        itemManager = null;
+        itemList.clear();
+        // 用 itemManager = null 出问题，因为实际上外部可以保存这个单例，导致不是单例。
     }
 
     public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
@@ -46,7 +47,8 @@ public class ItemManager {
      * how about sorting them in an order;
      */
     public void addItem(Item item) {
-        itemList.add(item);
+        if (item != null)
+            itemList.add(item);
     }
 
     /**
