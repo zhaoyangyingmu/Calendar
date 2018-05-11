@@ -100,7 +100,13 @@ public class BodyPane extends StackPane {
             int nextSize = nextCalendars.size();
 
             for (int i = 0; i < lastSize; i++) {
-                DayItem item = new NThisMonthDay(new OrdinaryDay(lastCalendars.get(i))).getItem();
+                CalendarDate lastDate = lastCalendars.get(i);
+                DayItem item = new NThisMonthDay(new OrdinaryDay(lastDate)).getItem();
+                item.setOnMouseClicked(event -> {
+                    if (DateUtil.isConsidered(lastDate)) {
+                        Display.paintDays(lastDate);
+                    }
+                });
                 this.add(item.getItem(), i, 0);
             }
             int j;
@@ -130,11 +136,20 @@ public class BodyPane extends StackPane {
                         to.getDay() + 1, to.getHour(), to.getMinute());
                 this.add(item, j % 7, j / 7);
             }
-            this.getChildren().get(lastSize + date.getDay() - 1).setId("today");
-
+            this.getChildren().get(lastSize + date.getDay() - 1).setId("focus");
+            CalendarDate today = DateUtil.getToday();
+            if (today.getYear() == date.getYear() && today.getMonth() == date.getMonth()) {
+                this.getChildren().get(lastSize + today.getDay() - 1).setId("today");
+            }
             for (int i = 0; i < nextSize; i++) {
                 j = i + lastSize + curSize;
-                DayItem item = new NThisMonthDay(new OrdinaryDay(nextCalendars.get(i))).getItem();
+                CalendarDate nextDate = nextCalendars.get(i);
+                DayItem item = new NThisMonthDay(new OrdinaryDay(nextDate)).getItem();
+                item.setOnMouseClicked(event -> {
+                    if (DateUtil.isConsidered(nextDate)) {
+                        Display.paintDays(nextDate);
+                    }
+                });
                 this.add(item, j % 7, j / 7);
             }
 
