@@ -10,7 +10,13 @@ public abstract class Item implements Serializable, ItemInterface {
     private ItemType itemType;
     private String detailText;
 
-    public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType) {
+    public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType) throws Exception {
+        if (to == null || from == null) {
+            throw new Exception("to or from TimeStamp is null! ");
+        }
+        if ((!from.isValid()) || (!to.isValid()) || !from.isBefore(to)) { // from  strictly after to
+            throw new Exception("Time is invalid");
+        }
         this.from = from;
         this.to = to;
         this.detailText = detailText;
