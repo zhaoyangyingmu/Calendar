@@ -64,12 +64,14 @@ public class CalendarDate {
         if (!DateUtil.isConsidered(this)) {
             return -1;
         }
-        int C = year / 100;
-        int y = year % 100;
         int m = month;
+        int y = year;
         if (month <= 2) {
             m = month + 12;
+            y--;
         }
+        int C = y / 100;
+        y %= 100;
         int d = day;
         int dayOfWeek = C / 4 - 2 * C + y + y / 4 + ((26 * (m + 1)) / 10) + d - 1;
         dayOfWeek = ((dayOfWeek % 7) + 7) % 7;

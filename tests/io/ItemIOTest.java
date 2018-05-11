@@ -29,7 +29,7 @@ public class ItemIOTest {
         }
 
         for (int i = 0; i < testSize; i++) {
-            list.add(new OtherItem(startList.get(i), endList.get(i), "abc" + i, Item.ItemType.DATING));
+            list.add(new OtherItem(startList.get(i), endList.get(i), "abc" + i));
         }
 
         // ItemManager.add()
