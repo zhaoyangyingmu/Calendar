@@ -50,11 +50,16 @@ public class DetailPane extends BorderPane {
         HBox btRow = new HBox();
         Button addBt = new Button("add");
         addBt.setOnMouseClicked(event -> {
-            Item item = new MeetingItem(from, to , "","","" );
-            ItemManager.getInstance().addItem(item);
-            ItemIO.output();
-            Display.removeDetailPane();
-            Display.addEditPane(item, true);
+            Item item = null;
+            try {
+                item = new MeetingItem(from, to , "","","" );
+                ItemManager.getInstance().addItem(item);
+                ItemIO.output();
+                Display.removeDetailPane();
+                Display.addEditPane(item, true);
+            } catch (Exception e) {
+                Display.showToast("请输入正确的时间与正确的类型！");
+            }
         });
         addBt.getStyleClass().add("btn");
         addBt.setMaxSize(45 , 30);
