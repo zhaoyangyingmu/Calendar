@@ -9,9 +9,9 @@ import kernel.Display;
 import todoitem.util.TimeStamp;
 import ui.util.LabelAndCombo;
 
-
-public class AsidePane extends GridPane {
-    public AsidePane() {
+public class SearchPane extends GridPane {
+    private static SearchPane searchPane;
+    private SearchPane() {
         int thisRowIndex = 0;
         Label title = new Label("Detail Search");
         title.setStyle("-fx-font-size: 20px;");
@@ -93,6 +93,7 @@ public class AsidePane extends GridPane {
                 TimeStamp to = new TimeStamp(toYear, toMonth, toDay, toHour, toMinute);
                 if (to.isValid() && from.isValid()) {
                     Display.addDetailPane(from, to);
+                    Display.removeSearchPane();
                 }
             }catch (Exception e){
                 Display.showToast("Type in number, please! ");
@@ -104,7 +105,21 @@ public class AsidePane extends GridPane {
         this.setHalignment(searchBt, HPos.CENTER);
         this.setAlignment(Pos.CENTER);
         this.setVgap(20);
-        this.getStylesheets().add("/stylesheet/buttonAndLabel.css");
+
+        final int paneFixWidth = 440;
+        final int paneFixHeight = 440;
+        this.setMaxSize(paneFixWidth , paneFixHeight);
+        this.setMinSize(paneFixWidth , paneFixHeight);
         this.getStyleClass().add("aside");
+        this.getStylesheets().add("/stylesheet/buttonAndLabel.css");
+        this.getStylesheets().add("/stylesheet/searchPane.css");
+
+    }
+
+    public static SearchPane getInstance() {
+        if (searchPane == null) {
+            searchPane = new SearchPane();
+        }
+        return searchPane;
     }
 }

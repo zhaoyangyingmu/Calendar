@@ -32,7 +32,7 @@ public class MenuPane extends StackPane {
                 if (menuPane == null) {
                     menuPane = new MenuPane();
                     menuPane.setPadding(new Insets(0, 0, 10, 0));
-                    menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/buttonAndLabel.css").toString());
+                    menuPane.getStylesheets().add(Config.class.getResource("/stylesheet/menuPane.css").toString());
                 }
             }
         }
@@ -40,18 +40,24 @@ public class MenuPane extends StackPane {
     }
 
     private MenuPane() {
+        final int comboWidth = 70;
+        final int comboHeight = 25;
         yearUnit = LabelAndCombo.getInstance("Year:   ", 1800, 2100);
-        ((LabelAndCombo) yearUnit).getComboBox().setMaxSize(70, 25);
-        ((LabelAndCombo) yearUnit).getComboBox().setMinSize(70, 25);
+        ((LabelAndCombo) yearUnit).getComboBox().setMaxSize(comboWidth, comboHeight);
+        ((LabelAndCombo) yearUnit).getComboBox().setMinSize(comboWidth, comboHeight);
         ((LabelAndCombo) yearUnit).getComboBox().setValue(DateUtil.getToday().getYear() + "");
 
         monthUnit = LabelAndCombo.getInstance("Month:   ", 1, 12);
+        ((LabelAndCombo) monthUnit).getComboBox().setMaxSize(comboWidth-10, comboHeight);
+        ((LabelAndCombo) monthUnit).getComboBox().setMinSize(comboWidth-10, comboHeight);
         ((LabelAndCombo) monthUnit).getComboBox().setValue("" + DateUtil.getToday().getMonth());
 
+        final int buttonWidth = 80;
+        final int buttonHeight = 35;
         Button checkBt = new Button("Check");
         checkBt.getStyleClass().add("btn");
-        checkBt.setMaxSize(60, 30);
-        checkBt.setMinSize(60, 30);
+        checkBt.setMaxSize(buttonWidth, buttonHeight);
+        checkBt.setMinSize(buttonWidth, buttonHeight);
         checkBt.setCursor(Cursor.HAND);
         checkBt.setOnMouseClicked(event -> {
             try {
@@ -68,20 +74,33 @@ public class MenuPane extends StackPane {
         });
         Button todayBt = new Button("Today");
         todayBt.getStyleClass().add("btn");
-        todayBt.setMaxSize(60, 30);
-        todayBt.setMinSize(60, 30);
+        todayBt.setMaxSize(buttonWidth, buttonHeight);
+        todayBt.setMinSize(buttonWidth, buttonHeight);
         todayBt.setCursor(Cursor.HAND);
         todayBt.setOnMouseClicked(event -> {
             CalendarDate today = DateUtil.getToday();
             Display.paintDays(today);
         });
 
+        Button searchBt = new Button("Search");
+        searchBt.getStyleClass().add("btn");
+        searchBt.setMaxSize(buttonWidth, buttonHeight);
+        searchBt.setMinSize(buttonWidth, buttonHeight);
+        searchBt.setCursor(Cursor.HAND);
+        searchBt.setOnMouseClicked(event -> {
+            Display.addSearchPane();
+        });
+
+
         int colIndex = 0;
         GridPane contentGrid = new GridPane();
         contentGrid.add(yearUnit, colIndex++, 0);
+        contentGrid.setMargin(yearUnit, new Insets(5 , 0, 0 , 0));
         contentGrid.add(monthUnit, colIndex++, 0);
+        contentGrid.setMargin(monthUnit , new Insets(5, 0 , 0 , 0));
         contentGrid.add(checkBt, colIndex++, 0);
         contentGrid.add(todayBt, colIndex++, 0);
+        contentGrid.add(searchBt , colIndex++ , 0);
         contentGrid.setHgap(20);
         contentGrid.setAlignment(Pos.CENTER);
         this.getChildren().add(contentGrid);

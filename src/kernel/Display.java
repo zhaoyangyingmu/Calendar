@@ -1,7 +1,7 @@
 package kernel;
 
 import javafx.application.Application;
-import ui.pane.AsidePane;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -29,12 +29,12 @@ public class Display extends Application {
     private static Stage stage = new Stage();
     private static StackPane imageCalendarPane = new StackPane();
     private static GridPane calendarPane = new GridPane();
-    private static GridPane calendarWithAside = new GridPane();
     private static DetailPane detailPane;
     private static TimeStamp fromStatic;
     private static TimeStamp toStatic;
     private static ImageView backgroundImage;
     private static EditPane editPane;
+
 
     public Display() {
 
@@ -45,24 +45,23 @@ public class Display extends Application {
         calendarPane.add(MenuPane.getInstance(), 0 , 0);
         calendarPane.add(BodyPane.getInstance(), 0, 1);
         calendarPane.add(QueryPane.getInstance(), 0 , 2);
+        calendarPane.setMargin(QueryPane.getInstance(), new Insets(10, 0 , 10 ,  0));
 
-        calendarWithAside.add(new AsidePane(),0,0);
-        calendarWithAside.add(calendarPane, 1, 0);
-        calendarWithAside.setHgap(10);
-
-        calendarWithAside.setTranslateX(250);
-        calendarWithAside.setTranslateY(40);
+        final int calendarXVal = 550;
+        final int calendarYVal = 40;
+        calendarPane.setTranslateX(calendarXVal);
+        calendarPane.setTranslateY(calendarYVal);
 
         backgroundImage = new ImageView(Config.class.getResource("/res/" + DateUtil.getToday().getMonth() + ".jpg").toString());
         backgroundImage.setFitHeight(Config.getWindowHeight());
         backgroundImage.setFitWidth(Config.getWindowWidth());
         imageCalendarPane.getChildren().add(backgroundImage);
-        imageCalendarPane.getChildren().add(calendarWithAside);
+        imageCalendarPane.getChildren().add(calendarPane);
         Scene scene = new Scene(imageCalendarPane, Config.getWindowWidth(), Config.getWindowHeight());
-//        stage.setMaxHeight(Config.getWindowHeight());
-//        stage.setMinHeight(Config.getWindowHeight());
-//        stage.setMaxWidth(Config.getWindowWidth());
-//        stage.setMinWidth(Config.getWindowWidth());
+        stage.setMaxHeight(Config.getWindowHeight());
+        stage.setMinHeight(Config.getWindowHeight());
+        stage.setMaxWidth(Config.getWindowWidth());
+        stage.setMinWidth(Config.getWindowWidth());
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
@@ -98,6 +97,15 @@ public class Display extends Application {
     public static void removeEditPane() {
         BodyPane.getInstance().refresh();
         imageCalendarPane.getChildren().remove(editPane);
+    }
+
+    public static void addSearchPane() {
+        imageCalendarPane.getChildren().add(SearchPane.getInstance());
+        SearchPane.getInstance().setAlignment(Pos.CENTER);
+    }
+
+    public static void removeSearchPane() {
+        imageCalendarPane.getChildren().remove(SearchPane.getInstance());
     }
 
     /**

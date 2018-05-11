@@ -35,14 +35,17 @@ public class QueryPane extends StackPane {
     private QueryPane() {
         Label hintLabel = new Label("HintLabel");
         hintLabel.setStyle("-fx-text-fill: white ; -fx-font-size: 20");
+        hintLabel.setMaxSize(170,35);
+        hintLabel.setMinSize(170 , 35);
         TextField dateText = new TextField();
         dateText.setPromptText("Search format : 2018-1-1");
-        dateText.setMaxSize(200, 30);
-        dateText.setMinSize(200, 30);
+        dateText.setMaxSize(230, 35);
+        dateText.setMinSize(230, 35);
         Button searchBt = new Button("Jump");
+        searchBt.setStyle("-fx-font-size: 15");
         searchBt.getStyleClass().add("btn");
-        searchBt.setMaxSize(80, 30);
-        searchBt.setMinSize(80, 30);
+        searchBt.setMaxSize(80, 35);
+        searchBt.setMinSize(80, 35);
         searchBt.setCursor(Cursor.HAND);
         searchBt.setOnMouseClicked(event -> {
             String text = dateText.getText();
@@ -64,6 +67,7 @@ public class QueryPane extends StackPane {
         contentGrid.add(hintLabel, 0, 0);
         contentGrid.add(dateText, 1, 0);
         contentGrid.add(searchBt, 2, 0);
+        contentGrid.setMargin(searchBt, new Insets(0, 10,0 , 10));
         contentGrid.setHgap(15);
         contentGrid.setAlignment(Pos.CENTER);
         contentGrid.setPadding(new Insets(10, 0, 0, 0));
