@@ -82,7 +82,7 @@ public class ItemManagerTest {
                     try {
                         add(new OtherItem(fromCases.get(i),toCases.get(i),""));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.out.println();
                     }
                 }
             }
@@ -125,7 +125,7 @@ public class ItemManagerTest {
                     try {
                         add(new OtherItem(fromCases.get(i),toCases.get(i),""));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.out.println();
                     }
                 }
             }

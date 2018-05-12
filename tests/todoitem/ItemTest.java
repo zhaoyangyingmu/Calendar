@@ -26,14 +26,14 @@ public class ItemTest {
     }
 
     @Test
-    public void NullItemInstance(){
+    public void NullItemInstance() {
         TimeStamp from = new TimeStamp(2018, 5, 11, 0, 0);
         TimeStamp to = new TimeStamp(2018, 5, 10, 0, 0); //非法时间段，不应该创建待办事项实例
         Item item = null;
         try {
             item = new OtherItem(from, to, "");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println();
         }
         assertNull(item);
     }
@@ -56,58 +56,58 @@ public class ItemTest {
         };
         List<Item> itemsDuringThisPeriod = new ArrayList<Item>() {
             {
-                add(new AppointmentItem(new TimeStamp(2016, 2,29, 0 , 1),
-                             new TimeStamp(2016, 2,29, 0 , 2),
-                        "", "" , ""));
+                add(new AppointmentItem(new TimeStamp(2016, 2, 29, 0, 1),
+                        new TimeStamp(2016, 2, 29, 0, 2),
+                        "", "", ""));
 
-                add(new AppointmentItem(new TimeStamp(2013, 1,31, 23 , 1),
-                        new TimeStamp(2014, 1,31, 16 , 6),
-                        "",  "" , ""));
+                add(new AppointmentItem(new TimeStamp(2013, 1, 31, 23, 1),
+                        new TimeStamp(2014, 1, 31, 16, 6),
+                        "", "", ""));
 
-                add(new AppointmentItem(new TimeStamp(2018, 6,30, 5 , 42),
-                        new TimeStamp(2018, 6,30, 5 , 43),
-                        "",  "" , ""));
+                add(new AppointmentItem(new TimeStamp(2018, 6, 30, 5, 42),
+                        new TimeStamp(2018, 6, 30, 5, 43),
+                        "", "", ""));
             }
         };
         for (int i = 0; i < fromCases.size(); i++) {
-            assertTrue(itemsDuringThisPeriod.get(i).isDuringTime(fromCases.get(i),toCases.get(i)));
+            assertTrue(itemsDuringThisPeriod.get(i).isDuringTime(fromCases.get(i), toCases.get(i)));
         }
     }
 
     @Test
     public void setFrom() throws Exception {
-        Item item = new MeetingItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2),
-                "", "" , "");
-        TimeStamp timeStamp = new TimeStamp(2018,4,14,20,25);
+        Item item = new MeetingItem(new TimeStamp(2016, 2, 29, 0, 1),
+                new TimeStamp(2016, 2, 29, 0, 2),
+                "", "", "");
+        TimeStamp timeStamp = new TimeStamp(2018, 4, 14, 20, 25);
         item.setFrom(timeStamp);
-        assertEquals(timeStamp,item.getFrom());
+        assertEquals(timeStamp, item.getFrom());
     }
 
     @Test
     public void setTo() throws Exception {
-        Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "");
-        TimeStamp timeStamp = new TimeStamp(2018,4,14,20,25);
+        Item item = new OtherItem(new TimeStamp(2016, 2, 29, 0, 1),
+                new TimeStamp(2016, 2, 29, 0, 2), "");
+        TimeStamp timeStamp = new TimeStamp(2018, 4, 14, 20, 25);
         item.setTo(timeStamp);
-        assertEquals(timeStamp,item.getTo());
+        assertEquals(timeStamp, item.getTo());
     }
 
     @Test
     public void setDetailText() throws Exception {
-        Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "");
+        Item item = new OtherItem(new TimeStamp(2016, 2, 29, 0, 1),
+                new TimeStamp(2016, 2, 29, 0, 2), "");
         String detailText = "HANG ON!";
         item.setDetailText(detailText);
-        assertEquals(detailText,item.getDetailText());
+        assertEquals(detailText, item.getDetailText());
     }
 
     @Test
     public void setItemType() throws Exception {
-        Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
-                new TimeStamp(2016, 2,29, 0 , 2), "");
+        Item item = new OtherItem(new TimeStamp(2016, 2, 29, 0, 1),
+                new TimeStamp(2016, 2, 29, 0, 2), "");
         Item.ItemType type = Item.ItemType.APPOINTMENT;
         item.setItemType(Item.ItemType.APPOINTMENT);
-        assertEquals(type,item.getItemType());
+        assertEquals(type, item.getItemType());
     }
 }

@@ -10,6 +10,7 @@ import ui.view.DayOff;
 import ui.view.Festival;
 import ui.view.OrdinaryDay;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -107,21 +108,30 @@ public class DayManagerTest {
 
     @Test
     public void integrationTestHoliday() {
-        try {
-            DayItem item = new OrdinaryDay(new CalendarDate(dateString));
-            DayType type;
-            if ((type = DayManager.isFestival(dateString)) != null) {
-                item = new Festival(item, type.getName()).getItem(); //获取节日名称
-            }
-            if ((type = DayManager.isRest(dateString)) != null
-                    || (type = DayManager.isWorkDay(dateString)) != null)
-                item = new DayOff(item, type.getName()).getItem();
-            if (expectedFestival == null)
-                assertFalse(item instanceof Festival);
-            if (expectedRest == null && expectedWorkday == null)
-                assertFalse(item instanceof DayOff);
-        } catch (InvalidDateException e) {
-            e.printStackTrace();
-        }
+        ArrayList<DayType> types = new ArrayList<>();
+        DayType type;
+        if ((type = DayManager.isFestival(dateString)) != null) {
+            types.add(type);    //显示节日名称
+        } else types.add(null); //不显示
+
+        if ((type = DayManager.isWorkDay(dateString)) != null) {
+            types.add(type);    //显示假日
+        } else types.add(null); //不显示
+
+        if ((type = DayManager.isRest(dateString)) != null) {
+            types.add(type);    //显示调休日
+        } else types.add(null); //不显示
+
+        if (expectedFestival != null) //成功显示
+            assertEquals(expectedFestival, types.get(0).getName());
+        else assertNull(types.get(0));
+
+        if (expectedWorkday != null) {  //成功显示
+            assertEquals(expectedWorkday, types.get(1).getName());
+        } else assertNull(types.get(1));
+
+        if (expectedRest != null) { //成功显示
+            assertEquals(expectedRest, types.get(2).getName());
+        } else assertNull(types.get(2));
     }
 }

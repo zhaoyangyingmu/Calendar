@@ -119,7 +119,7 @@ public class IntegrationTest {
             else
                 item = new OtherItem(frTime, toTime, "");
         } catch (Exception e) {
-            e.printStackTrace();
+            assertNull(item);
         }
 
         if (isDuringTime) {
