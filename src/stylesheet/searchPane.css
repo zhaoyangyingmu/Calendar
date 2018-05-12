@@ -2,3 +2,17 @@
     -fx-background-color: rgba(255,255,255,1);
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, .2), .2, .2, 1, 1);
 }
+
+.btn {
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
+
+.btn:hover {
+    -fx-cursor: hand;
+}
+.myLabel {
+    -fx-text-fill: #aaa;
+}
