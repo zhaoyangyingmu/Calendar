@@ -9,7 +9,7 @@ import todoitem.util.TimeStamp;
 public class AppointmentItem extends Item {
     private String participants;
     private String location;
-    public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) {
+    public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) throws Exception {
         super(from, to, detailText, ItemType.APPOINTMENT);
         this.participants = participants;
         this.location = location;
@@ -19,15 +19,15 @@ public class AppointmentItem extends Item {
         return participants;
     }
 
-    public void setParticipants(String participants) {
-        this.participants = participants;
-    }
+//    public void setParticipants(String participants) {
+//        this.participants = participants;
+//    }
 
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+//    public void setLocation(String location) {
+//        this.location = location;
+//    }
 }

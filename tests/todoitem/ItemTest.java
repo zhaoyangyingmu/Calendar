@@ -26,15 +26,20 @@ public class ItemTest {
     }
 
     @Test
-    public void NullItemInstance() {
+    public void NullItemInstance(){
         TimeStamp from = new TimeStamp(2018, 5, 11, 0, 0);
         TimeStamp to = new TimeStamp(2018, 5, 10, 0, 0); //非法时间段，不应该创建待办事项实例
-        Item item = new OtherItem(from, to, "");
+        Item item = null;
+        try {
+            item = new OtherItem(from, to, "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertNull(item);
     }
 
     @Test
-    public void isDuringTime() {
+    public void isDuringTime() throws Exception {
         List<TimeStamp> fromCases = new ArrayList<TimeStamp>() {
             {
                 add(new TimeStamp(2016, 2, 29, 0, 0));
@@ -70,7 +75,7 @@ public class ItemTest {
     }
 
     @Test
-    public void setFrom() {
+    public void setFrom() throws Exception {
         Item item = new MeetingItem(new TimeStamp(2016, 2,29, 0 , 1),
                 new TimeStamp(2016, 2,29, 0 , 2),
                 "", "" , "");
@@ -80,7 +85,7 @@ public class ItemTest {
     }
 
     @Test
-    public void setTo() {
+    public void setTo() throws Exception {
         Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
                 new TimeStamp(2016, 2,29, 0 , 2), "");
         TimeStamp timeStamp = new TimeStamp(2018,4,14,20,25);
@@ -89,7 +94,7 @@ public class ItemTest {
     }
 
     @Test
-    public void setDetailText() {
+    public void setDetailText() throws Exception {
         Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
                 new TimeStamp(2016, 2,29, 0 , 2), "");
         String detailText = "HANG ON!";
@@ -98,7 +103,7 @@ public class ItemTest {
     }
 
     @Test
-    public void setItemType() {
+    public void setItemType() throws Exception {
         Item item = new OtherItem(new TimeStamp(2016, 2,29, 0 , 1),
                 new TimeStamp(2016, 2,29, 0 , 2), "");
         Item.ItemType type = Item.ItemType.APPOINTMENT;

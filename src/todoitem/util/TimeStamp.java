@@ -21,6 +21,8 @@ public class TimeStamp implements Serializable {
         this.minute = minute;
     }
 
+
+
     public static TimeStamp createStampDayStart(int year, int month , int day) {
         return new TimeStamp(year, month , day , 0 , 0);
     }
@@ -111,7 +113,7 @@ public class TimeStamp implements Serializable {
     /**
      * 2018.1.1 9:30 is before 2018.1.1 9:30
      * */
-    public boolean isBefore(TimeStamp target){
+    public boolean isBefore(TimeStamp target){// this <= target
         if(year < target.getYear() ){
             return true;
         }

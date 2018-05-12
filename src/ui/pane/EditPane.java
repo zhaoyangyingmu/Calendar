@@ -42,18 +42,7 @@ public class EditPane extends GridPane {
             location = ((AppointmentItem) item).getLocation();
             participants = ((AppointmentItem) item).getParticipants();
         }
-//        if (itemType == Item.ItemType.MEETING) {
-//            location = ((MeetingItem) item).getLocation();
-//            topic = ((MeetingItem) item).getTopic();
-//        } else if (itemType == Item.ItemType.APPOINTMENT) {
-//            location = ((AppointmentItem) item).getLocation();
-//            participants = ((AppointmentItem) item).getParticipants();
-//        }
         initial(fromAdd);
-    }
-
-    private void initFromAndToRow() {
-
     }
 
     public void initial(boolean fromAdd) {
@@ -245,7 +234,7 @@ public class EditPane extends GridPane {
                 ItemIO.output();
                 Display.removeEditPane();
             } catch (Exception e) {
-                Display.showToast("请输入数字与正确的类型！");
+                Display.showToast("请输入正确的时间与正确的类型！");
             }
         });
         Button cancelBt = new Button("Cancel");

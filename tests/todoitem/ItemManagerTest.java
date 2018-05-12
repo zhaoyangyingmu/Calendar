@@ -25,7 +25,7 @@ public class ItemManagerTest {
     }
 
     @Test
-    public void addItem() {
+    public void addItem() throws Exception {
         boolean noSuchItem = false;
         List<Item> items = new ArrayList<Item>() {
             {
@@ -61,7 +61,7 @@ public class ItemManagerTest {
     }
 
     @Test
-    public void getItemsByStamp() {
+    public void getItemsByStamp()  {
         List<TimeStamp> fromCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2016, 2,29, 0 , 0));
@@ -79,7 +79,11 @@ public class ItemManagerTest {
         List<Item> items = new ArrayList<Item>() {
             {
                 for (int i = 0 ; i < fromCases.size(); i++){
-                    add(new OtherItem(fromCases.get(i),toCases.get(i),""));
+                    try {
+                        add(new OtherItem(fromCases.get(i),toCases.get(i),""));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -100,7 +104,7 @@ public class ItemManagerTest {
     }
 
     @Test
-    public void deleteItem() {
+    public void deleteItem(){
         List<TimeStamp> fromCases = new ArrayList<TimeStamp>(){
             {
                 add(new TimeStamp(2016, 2,29, 0 , 0));
@@ -118,7 +122,11 @@ public class ItemManagerTest {
         List<Item> items = new ArrayList<Item>() {
             {
                 for (int i = 0 ; i < fromCases.size(); i++){
-                    add(new OtherItem(fromCases.get(i),toCases.get(i),""));
+                    try {
+                        add(new OtherItem(fromCases.get(i),toCases.get(i),""));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
