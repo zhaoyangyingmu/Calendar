@@ -66,7 +66,7 @@ public class IntegrationTest {
 
     @BeforeClass
     public static void delete() {
-        File file = new File("output.txt");
+        File file = new File("test.txt");
         if (file.exists())
             file.delete();
     }
@@ -138,7 +138,7 @@ public class IntegrationTest {
             //存入数据库
             ItemManager manager = ItemManager.getInstance();
             manager.addItem(item);
-            ItemIO.output();
+            ItemIO.output("test.txt");
         } else {
             assertNull(item);
         }

@@ -28,11 +28,11 @@ public class IntegrationTestIO {
 
     @Test
     public void IOTest() {
-        File file = new File("output.txt");
+        File file = new File("test.txt");
         if (file.exists()) {
             file.delete();
         }
-        ItemIO.input();
+        ItemIO.input("test.txt");
         ItemManager manager = ItemManager.getInstance();
         ArrayList<Item> items = manager.getItemList();
         assertEquals(expectedItems.size(), items.size());
@@ -55,9 +55,9 @@ public class IntegrationTestIO {
             }
             expectedItems.add(item);
             manager.addItem(item);
-            ItemIO.output();
+            ItemIO.output("test.txt");
             ItemManager.destroy();
-            ItemIO.input();
+            ItemIO.input("test.txt");
             assertEquals(expectedItems.size(), manager.getItemList().size());
         }
         int size = expectedItems.size();
@@ -65,9 +65,9 @@ public class IntegrationTestIO {
         for (Item item : expectedItems) {
             manager.deleteItem(item);
             size--;
-            ItemIO.output();
+            ItemIO.output("test.txt");
             ItemManager.destroy();
-            ItemIO.input();
+            ItemIO.input("test.txt");
             assertEquals(size, manager.getItemList().size());
         }
         expectedItems.clear();

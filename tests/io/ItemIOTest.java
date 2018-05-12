@@ -7,13 +7,17 @@ import todoitem.itemSub.AppointmentItem;
 import todoitem.util.TimeStamp;
 import todoitem.util.TimeStampFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class ItemIOTest {
     @Test
-    public void outputAndInput() throws Exception {
+    public void outputAndInput() {
+        File file = new File("test.txt");
+        if (file.exists())
+            file.delete();
         final int testSize = 100;
         // expected item list
         TimeStamp start = TimeStamp.createStampDayStart(2018, 1, 1);
@@ -29,21 +33,28 @@ public class ItemIOTest {
         }
 
         for (int i = 0; i < testSize; i++) {
-            list.add(new AppointmentItem(startList.get(i), endList.get(i), "date everyday", "Girfriend", "Fudan"));
+            try {
+                Item item = new AppointmentItem(startList.get(i), endList.get(i), "date everyday",
+                        "Girfriend", "Fudan");
+                list.add(item);
+            } catch (Exception e) {
+                System.out.println();
+            }
+
         }
 
         // ItemManager.add()
 
-        for (int i = 0; i < testSize; i++) {
-            ItemManager.getInstance().addItem(list.get(i));
+        for (Item aList : list) {
+            ItemManager.getInstance().addItem(aList);
         }
         // output
-        ItemIO.output();
+        ItemIO.output("test.txt");
         // input
-        ItemManager.getInstance().getItemList().clear();
-        ItemIO.input();
+        ItemManager.destroy();
+        ItemIO.input("test.txt");
         //compare
-        for (int i = 0; i < testSize; i++) {
+        for (int i = 0; i < list.size(); i++) {
             assertTrue(ItemManager.getInstance().getItemList().get(i).equals(list.get(i)));
         }
     }
