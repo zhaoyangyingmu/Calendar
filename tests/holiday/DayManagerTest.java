@@ -1,8 +1,14 @@
 package holiday;
 
+import exception.InvalidDateException;
+import kernel.CalendarDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import ui.view.DayItem;
+import ui.view.DayOff;
+import ui.view.Festival;
+import ui.view.OrdinaryDay;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -105,4 +111,24 @@ public class DayManagerTest {
         }
     }
 
+
+    @Test
+    public void integrationTestHoliday() {
+        try {
+            DayItem item = new OrdinaryDay(new CalendarDate(dateString));
+            DayType type;
+            if ((type = DayManager.isFestival(dateString)) != null) {
+                item = new Festival(item, type.getName()).getItem(); //获取节日名称
+            }
+            if ((type = DayManager.isRest(dateString)) != null
+                    || (type = DayManager.isWorkDay(dateString)) != null)
+                item = new DayOff(item, type.getName()).getItem();
+            if (expectedFestival == null)
+                assertFalse(item instanceof Festival);
+            if (expectedRest == null && expectedWorkday == null)
+                assertFalse(item instanceof DayOff);
+        } catch (InvalidDateException e) {
+            e.printStackTrace();
+        }
+    }
 }
