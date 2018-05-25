@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ItemManager {
     private static volatile ItemManager itemManager;    //volatile关键字保证不能同时对itemManager的读写
-    private static ArrayList<Item> itemList = new ArrayList<>();;
+    private static ArrayList<Item> itemList = new ArrayList<>();
 
     private ItemManager() {
 
