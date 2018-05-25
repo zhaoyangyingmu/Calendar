@@ -42,6 +42,28 @@ public class ItemManager {
         return resultList;
     }
 
+    public ArrayList<Item> getPrompts() {
+
+        ArrayList<Item> resultList = new ArrayList<>();
+
+        long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
+        for(Item tmp : itemList) {
+            if ((boolean) tmp.getValue("promptStatus")) {
+                long startMinute = tmp.getFrom().getMinutes();
+                long endMinute = tmp.getTo().getMinutes();
+                long minutesDelta = (long) tmp.getValue("minutesDelta");
+                for(long i = startMinute; i <= endMinute ; i+= minutesDelta) {
+                    if (i == currentMinute) {
+                        resultList.add(tmp);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return resultList;
+    }
+
     /**
      * what if add the same thing twice;
      * how about sorting them in an order;

@@ -17,6 +17,8 @@ import ui.Config;
 import ui.pane.*;
 import ui.util.Toast;
 
+import java.util.ArrayList;
+
 
 /**
  * You need to implement Calendar GUI here!
@@ -60,6 +62,8 @@ public class Display extends Application {
         backgroundImage.setEffect(new GaussianBlur(40));
         imageCalendarPane.getChildren().add(backgroundImage);
         imageCalendarPane.getChildren().add(calendarPane);
+
+
         Scene scene = new Scene(imageCalendarPane, Config.getWindowWidth(), Config.getWindowHeight());
         stage.setMaxHeight(Config.getWindowHeight());
         stage.setMinHeight(Config.getWindowHeight());
@@ -154,7 +158,10 @@ public class Display extends Application {
             try {
                 while(true) {
                     Thread.sleep(time);
-                    System.out.println("睡了60s");
+                    ArrayList<Item> items = new ArrayList<>();
+                    if (items.size() != 0) {
+
+                    }
                     if(isClosed) {
                         break;
                     }
