@@ -36,6 +36,7 @@ public class Display extends Application {
     private static ImageView backgroundImage;
     private static EditPane editPane;
     private static boolean hasEdit=false;
+    private static boolean isClosed=false;
 
     public Display() {
 
@@ -67,6 +68,10 @@ public class Display extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(event -> {
+            isClosed = true;
+        });
+        setPrompt();
     }
 
     public static void addDetailPane(TimeStamp from, TimeStamp to) {
@@ -141,5 +146,23 @@ public class Display extends Application {
         int fadeInt = 500;
         int fadeOut = 500;
         Toast.makeText(stage, mes, delay, fadeInt, fadeOut);
+    }
+
+    public static void setPrompt() {
+        long time = 60 * 1000;
+        Thread thread = new Thread(() -> {
+            try {
+                while(true) {
+                    Thread.sleep(time);
+                    System.out.println("睡了60s");
+                    if(isClosed) {
+                        break;
+                    }
+                }
+            } catch (Exception exp) {
+                exp.printStackTrace();
+            }
+        });
+        thread.start();
     }
 }

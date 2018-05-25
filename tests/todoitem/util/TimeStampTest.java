@@ -142,4 +142,13 @@ public class TimeStampTest {
         }
     }
 
+    @Test
+    public void delta() {
+        TimeStamp testCase = new TimeStamp(2018, 3 , 31 , 5, 24);
+        for(int i = 1; i < 10 ; i++) {
+            TimeStamp timeStamp = new TimeStamp(testCase.getYear() , testCase.getMonth(),testCase.getDay()-1
+            ,testCase.getHour()+i , testCase.getMinute()+i);
+            assertTrue((timeStamp.delta(testCase)) == (i*61 - 1*24*60));
+        }
+    }
 }
