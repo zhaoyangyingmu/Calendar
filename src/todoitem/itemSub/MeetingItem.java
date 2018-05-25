@@ -21,7 +21,14 @@ public class MeetingItem extends Item {
 
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
                        int priority, int status, boolean isFather) throws Exception {
-        super(from, to, detailText, ItemType.MEETING, priority, status, isFather);
+        this(from, to, detailText, topic, location, priority, status, isFather,
+                false, 60, true, 5);
+    }
+
+    public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
+                       int priority, int status, boolean isFather, boolean promptStatus,
+                       long ahead, boolean showOnStage, long delta) throws Exception {
+        super(from, to, detailText, ItemType.MEETING, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
         addAttr("place", location);
         addAttr("topic", topic);
         addAttr("content", detailText);

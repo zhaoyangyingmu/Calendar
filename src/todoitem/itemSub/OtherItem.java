@@ -12,6 +12,11 @@ public class OtherItem extends Item {
     }
 
     public OtherItem(TimeStamp from, TimeStamp to, String detailText, int priority, int status, boolean isFather) throws Exception {
-        super(from, to, detailText, ItemType.OTHER, priority, status, isFather);
+        this(from, to, detailText, priority, status, isFather, false, 60, true, 5);
+    }
+
+    public OtherItem(TimeStamp from, TimeStamp to, String detailText, int priority, int status, boolean isFather, boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
+        super(from, to, detailText, ItemType.OTHER, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
+        addAttr("description", detailText);
     }
 }

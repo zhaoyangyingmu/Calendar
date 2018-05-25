@@ -10,20 +10,35 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap 
     private ItemType itemType;
     private String detailText;
 
-    public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType, int priority, int status, boolean isFather) throws Exception {
+    public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType,
+                int priority, int status, boolean isFather) throws Exception {
+        this(from, to, detailText, itemType, priority, status, isFather, false, 60, true, 5);
+    }
+
+    public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType,
+                int priority, int status, boolean isFather,
+                boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
         if (to == null || from == null) {
             throw new Exception("to or from TimeStamp is null! ");
         }
         if ((!from.isValid()) || (!to.isValid()) || !from.isBefore(to)) { // from  strictly after to
             throw new Exception("Time is invalid");
         }
-        addAttr("startTime", from.toString());
-        addAttr("endTime", to.toString());
-        addAttr("type", itemType.typeStr);
-        addAttr("priority", "" + priority);
-        addAttr("status", "" + status);
-        addAttr("isFather", "" + isFather);
-        addAttr("fatherID", "-1");  // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为-1
+        addAttr("startTime", from.toString());//开始时间
+        addAttr("endTime", to.toString());  //结束时间
+        addAttr("type", itemType.typeStr);  //待办事项类型
+        addAttr("priority", "" + priority); //优先级
+        addAttr("status", "" + status);     //完成进度
+        addAttr("isFather", "" + isFather); //是否是父待办事项
+        addAttr("fatherID", "0");  // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为0
+
+        /*
+        *提醒
+        **/
+        addAttr("promptStatus", "" + promptStatus);    //是否进行提醒，默认不提醒
+        addAttr("minutesAhead", "" + ahead);  //提前多久进行提醒，默认提前一小时
+        addAttr("showOnStage", "" + showOnStage);  //是否在主界面区域显示，默认显示
+        addAttr("minutesDelta", "" + delta);    //多久提醒一次，默认5分钟
         this.from = from;
         this.to = to;
         this.detailText = detailText;
