@@ -48,6 +48,9 @@ public class ItemManager {
 
         long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
         for(Item tmp : itemList) {
+            if(tmp.getFrom() == null || tmp.getTo() == null) {
+                continue;
+            }
             if ((boolean) tmp.getValue("promptStatus")) {
                 long startMinute = tmp.getFrom().getMinutes();
                 long endMinute = tmp.getTo().getMinutes();
