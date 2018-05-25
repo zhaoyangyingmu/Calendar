@@ -7,9 +7,6 @@ import todoitem.util.TimeStamp;
  * Created by Bing Chen on 2018/5/9.
  */
 public class MeetingItem extends Item {
-    private String topic;
-    private String location;
-
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location) throws Exception {
         /*
          * 默认优先级为4，即不重要 & 不紧急
@@ -31,13 +28,10 @@ public class MeetingItem extends Item {
         super(from, to, detailText, ItemType.MEETING, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
         addAttr("place", location);
         addAttr("topic", topic);
-        addAttr("content", detailText);
-        this.topic = topic;
-        this.location = location;
     }
 
     public String getTopic() {
-        return topic;
+        return (String) getValue("topic");
     }
 
 //    public void setTopic(String topic) {
@@ -45,7 +39,7 @@ public class MeetingItem extends Item {
 //    }
 
     public String getLocation() {
-        return location;
+        return (String)getValue("place");
     }
 
 //    public void setLocation(String location) {

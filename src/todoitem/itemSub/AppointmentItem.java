@@ -7,8 +7,6 @@ import todoitem.util.TimeStamp;
  * Created by Bing Chen on 2018/5/9.
  */
 public class AppointmentItem extends Item {
-    private String participants;
-    private String location;
 
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) throws Exception {
         this(from, to, detailText, participants, location, 4, 1, true);
@@ -25,13 +23,10 @@ public class AppointmentItem extends Item {
         super(from, to, detailText, ItemType.APPOINTMENT, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
         addAttr("place", location);
         addAttr("people", participants);
-        addAttr("content", detailText);
-        this.participants = participants;
-        this.location = location;
     }
 
     public String getParticipants() {
-        return participants;
+        return (String)getValue("people");
     }
 
 //    public void setParticipants(String participants) {
@@ -39,7 +34,7 @@ public class AppointmentItem extends Item {
 //    }
 
     public String getLocation() {
-        return location;
+        return (String)getValue("place");
     }
 
 //    public void setLocation(String location) {

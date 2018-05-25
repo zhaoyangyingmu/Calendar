@@ -4,32 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface AttributeMap {
-    HashMap<String, String> attrsMap = new HashMap<>();
+    HashMap<String, Object> getAttrs();
 
-    default HashMap<String, String> getAttrs() {
-        return attrsMap;
-    }
+    Object getValue(String key);
 
-    default String getValue(String key) {
-        if (attrsMap.containsKey(key))
-            return attrsMap.get(key);
-        return null;
-    }
+    void addAttr(String key, Object value);
 
-    default void addAttr(String key, String value) {
-        if (attrsMap.containsKey(key))
-            attrsMap.replace(key, value);
-        else
-            attrsMap.put(key, value);
-    }
-
-    default void removeAttr(String key) {
-        if (attrsMap.containsKey(key))
-            attrsMap.remove(key);
-    }
+    void removeAttr(String key);
 
 
-    default void addAttrs(Map<String, String> attrs) {
-        attrsMap.putAll(attrs);
-    }
+    void addAttrs(Map<String, Object> attrs);
 }
