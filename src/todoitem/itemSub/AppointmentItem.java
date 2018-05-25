@@ -9,8 +9,17 @@ import todoitem.util.TimeStamp;
 public class AppointmentItem extends Item {
     private String participants;
     private String location;
+
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) throws Exception {
-        super(from, to, detailText, ItemType.APPOINTMENT);
+        this(from, to, detailText, participants, location, 4, 1, true);
+    }
+
+    public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location
+            , int priority, int status, boolean isFather) throws Exception {
+        super(from, to, detailText, ItemType.APPOINTMENT, priority, status, isFather);
+        addAttr("place", location);
+        addAttr("people", participants);
+        addAttr("content", detailText);
         this.participants = participants;
         this.location = location;
     }

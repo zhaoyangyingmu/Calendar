@@ -9,10 +9,24 @@ import todoitem.util.TimeStamp;
 public class MeetingItem extends Item {
     private String topic;
     private String location;
+
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location) throws Exception {
-        super(from, to, detailText, ItemType.MEETING);
-        this.topic=topic;
-        this.location=location;
+        /*
+         * 默认优先级为4，即不重要 & 不紧急
+         * 默认状态为1， 即未开始
+         * 默认为父待办事项
+         */
+        this(from, to, detailText, topic, location, 4, 1, true);
+    }
+
+    public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
+                       int priority, int status, boolean isFather) throws Exception {
+        super(from, to, detailText, ItemType.MEETING, priority, status, isFather);
+        addAttr("place", location);
+        addAttr("topic", topic);
+        addAttr("content", detailText);
+        this.topic = topic;
+        this.location = location;
     }
 
     public String getTopic() {

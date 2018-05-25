@@ -8,6 +8,10 @@ import todoitem.util.TimeStamp;
  */
 public class OtherItem extends Item {
     public OtherItem(TimeStamp from, TimeStamp to, String detailText) throws Exception {
-        super(from, to, detailText, ItemType.OTHER);
+        this(from, to, detailText, 4, 1, true);
+    }
+
+    public OtherItem(TimeStamp from, TimeStamp to, String detailText, int priority, int status, boolean isFather) throws Exception {
+        super(from, to, detailText, ItemType.OTHER, priority, status, isFather);
     }
 }
