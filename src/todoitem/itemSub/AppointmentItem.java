@@ -26,7 +26,7 @@ public class AppointmentItem extends Item {
     }
 
     public String getParticipants() {
-        return (String)getValue("people");
+        return getValue("people");
     }
 
 //    public void setParticipants(String participants) {
@@ -34,7 +34,7 @@ public class AppointmentItem extends Item {
 //    }
 
     public String getLocation() {
-        return (String)getValue("place");
+        return getValue("place");
     }
 
 //    public void setLocation(String location) {

@@ -31,7 +31,7 @@ public class MeetingItem extends Item {
     }
 
     public String getTopic() {
-        return (String) getValue("topic");
+        return getValue("topic");
     }
 
 //    public void setTopic(String topic) {
@@ -39,7 +39,7 @@ public class MeetingItem extends Item {
 //    }
 
     public String getLocation() {
-        return (String)getValue("place");
+        return getValue("place");
     }
 
 //    public void setLocation(String location) {
