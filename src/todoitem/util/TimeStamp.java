@@ -5,6 +5,7 @@ import kernel.CalendarDate;
 import kernel.DateUtil;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class TimeStamp implements Serializable {
     private int year;
@@ -173,6 +174,26 @@ public class TimeStamp implements Serializable {
     public boolean equals(Object timeStamp) {
         TimeStamp tmp = (TimeStamp) timeStamp;
         return (year == tmp.getYear() && month == tmp.getMonth() && day == tmp.getDay() && hour == tmp.getHour() && minute == tmp.getMinute());
+    }
+
+    /**
+     * 此方法返回自1970年依赖的分钟数
+     * */
+    public long getMinutes() {
+        String timeStr = String.format("%04d-%02d-%02d %02d:%02d:00", year,month,day,hour,minute);
+        Timestamp sysTimeStamp = Timestamp.valueOf(timeStr);
+        long deltaMinutes = sysTimeStamp.getTime() / (1000 * 60);
+        return deltaMinutes;
+    }
+
+
+    /**
+     * 计算两者相差的时间，用分钟表示。
+     * this - timeStamp
+     * */
+    public long delta(TimeStamp timeStamp) {
+
+        return this.getMinutes() - timeStamp.getMinutes();
     }
 
     @Override

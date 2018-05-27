@@ -21,19 +21,15 @@ import todoitem.util.TimeStamp;
 
 import java.util.ArrayList;
 
-public class DetailPane extends BorderPane {
+public class DetailPane extends GridPane {
     public DetailPane(TimeStamp from , TimeStamp to) {
+        int mainCol = 0 ;
+        int mainRow = 0 ;
+        this.getStyleClass().add("mainContent");
         this.getStylesheets().add("/stylesheet/buttonAndLabel.css");
-        this.setStyle("-fx-background-color: white;");
-        this.setMaxHeight(325);
-        this.setMinHeight(325);
-        this.setMaxWidth(525);
-        this.setMinWidth(525);
         Label title = new Label("Detail");
-        title.setStyle("-fx-font-size: 35px ;-fx-font-family: \"Segoe UI Semibold\";-fx-font-color: black;");
-        this.setTop(title);
-        this.setAlignment(title, Pos.CENTER);
-        this.setMargin(title, new Insets(20, 0 , 0 , 0 ));
+        title.getStyleClass().add("title");
+        this.add(title , mainCol , mainRow++);
 
         ArrayList<Item> itemList = ItemManager.getInstance().getItemsByStamp(from, to);
         GridPane detailContent = new GridPane();
@@ -43,9 +39,8 @@ public class DetailPane extends BorderPane {
         }
         ScrollPane scrollContent = new ScrollPane();
         scrollContent.setContent(detailContent);
-        this.setCenter(scrollContent);
-        this.setAlignment(scrollContent, Pos.CENTER);
-
+        scrollContent.getStyleClass().add("scrollView");
+        this.add(scrollContent, mainCol, mainRow++);
 
         HBox btRow = new HBox();
         Button addBt = new Button("add");
@@ -75,8 +70,9 @@ public class DetailPane extends BorderPane {
         btRow.getChildren().add(1,quitBt);
         btRow.setMargin(addBt , new Insets(10, 10 , 10 , 0));
         btRow.setMargin(quitBt , new Insets(10,0,10,10));
+        btRow.getStyleClass().add("buttons");
 
-        this.setBottom(btRow);
+        this.add(btRow, mainCol, mainRow++);
         btRow.setAlignment(Pos.CENTER);
 
         this.setStyle("-fx-background-color: rgba(255 , 255 , 255 , 0.9);-fx-background-radius: 5.0;");
