@@ -30,15 +30,15 @@
     -fx-background-color: rgba(0, 0, 0, .8);
 }
 
-.type_meeting {
+.type_MEETING {
     -fx-fill: #F54EA2;
 }
 
-.type_appointment {
+.type_APPOINTMENT {
     -fx-fill: #A94CAF;
 }
 
-.type_other {
+.type_OTHER {
     -fx-fill: #42218E;
 }
 
