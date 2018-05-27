@@ -1,5 +1,6 @@
 package todoitem.itemSub;
 
+import todoitem.Const;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
@@ -10,13 +11,14 @@ public class TravelItem extends Item {
         super(attrsMap);
     }
 
-    public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String numnber, String remark) throws Exception {
-        this(from, to, way, place, numnber, remark, 4, 1, true);
+    public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark) throws Exception {
+        this(from, to, way, place, number, remark,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
 
-    public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String numnber, String remark, int priority,
+    public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark, int priority,
                       int status, boolean isFather) throws Exception {
-        this(from, to, way, place, numnber, remark, priority, status, isFather, false, 60, true, 5);
+        this(from, to, way, place, number, remark, priority, status, isFather,
+                Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
     public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark, int priority,

@@ -1,5 +1,6 @@
 package todoitem.itemSub;
 
+import todoitem.Const;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
@@ -11,12 +12,13 @@ public class InterviewItem extends Item {
     }
 
     public InterviewItem(TimeStamp from, TimeStamp to, String place, String company, String job, String remark) throws Exception {
-        this(from, to, place, company, job, remark, 4, 1, true);
+        this(from, to, place, company, job, remark,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
 
     public InterviewItem(TimeStamp from, TimeStamp to, String place, String company, String job, String remark,
                          int priority, int status, boolean isFather) throws Exception {
-        this(from, to, company, company, job, remark, priority, status, isFather, false, 60, true, 5);
+        this(from, to, company, company, job, remark, priority, status, isFather,
+                Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
     public InterviewItem(TimeStamp from, TimeStamp to, String place, String company, String job, String remark,

@@ -1,5 +1,6 @@
 package todoitem.itemSub;
 
+import todoitem.Const;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
@@ -12,13 +13,13 @@ public class CourseItem extends Item {
 
     public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
                       String remark, String place, String day) throws Exception {
-        this(from, to, name, detailText, duration, teacher, remark, place, day, 4, 1, true);
+        this(from, to, name, detailText, duration, teacher, remark, place, day,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
 
     public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
                       String remark, String place, String day, int priority, int status, boolean isFather) throws Exception {
         this(from, to, name, detailText, duration, teacher, remark, place, day, priority, status, isFather,
-                false, 60, true, 5);
+                Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
     public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,

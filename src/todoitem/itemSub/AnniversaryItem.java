@@ -1,5 +1,6 @@
 package todoitem.itemSub;
 
+import todoitem.Const;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
@@ -11,14 +12,14 @@ public class AnniversaryItem extends Item {
     }
 
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType) throws Exception {
-        this(from, to, detailText, anniversaryType, 4, 1, true);
+        this(from, to, detailText, anniversaryType,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
 
     }
 
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType,
                            int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, anniversaryType, priority, status, isFather,
-                false, 60, true, 5);
+                Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType, int priority, int status, boolean isFather,

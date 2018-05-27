@@ -27,6 +27,6 @@ public class OtherItem extends Item {
     public OtherItem(TimeStamp from, TimeStamp to, String detailText,
                      int priority, int status, boolean isFather,
                      boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
-        super(from, to, detailText, ItemType.OTHER, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
+        super(from, to, detailText, ItemType.COURSE, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
     }
 }
