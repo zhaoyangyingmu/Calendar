@@ -14,8 +14,10 @@ public class ItemManager {
 
     private ItemManager() {
         overlappedTypes.addAll(FXCollections.observableArrayList(
-                ItemType.MEETING.getTypeStr(), ItemType.APPOINTMENT.getTypeStr()
-        ));//TODO 6种待办事项类型
+                ItemType.MEETING.getTypeStr(), ItemType.DATE.getTypeStr(),
+                ItemType.COURSE.getTypeStr(), ItemType.INTERVIEW.getTypeStr(),
+                ItemType.TRAVEL.getTypeStr()
+        ));
     }
 
     public static ItemManager getInstance() {
@@ -86,7 +88,7 @@ public class ItemManager {
 
     }
 
-        public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
+    public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
         ArrayList<Item> resultList = new ArrayList<>();
         for (Item tmp : itemList) {
             if (tmp.isDuringTime(from, to)) {
@@ -95,7 +97,8 @@ public class ItemManager {
         }
         return resultList;
     }
-//    public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
+
+    //    public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
 //        ArrayList<HashMap<String, String>> itemsMsg = Mysql.queryByTime(from.toString(), to.toString());
 //        return getItems(itemsMsg);
 //    }
@@ -153,7 +156,6 @@ public class ItemManager {
 //    }
 
 
-
     /**
      * 待办事项的组合
      */
@@ -173,7 +175,8 @@ public class ItemManager {
         **/
         Set<String> types = new HashSet<>();
         types.addAll(FXCollections.observableArrayList(
-                ItemType.MEETING.getTypeStr(), ItemType.APPOINTMENT.getTypeStr())); //TODO 四种类型
+                ItemType.MEETING.getTypeStr(), ItemType.DATE.getTypeStr(),
+                ItemType.COURSE.getTypeStr(), ItemType.INTERVIEW.getTypeStr()));
         HashMap<String, String> fatherItemMsg = Mysql.queryByID(item.getFatherID());
         if (fatherItemMsg != null) {
             if (types.remove(fatherItemMsg.get("type")))  //true表示父类型为四种类型之一
