@@ -1,8 +1,6 @@
 package ui.pane;
 
 import io.ItemIO;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -136,7 +134,6 @@ public class EditPane extends GridPane {
          * Detail information
          * */
         GridPane detailRow = new LabelAndTextRow("Info: ", detail);
-//        this.add(infoRow, 0, 5);
         informationRow.add(detailRow, 0, 0);
         detailRow.setAlignment(Pos.CENTER);
 
@@ -144,27 +141,19 @@ public class EditPane extends GridPane {
          * location information
          * */
         GridPane locationRow = new LabelAndTextRow("location: ", location);
-//        this.add(locationRow , 0, 6);
-//        informationRow.add(locationRow,0,1);
         locationRow.setAlignment(Pos.CENTER);
-//        locationRow.setVisible(false);
 
         /**
          * topic information
          * */
         GridPane topicRow = new LabelAndTextRow("topic: ", topic);
-//        this.add(topicRow , 0, 7);
-//        informationRow.add(topicRow,0,2);
         topicRow.setAlignment(Pos.CENTER);
-//        topicRow.setVisible(false);
         /**
          * topic information
          * */
         GridPane participantsRow = new LabelAndTextRow("participants: ", participants);
-//        this.add(participantsRow , 0, 8);
-//        informationRow.add(participantsRow,0,3);
         participantsRow.setAlignment(Pos.CENTER);
-//        participantsRow.setVisible(false);
+
 
         this.add(informationRow, 0, 5);
         informationRow.setVgap(10);
@@ -175,13 +164,13 @@ public class EditPane extends GridPane {
             if (newValue.equals("MEETING")) {
                 informationRow.add(locationRow, 0, 1);
                 informationRow.add(topicRow, 0, 2);
-            } else if (newValue.equals("APPOINTMENT")) {
+            } else if (newValue.equals("DATE")) {
                 informationRow.add(locationRow, 0, 1);
                 informationRow.add(participantsRow, 0, 2);
             }
         });
         ((LabelAndCombo) typeRow).getComboBox().setValue("MEETING");
-        ((LabelAndCombo) typeRow).getComboBox().setValue("APPOINTMENT");
+        ((LabelAndCombo) typeRow).getComboBox().setValue("DATE");
         ((LabelAndCombo) typeRow).getComboBox().setValue(itemType.toString());
         /**
          * Save and remove button;
@@ -222,7 +211,7 @@ public class EditPane extends GridPane {
                     location = ((LabelAndTextRow) locationRow).getTextField().getText();
                     topic = ((LabelAndTextRow) topicRow).getTextField().getText();
                     tmpItem = new MeetingItem(fromStamp, toStamp, detail, topic, location);
-                } else if (tmpType == Item.ItemType.APPOINTMENT) {
+                } else if (tmpType == Item.ItemType.DATE) {
                     location = ((LabelAndTextRow) locationRow).getTextField().getText();
                     participants = ((LabelAndTextRow) participantsRow).getTextField().getText();
                     tmpItem = new AppointmentItem(fromStamp, toStamp, detail, participants, location);

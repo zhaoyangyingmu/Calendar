@@ -179,7 +179,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
 
     public enum ItemType {
-        OTHER("OTHER"), MEETING("MEETING"), APPOINTMENT("APPOINTMENT");
+        CUSTOM("CUSTOM"), MEETING("MEETING"), DATE("DATE"), ANNIVERSARY("ANNIVERSARY"),
+        COURSE("COURSE"), TRAVEL("TRAVEL"), INTERVIEW("INTERVIEW");
         private String typeStr;
 
         ItemType(String typeStr) {
@@ -194,10 +195,18 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
             switch (typeStr) {
                 case "MEETING":
                     return MEETING;
-                case "APPOINTMENT":
-                    return APPOINTMENT;
-                case "OTHER":
-                    return OTHER;
+                case "DATE":
+                    return DATE;
+                case "CUSTOM":
+                    return CUSTOM;
+                case "ANNIVERSARY":
+                    return ANNIVERSARY;
+                case "COURSE":
+                    return COURSE;
+                case "TRAVEL":
+                    return TRAVEL;
+                case "INTERVIEW":
+                    return INTERVIEW;
             }
             return null;
         }
