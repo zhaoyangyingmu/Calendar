@@ -50,6 +50,19 @@ public class EditPane extends GridPane {
     }
 
     private void initial(boolean fromAdd) {
+        int checkCol = 0 ;
+        int checkRow = 0 ;
+        GridPane checkGrid = new GridPane();
+        //将选择的内容放在checkGrid里面。 再放到主体里面
+
+        int mainCol = 0;
+        int mainRow = 0;
+        this.getStyleClass().add("mainContent");
+
+        Label title = new Label("编辑信息");
+        title.getStyleClass().add("title");
+        this.add(title, mainCol, mainRow++);
+
         /**
          * from timeStamp information
          * */
@@ -70,7 +83,7 @@ public class EditPane extends GridPane {
         GridPane fromDayRow = LabelAndCombo.getInstance("day:  ", 1, 31);
         ((LabelAndCombo) fromDayRow).getComboBox().setValue(from.getDay() + "");
         fromFirstRow.add(fromDayRow, 3, 0);
-        this.add(fromFirstRow, 0, 0);
+        checkGrid.add(fromFirstRow, checkCol, checkRow++);
 
 
         GridPane fromSecondRow = new GridPane();
@@ -81,7 +94,7 @@ public class EditPane extends GridPane {
         GridPane fromMinuteRow = LabelAndCombo.getInstance("minute:  ", 0, 59);
         ((LabelAndCombo) fromMinuteRow).getComboBox().setValue(from.getMinute() + "");
         fromSecondRow.add(fromMinuteRow, 5, 0);
-        this.add(fromSecondRow, 0, 1);
+        checkGrid.add(fromSecondRow, checkCol, checkRow++);
         fromSecondRow.setAlignment(Pos.CENTER);
 
 
@@ -105,7 +118,7 @@ public class EditPane extends GridPane {
         GridPane toDayRow = LabelAndCombo.getInstance("day:  ", 1, 31);
         ((LabelAndCombo) toDayRow).getComboBox().setValue(to.getDay() + "");
         toFirstRow.add(toDayRow, 6, 0);
-        this.add(toFirstRow, 0, 2);
+        checkGrid.add(toFirstRow, checkCol, checkRow++);
 
         GridPane toSecondRow = new GridPane();
         GridPane toHourRow = LabelAndCombo.getInstance("hour:  ", 0, 23);
@@ -115,7 +128,7 @@ public class EditPane extends GridPane {
         GridPane toMinuteRow = LabelAndCombo.getInstance("minute:  ", 0, 59);
         ((LabelAndCombo) toMinuteRow).getComboBox().setValue(to.getMinute() + "");
         toSecondRow.add(toMinuteRow, 10, 0);
-        this.add(toSecondRow, 0, 3);
+        checkGrid.add(toSecondRow, checkCol, checkRow++);
         toSecondRow.setAlignment(Pos.CENTER);
 
         /**
@@ -130,7 +143,7 @@ public class EditPane extends GridPane {
 
         ((LabelAndCombo) typeRow).getComboBox().setMinSize(100, 25);
         ((LabelAndCombo) typeRow).getComboBox().setMaxSize(100, 25);
-        this.add(typeRow, 0, 4);
+        checkGrid.add(typeRow, checkCol, checkRow++);
         typeRow.setAlignment(Pos.CENTER);
         /**
          * the pane for text of all the information
@@ -161,7 +174,7 @@ public class EditPane extends GridPane {
 //        participantsRow.setAlignment(Pos.CENTER);
 
 
-        this.add(informationRow, 0, 5);
+        checkGrid.add(informationRow, checkCol, checkRow++);
         informationRow.setVgap(10);
         informationRow.setAlignment(Pos.CENTER);
 
@@ -208,11 +221,16 @@ public class EditPane extends GridPane {
         /**
          * Save and remove button;
          * */
+        checkGrid.setVgap(10);
+        checkGrid.getStylesheets().add("/stylesheet/greenAndRed.css");
+        checkGrid.getStyleClass().add("checkGrid");
+        this.add(checkGrid ,  mainCol , mainRow++);
+        checkGrid.setAlignment(Pos.CENTER);
+
+
         GridPane buttonRow = new GridPane();
-        Button saveBt = new Button("Save");
-        saveBt.getStyleClass().add("green");
-        saveBt.setMinSize(70, 35);
-        saveBt.setMaxSize(70, 35);
+        Label saveBt = new Label("保存");
+        saveBt.getStyleClass().add("button");
         saveBt.setOnMouseClicked(event -> {
             try {
                 int[] fromArray = new int[5];
@@ -283,10 +301,8 @@ public class EditPane extends GridPane {
                 Display.showToast("请输入正确的时间与正确的类型！");
             }
         });
-        Button cancelBt = new Button("Cancel");
-        cancelBt.getStyleClass().add("red");
-        cancelBt.setMinSize(70, 35);
-        cancelBt.setMaxSize(70, 35);
+        Label cancelBt = new Label("取消");
+        cancelBt.getStyleClass().add("button");
 
         cancelBt.setOnMouseClicked(event -> {
             if (fromAdd) {
@@ -295,16 +311,15 @@ public class EditPane extends GridPane {
             }
             Display.removeEditPane();
         });
-        buttonRow.add(saveBt, 0, 0);
-        buttonRow.add(cancelBt, 1, 0);
+        Label promptBt = new Label("设置提醒");
+        promptBt.getStyleClass().add("button");
+
+        buttonRow.add(promptBt , 0 , 0);
+        buttonRow.add(saveBt, 1, 0);
+        buttonRow.add(cancelBt, 2, 0);
         buttonRow.setHgap(10);
-        this.add(buttonRow, 0, 6);
-        buttonRow.setAlignment(Pos.CENTER);
-        this.setVgap(10);
-        this.setStyle("-fx-background-color: rgba(255 , 255 , 255 , 0.9);-fx-background-radius: 5.0;");
-        this.setMaxSize(683, 500);
-        this.setMinSize(683, 500);
-        this.getStylesheets().add("/stylesheet/greenAndRed.css");
+        buttonRow.getStyleClass().add("buttons");
+        this.add(buttonRow, mainCol,mainRow++);
     }
 
     public void initialInformationControl() {
