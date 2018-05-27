@@ -34,12 +34,29 @@
     -fx-fill: #F54EA2;
 }
 
-.type_APPOINTMENT {
+.type_DATE {
     -fx-fill: #A94CAF;
 }
 
-.type_OTHER {
+.type_ANNIVERSARY {
+    -fx-fill: #7B3B8C;
+}
+
+.type_COURSE {
+    -fx-fill: #F75940;
+}
+
+.type_TRAVEL {
     -fx-fill: #42218E;
+
+}
+
+.type_INTERVIEW {
+    -fx-fill: #7A57D1;
+}
+
+.type_CUSTOM {
+    -fx-fill: #266A2E;
 }
 
 .not_this_month_day {
