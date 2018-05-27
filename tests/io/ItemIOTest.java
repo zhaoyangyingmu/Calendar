@@ -20,7 +20,6 @@ public class ItemIOTest {
             file.delete();
         final int testSize = 100;
         // expected item list
-        TimeStamp start = TimeStamp.createStampDayStart(2018, 1, 1);
         ArrayList<Item> list = new ArrayList<>();
 
         ArrayList<TimeStamp> startList = new ArrayList<>();

@@ -74,18 +74,18 @@ public class IntegrationTest {
     @Parameterized.Parameters
     public static Collection<Object[]> getTestData() {
         return Arrays.asList(new Object[][]{
-                {"2018-5-1", "2018-4-29", false, false, false, Item.ItemType.APPOINTMENT},     //非法时间段，不能创建待办事项对象
-                {"2018-1-1", "2017-12-30", false, false, false, Item.ItemType.APPOINTMENT},    //非法时间段
-                {"2016-2-30", "2016-3-1", true, false, false, Item.ItemType.APPOINTMENT},      //非法日期
-                {"2000-2-29", "2018-2-29", false, true, false, Item.ItemType.APPOINTMENT},     //非法日期
-                {"2020-2-29", "2020-3-0", false, true, false, Item.ItemType.APPOINTMENT},      //非法日期
-                {"0000-00-00", "2018-5-12", true, false, false, Item.ItemType.APPOINTMENT},    //非法日期
-                {"2018-2-29", "2018-4-29", false, false, false, Item.ItemType.APPOINTMENT},    //非法日期
-                {"2018-2-28", "2018-3-1", false, false, true, Item.ItemType.APPOINTMENT},
-                {"2000-2-29", "2018-2-28", false, false, true, Item.ItemType.OTHER},
+                {"2018-5-1", "2018-4-29", false, false, false, Item.ItemType.DATE},     //非法时间段，不能创建待办事项对象
+                {"2018-1-1", "2017-12-30", false, false, false, Item.ItemType.DATE},    //非法时间段
+                {"2016-2-30", "2016-3-1", true, false, false, Item.ItemType.DATE},      //非法日期
+                {"2000-2-29", "2018-2-29", false, true, false, Item.ItemType.DATE},     //非法日期
+                {"2020-2-29", "2020-3-0", false, true, false, Item.ItemType.DATE},      //非法日期
+                {"0000-00-00", "2018-5-12", true, false, false, Item.ItemType.DATE},    //非法日期
+                {"2018-2-29", "2018-4-29", false, false, false, Item.ItemType.DATE},    //非法日期
+                {"2018-2-28", "2018-3-1", false, false, true, Item.ItemType.DATE},
+                {"2000-2-29", "2018-2-28", false, false, true, Item.ItemType.CUSTOM},
                 {"2020-2-29", "2028-4-1", false, false, true, Item.ItemType.MEETING},
-                {"2018-5-10", "2018-5-12", false, false, true, Item.ItemType.APPOINTMENT},
-                {"2018-5-9", "2018-5-11", false, false, true, Item.ItemType.OTHER},
+                {"2018-5-10", "2018-5-12", false, false, true, Item.ItemType.DATE},
+                {"2018-5-9", "2018-5-11", false, false, true, Item.ItemType.CUSTOM},
                 {"2018-5-10", "2018-5-12", false, false, true, Item.ItemType.MEETING},
         });
     }
@@ -112,7 +112,7 @@ public class IntegrationTest {
         }
         Item item = null;
         try {
-            if (type == Item.ItemType.APPOINTMENT) {
+            if (type == Item.ItemType.DATE) {
                 item = new AppointmentItem(frTime, toTime, "", "", "");
             } else if (type == Item.ItemType.MEETING)
                 item = new MeetingItem(frTime, toTime, "", "", "");

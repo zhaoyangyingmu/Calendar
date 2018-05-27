@@ -30,16 +30,33 @@
     -fx-background-color: rgba(0, 0, 0, .8);
 }
 
-.type_meeting {
+.type_MEETING {
     -fx-fill: #F54EA2;
 }
 
-.type_appointment {
+.type_DATE {
     -fx-fill: #A94CAF;
 }
 
-.type_other {
+.type_ANNIVERSARY {
+    -fx-fill: #7B3B8C;
+}
+
+.type_COURSE {
+    -fx-fill: #F75940;
+}
+
+.type_TRAVEL {
     -fx-fill: #42218E;
+
+}
+
+.type_INTERVIEW {
+    -fx-fill: #7A57D1;
+}
+
+.type_CUSTOM {
+    -fx-fill: #266A2E;
 }
 
 .not_this_month_day {

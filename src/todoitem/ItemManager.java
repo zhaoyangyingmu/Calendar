@@ -1,16 +1,23 @@
 package todoitem;
 
-import todoitem.itemSub.AppointmentItem;
+import javafx.collections.FXCollections;
+import todoitem.Item.ItemType;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class ItemManager {
+    private final static Set<String> overlappedTypes = new HashSet<>(); //不允许重叠的待办事项类型
     private static volatile ItemManager itemManager;    //volatile关键字保证不能同时对itemManager的读写
     private static ArrayList<Item> itemList = new ArrayList<>();
 
     private ItemManager() {
-
+        overlappedTypes.addAll(FXCollections.observableArrayList(
+                ItemType.MEETING.getTypeStr(), ItemType.DATE.getTypeStr(),
+                ItemType.COURSE.getTypeStr(), ItemType.INTERVIEW.getTypeStr(),
+                ItemType.TRAVEL.getTypeStr()
+        ));
     }
 
     public static ItemManager getInstance() {
@@ -31,6 +38,54 @@ public class ItemManager {
     public static void destroy() {
         itemList.clear();
         // 用 itemManager = null 出问题，因为实际上外部可以保存这个单例，导致不是单例。
+    }
+
+    /**
+     * 更新待办事项的完成状态
+     *
+     * @param item 待更新的待办事项对象
+     */
+    public boolean setCompleted(Item item) {
+        if (item.getStatus() == Const.IN_PROGRESS) {//在进行中的待办事项才可以设置为完成状态
+            if (Mysql.updateStatus(item.getID(), Const.COMPLETED) == Const.COMPLETED) {//更新成功
+                ArrayList<HashMap<String, String>> childrenMsg = Mysql.queryByFatherID(item.getFatherID());
+                boolean allCompleted = true;
+                for (HashMap<String, String> msg : childrenMsg) {
+                    allCompleted &= (Integer.parseInt(msg.get("status")) == Const.COMPLETED);
+                }
+                if (allCompleted)//所有子待办事项都完成后，更新父待办事项
+                    return Mysql.updateStatus(item.getFatherID(), Const.COMPLETED) == Const.COMPLETED;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param item 待更新状态的待办事项
+     * @return 返回更新后的状态值
+     */
+    public int updateStatus(Item item) {
+        Calendar time = Calendar.getInstance();
+        TimeStamp stamp = new TimeStamp(time.get(Calendar.YEAR), time.get(Calendar.MONTH), time.get(Calendar.DAY_OF_MONTH),
+                time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
+        TimeStamp from = TimeStampFactory.createStampByString(item.getValue("startTime"));
+        TimeStamp to = TimeStampFactory.createStampByString(item.getValue("endTime"));
+        int st = item.getStatus(); //待办事项当前完成状态
+        int status = Const.BEFORE_BEGINNING;
+        if (stamp.isAfter(from) && stamp.isBefore(to) && st == Const.BEFORE_BEGINNING) {
+            status = Const.IN_PROGRESS;
+        } else if (stamp.isAfter(to) && st == Const.IN_PROGRESS) {
+            status = Const.OVERDUE;
+        }
+        if (st != Const.COMPLETED) {
+            if (item.getID() < 0)//还未插入数据库
+                item.setStatus(status);
+            else
+                Mysql.updateStatus(item.getID(), status);//不是完成状态就自动更新，是否完成由用户更新}
+            return status;
+        }
+        return Const.COMPLETED;
+
     }
 
     public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
@@ -66,15 +121,52 @@ public class ItemManager {
 //        }
         return resultList;
     }
+//    public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
+//        ArrayList<HashMap<String, String>> itemsMsg = Mysql.queryByTime(from.toString(), to.toString());
+//        return getItems(itemsMsg);
+//    }
+
+    public ArrayList<Item> getItemsByFatherItem(Item item) {
+        ArrayList<HashMap<String, String>> itemsMsg = Mysql.queryByFatherID(item.getID());
+        return getItems(itemsMsg);
+    }
+
+    private ArrayList<Item> getItems(ArrayList<HashMap<String, String>> itemsMsg) {
+        ArrayList<Item> resItems = new ArrayList<>();
+        for (HashMap<String, String> msg : itemsMsg) {
+            ItemType type = ItemType.parseItemType(msg.get("type"));
+            Item temp = ItemFactory.createItemByItemType(type, msg);
+            updateStatus(temp);
+            resItems.add(temp);
+        }
+        return resItems;
+    }
 
     /**
      * what if add the same thing twice;
      * how about sorting them in an order;
      */
     public void addItem(Item item) {
-        if (item != null)
+        if (item != null) {
             itemList.add(item);
+            System.out.println("是否是父待办事项: " + item.isFather());
+            System.out.println("优先级: " + item.getPriority());
+            System.out.println("完成状态: " + item.getStatus());
+            System.out.println("是否设置提醒: " + item.promptStatus());
+            System.out.println("提前多久提醒: " + item.minutesAhead());
+            System.out.println("是否在界面上显示: " + item.showOnStage());
+            System.out.println("=====================  分割线  =======================");
+        }
     }
+//    public boolean addItem(Item item) {
+//        if (item != null)
+//            if (canOverlapped(item) && canCombine(item)) {
+//                updateStatus(item);
+//                return Mysql.addSchedule(item.getAttrs()) != 0;
+//            }
+//        return false;
+//    }
+
 
     /**
      * what if delete the same thing twice;
@@ -82,5 +174,71 @@ public class ItemManager {
     public void deleteItem(Item item) {
         itemList.remove(item);
     }
+//    public boolean deleteItem(Item item) {
+//        return Mysql.deleteSchedule(item.getID()) != 0;
+//    }
 
+
+    /**
+     * 待办事项的组合
+     */
+    private boolean canCombine(Item item) {
+        //保证待办事项的子待办事项不会再能添加子待办事项
+        if (!item.isFather())
+            return false;
+
+        //纪念日的子待办事项不需要每年重复
+
+
+        /*
+        *某些待办事项不能互相包含，即他们之间是互斥的
+        *如：会议不能有约会待办事项作为子待办事项。
+        *目前互斥集合为（会议，课程，约会，面试）
+        *但是相同类型不互斥。即会议允许存在子会议。
+        **/
+        Set<String> types = new HashSet<>();
+        types.addAll(FXCollections.observableArrayList(
+                ItemType.MEETING.getTypeStr(), ItemType.DATE.getTypeStr(),
+                ItemType.COURSE.getTypeStr(), ItemType.INTERVIEW.getTypeStr()));
+        HashMap<String, String> fatherItemMsg = Mysql.queryByID(item.getFatherID());
+        if (fatherItemMsg != null) {
+            if (types.remove(fatherItemMsg.get("type")))  //true表示父类型为四种类型之一
+                if (types.contains(item.getItemType().getTypeStr())) //true表示子待办事项类型为互斥类型
+                    return false;
+
+
+        /*
+        *父待办事项必须有起止时间，添加的子待办事项时间必须在父待办事项的时间范围内
+        *例如: 设置了时间的待办事项不能添加没有设置时间的子待办事项
+        *     没有设置时间的待办事项不能设置子待办事项。
+        **/
+            TimeStamp fatherFr = TimeStampFactory.createStampByString(fatherItemMsg.get("startTime"));
+            TimeStamp fatherTo = TimeStampFactory.createStampByString(fatherItemMsg.get("endTime"));
+            TimeStamp fr = item.getFrom();
+            TimeStamp to = item.getTo();
+            //必须有起止时间
+            return fatherFr != null && fatherTo != null && fr != null && to != null && !fr.isBefore(fatherFr) && !to.isAfter(fatherTo);
+        } else
+            return true;    //此为父待办事项
+    }
+
+    /**
+     * 待办事项时间重叠
+     */
+    private boolean canOverlapped(Item item) {
+        /*
+        *以下类型的待办事项（会议，课程，约会，面试，旅程）不能出现时间重叠情况，包括相同类型的情况
+        *后添加的时间冲突的待办事项不能添加成功并且为用户提示错误（具体到与哪个待办事项在XX时间冲突了）
+        *父待办事项在计算时间重叠方面和普通地待办事项没有区别)
+        *其余类型待办事项可以时间重叠
+        *例子：会议不能和会议时间重叠，会议不能和约会时间重叠。会议不能和纪念日的子待办事项-约会时间重叠。
+        **/
+        ArrayList<HashMap<String, String>> itemsMsg = Mysql.queryByTime(item.getFrom().toString(), item.getTo().toString());
+        if (itemsMsg != null)
+            for (HashMap<String, String> itemMsg : itemsMsg) {
+                if (overlappedTypes.contains(itemMsg.get("type")))
+                    return false;
+            }
+        return true;
+    }
 }

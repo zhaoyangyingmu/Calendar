@@ -47,7 +47,7 @@ public class DetailPane extends GridPane {
         addBt.setOnMouseClicked(event -> {
             Item item = null;
             try {
-                item = new MeetingItem(from, to , "","","" );
+                item = new OtherItem(from, to , "" );
                 ItemManager.getInstance().addItem(item);
                 ItemIO.output();
                 Display.removeDetailPane();
@@ -138,7 +138,7 @@ public class DetailPane extends GridPane {
         }
 
         private int addOtherInfo(ItemPane itemPane,Item item,int rowIndex){
-            if (item.getItemType() == Item.ItemType.APPOINTMENT){//约会则还需显示人员和地点
+            if (item.getItemType() == Item.ItemType.DATE){//约会则还需显示人员和地点
                 Text participantText = new Text("Participants: " + ((AppointmentItem)item).getParticipants());
                 itemPane.add(participantText, 0 , rowIndex++);
                 itemPane.setMargin(participantText, new Insets(5, 0 , 0 , 0 ));
