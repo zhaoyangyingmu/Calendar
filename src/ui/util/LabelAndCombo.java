@@ -20,6 +20,7 @@ public class LabelAndCombo extends GridPane {
         comboBox.setEditable(true);
         comboBox.setValue(list.get(0));
         comboBox.setOpacity(0.7);
+        comboBox.getStyleClass().add("comboBox");
         this.add(comboBox , 1, 0);
     }
 

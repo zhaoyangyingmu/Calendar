@@ -1,5 +1,6 @@
 package todoitem;
 
+import todoitem.itemSub.AppointmentItem;
 import todoitem.util.TimeStamp;
 
 import java.util.ArrayList;
@@ -46,24 +47,23 @@ public class ItemManager {
 
         ArrayList<Item> resultList = new ArrayList<>();
 
-        long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
-        for(Item tmp : itemList) {
-            if(tmp.getFrom() == null || tmp.getTo() == null) {
-                continue;
-            }
-            if ((boolean) tmp.getValue("promptStatus")) {
-                long startMinute = tmp.getFrom().getMinutes();
-                long endMinute = tmp.getTo().getMinutes();
-                long minutesDelta = (long) tmp.getValue("minutesDelta");
-                for(long i = startMinute; i <= endMinute ; i+= minutesDelta) {
-                    if (i == currentMinute) {
-                        resultList.add(tmp);
-                        break;
-                    }
-                }
-            }
-        }
-
+//        long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
+//        for(Item tmp : itemList) {
+//            if(tmp.getFrom() == null || tmp.getTo() == null) {
+//                continue;
+//            }
+//            if ((boolean) tmp.getValue("promptStatus")) {
+//                long startMinute = tmp.getFrom().getMinutes();
+//                long endMinute = tmp.getTo().getMinutes();
+//                long minutesDelta = (long) tmp.getValue("minutesDelta");
+//                for(long i = startMinute; i <= endMinute ; i+= minutesDelta) {
+//                    if (i == currentMinute) {
+//                        resultList.add(tmp);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
         return resultList;
     }
 
