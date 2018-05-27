@@ -1,5 +1,6 @@
 package todoitem.itemSub;
 
+import todoitem.Const;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
@@ -12,19 +13,20 @@ public class MeetingItem extends Item {
     public MeetingItem(HashMap<String, String> attrs) {
         super(attrs);
     }
+
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location) throws Exception {
         /*
          * 默认优先级为4，即不重要 & 不紧急
          * 默认状态为1， 即未开始
          * 默认为父待办事项
          */
-        this(from, to, detailText, topic, location, 4, 1, true);
+        this(from, to, detailText, topic, location, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
 
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
                        int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, topic, location, priority, status, isFather,
-                false, 60, true, 5);
+                Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,

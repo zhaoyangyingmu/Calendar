@@ -13,9 +13,11 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     public Item(HashMap<String, String> attrsMap) {
         addAttrs(attrsMap);
     }
+
     public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType,
                 int priority, int status, boolean isFather) throws Exception {
-        this(from, to, detailText, itemType, priority, status, isFather, false, 60, true, 5);
+        this(from, to, detailText, itemType, priority, status, isFather,
+                Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
 
@@ -36,8 +38,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
         addAttr("priority", priority + ""); //优先级
         addAttr("status", status + "");     //完成进度
         addAttr("isFather", isFather + ""); //是否是父待办事项
-        addAttr("fatherID", "0");  // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为0
-
+        addAttr("fatherID", Const.FATHER_ID + "");  // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为0
+        addAttr("scheduleID", Const.ID + "");
         /*
         *提醒
         **/
@@ -105,6 +107,9 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
         return Integer.parseInt(getValue("status"));
     }
 
+    public void setStatus(int status) {
+        addAttr("status", status + "");
+    }
 
     @Override
     public int getID() {
