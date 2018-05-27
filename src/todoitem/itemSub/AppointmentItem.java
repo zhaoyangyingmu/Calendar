@@ -3,10 +3,15 @@ package todoitem.itemSub;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
+import java.util.HashMap;
+
 /**
  * Created by Bing Chen on 2018/5/9.
  */
 public class AppointmentItem extends Item {
+    public AppointmentItem(HashMap<String, String> attrs) {
+        super(attrs);
+    }
 
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) throws Exception {
         this(from, to, detailText, participants, location, 4, 1, true);
