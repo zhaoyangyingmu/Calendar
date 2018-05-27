@@ -102,6 +102,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public int getStatus() {
+        // 状态，进行中，完成
         return Integer.parseInt(getValue("status"));
     }
 
@@ -118,11 +119,13 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public long minutesAhead() {
+        // 提前多少开始提醒
         return Long.parseLong(getValue("minutesAhead"));
     }
 
     @Override
     public long minutesDelta() {
+        //时间间隔
         return Long.parseLong(getValue("minutesDelta"));
     }
 
@@ -133,11 +136,13 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public boolean promptStatus() {
+        // 是否提醒
         return Boolean.parseBoolean(getValue("promptStatus"));
     }
 
     @Override
     public boolean showOnStage() {
+        // 是否在页面上显示
         return Boolean.parseBoolean(getValue("showOnStage"));
     }
 

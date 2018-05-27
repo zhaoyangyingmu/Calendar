@@ -41,11 +41,11 @@ public class Display extends Application {
     private static Stage stage = new Stage();
     private static Pane imageCalendarPane = new Pane();
     private static GridPane calendarPane = new GridPane();
-    private static DetailPane detailPane;
+    private static WrappedDetailPane detailPane;
     private static TimeStamp fromStatic;
     private static TimeStamp toStatic;
     private static ImageView backgroundImage;
-    private static EditPane editPane;
+    private static WrappedEditPane editPane;
     private static boolean hasEdit = false;
     private static volatile boolean isClosed = false;
     private static PromptPane promptPane = PromptPane.getInstance();
@@ -99,7 +99,7 @@ public class Display extends Application {
         if (detailPane != null) {
             removeDetailPane();
         }
-        detailPane = new DetailPane(from, to);
+        detailPane = new WrappedDetailPane(from, to);
         fromStatic = from;
         toStatic = to;
         imageCalendarPane.getChildren().add(detailPane);
@@ -112,12 +112,12 @@ public class Display extends Application {
 
     public static void refreshDetailPane() {
         imageCalendarPane.getChildren().remove(detailPane);
-        detailPane = new DetailPane(fromStatic, toStatic);
+        detailPane = new WrappedDetailPane(fromStatic, toStatic);
         imageCalendarPane.getChildren().add(detailPane);
     }
 
     public static void addEditPane(Item item, boolean fromAdd) {
-        editPane = new EditPane(item, fromAdd);
+        editPane = new WrappedEditPane(item, fromAdd);
         imageCalendarPane.getChildren().add(editPane);
         hasEdit = true;
         editPane.setAlignment(Pos.CENTER);

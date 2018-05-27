@@ -45,7 +45,7 @@ public class EditPane extends GridPane {
         initial(fromAdd);
     }
 
-    public void initial(boolean fromAdd) {
+    private void initial(boolean fromAdd) {
         /**
          * from timeStamp information
          * */
