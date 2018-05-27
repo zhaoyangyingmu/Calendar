@@ -25,7 +25,7 @@ public class AppointmentItem extends Item {
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location,
                            int priority, int status, boolean isFather, boolean promptStatus,
                            long ahead, boolean showOnStage, long delta) throws Exception {
-        super(from, to, detailText, ItemType.APPOINTMENT, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
+        super(from, to, detailText, ItemType.DATE, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
         addAttr("place", location);
         addAttr("people", participants);
     }
