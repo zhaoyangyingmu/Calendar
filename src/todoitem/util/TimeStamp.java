@@ -14,7 +14,7 @@ public class TimeStamp implements Serializable {
     private int hour;
     private int minute;
 
-    public TimeStamp(int year, int month , int day , int hour,int minute) {
+    public TimeStamp(int year, int month, int day, int hour, int minute) {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -23,13 +23,12 @@ public class TimeStamp implements Serializable {
     }
 
 
-
-    public static TimeStamp createStampDayStart(int year, int month , int day) {
-        return new TimeStamp(year, month , day , 0 , 0);
+    public static TimeStamp createStampDayStart(int year, int month, int day) {
+        return new TimeStamp(year, month, day, 0, 0);
     }
 
-    public static TimeStamp createStampDayEnd(int year, int month , int day) {
-        return new TimeStamp(year, month , day , 23, 59);
+    public static TimeStamp createStampDayEnd(int year, int month, int day) {
+        return new TimeStamp(year, month, day, 23, 59);
     }
 
     public int getYear() {
@@ -54,8 +53,8 @@ public class TimeStamp implements Serializable {
 
     /**
      * in practice, we find it not so useful. Therefore, we add setDay method;
-     * */
-    public void changeTo(int year, int month , int day , int hour , int minute){
+     */
+    public void changeTo(int year, int month, int day, int hour, int minute) {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -70,20 +69,22 @@ public class TimeStamp implements Serializable {
 
     /**
      * 2018.1.1 9:30 is after 2018.1.1 9:30
-     * */
-    public boolean isAfter(TimeStamp target){
-        if(year < target.getYear() ){
+     */
+    public boolean isAfter(TimeStamp target) {
+        if (target == null)
+            return false;
+        if (year < target.getYear()) {
             return false;
         }
-        if (year > target.getYear()){
+        if (year > target.getYear()) {
             return true;
         }
 
         // year equal
-        if (month < target.getMonth()){
+        if (month < target.getMonth()) {
             return false;
         }
-        if (month > target.getMonth()){
+        if (month > target.getMonth()) {
             return true;
         }
         // month equal
@@ -101,7 +102,7 @@ public class TimeStamp implements Serializable {
             return true;
         }
         // hour equal
-        if (minute < target.getMinute()){
+        if (minute < target.getMinute()) {
             return false;
         }
         if (minute > target.getMinute()) {
@@ -113,19 +114,21 @@ public class TimeStamp implements Serializable {
 
     /**
      * 2018.1.1 9:30 is before 2018.1.1 9:30
-     * */
-    public boolean isBefore(TimeStamp target){// this <= target
-        if(year < target.getYear() ){
+     */
+    public boolean isBefore(TimeStamp target) {// this <= target
+        if (target == null)
+            return false;
+        if (year < target.getYear()) {
             return true;
         }
-        if (year > target.getYear()){
+        if (year > target.getYear()) {
             return false;
         }
         // year equal
-        if (month < target.getMonth()){
+        if (month < target.getMonth()) {
             return true;
         }
-        if (month > target.getMonth()){
+        if (month > target.getMonth()) {
             return false;
         }
         // month equal
@@ -143,7 +146,7 @@ public class TimeStamp implements Serializable {
             return false;
         }
         // hour equal
-        if (minute < target.getMinute()){
+        if (minute < target.getMinute()) {
             return true;
         }
         if (minute > target.getMinute()) {
@@ -154,7 +157,7 @@ public class TimeStamp implements Serializable {
     }
 
     public boolean isValid() {
-        CalendarDate date = new CalendarDate(year,month,day);
+        CalendarDate date = new CalendarDate(year, month, day);
         if (!DateUtil.isConsidered(date)) {
             return false;
         }
@@ -168,8 +171,8 @@ public class TimeStamp implements Serializable {
     }
 
     @Override
-    public boolean equals(Object timeStamp){
-        TimeStamp tmp = (TimeStamp)timeStamp;
+    public boolean equals(Object timeStamp) {
+        TimeStamp tmp = (TimeStamp) timeStamp;
         return (year == tmp.getYear() && month == tmp.getMonth() && day == tmp.getDay() && hour == tmp.getHour() && minute == tmp.getMinute());
     }
 

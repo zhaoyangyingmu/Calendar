@@ -3,20 +3,35 @@ package todoitem.itemSub;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
+import java.util.HashMap;
+
 /**
  * Created by Bing Chen on 2018/5/9.
  */
 public class AppointmentItem extends Item {
-    private String participants;
-    private String location;
+    public AppointmentItem(HashMap<String, String> attrs) {
+        super(attrs);
+    }
+
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) throws Exception {
-        super(from, to, detailText, ItemType.APPOINTMENT);
-        this.participants = participants;
-        this.location = location;
+        this(from, to, detailText, participants, location, 4, 1, true);
+    }
+
+    public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location
+            , int priority, int status, boolean isFather) throws Exception {
+        this(from, to, detailText, participants, location, priority, status, isFather, false, 60, true, 5);
+    }
+
+    public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location,
+                           int priority, int status, boolean isFather, boolean promptStatus,
+                           long ahead, boolean showOnStage, long delta) throws Exception {
+        super(from, to, detailText, ItemType.APPOINTMENT, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
+        addAttr("place", location);
+        addAttr("people", participants);
     }
 
     public String getParticipants() {
-        return participants;
+        return getValue("people");
     }
 
 //    public void setParticipants(String participants) {
@@ -24,7 +39,7 @@ public class AppointmentItem extends Item {
 //    }
 
     public String getLocation() {
-        return location;
+        return getValue("place");
     }
 
 //    public void setLocation(String location) {
