@@ -10,6 +10,9 @@ import java.util.Map;
 public abstract class Item implements Serializable, ItemInterface, AttributeMap, AttributeFunc {
     private HashMap<String, String> attrsMap;
 
+    public Item(HashMap<String, String> attrsMap) {
+        addAttrs(attrsMap);
+    }
     public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType,
                 int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, itemType, priority, status, isFather, false, 60, true, 5);
