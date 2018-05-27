@@ -3,10 +3,15 @@ package todoitem.itemSub;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
 
+import java.util.HashMap;
+
 /**
  * Created by Bing Chen on 2018/5/9.
  */
 public class MeetingItem extends Item {
+    public MeetingItem(HashMap<String, String> attrs) {
+        super(attrs);
+    }
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location) throws Exception {
         /*
          * 默认优先级为4，即不重要 & 不紧急
