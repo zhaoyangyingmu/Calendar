@@ -106,8 +106,8 @@ public class ItemTest {
     public void setItemType() throws Exception {
         Item item = new OtherItem(new TimeStamp(2016, 2, 29, 0, 1),
                 new TimeStamp(2016, 2, 29, 0, 2), "");
-        Item.ItemType type = Item.ItemType.APPOINTMENT;
-        item.setItemType(Item.ItemType.APPOINTMENT);
+        Item.ItemType type = Item.ItemType.DATE;
+        item.setItemType(Item.ItemType.DATE);
         assertEquals(type, item.getItemType());
     }
 }
