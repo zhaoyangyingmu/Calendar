@@ -49,4 +49,11 @@ public class InterviewItem extends Item {
     public String getRemark() {
         return getValue("remark");
     }
+    public String getPlaceDescription(){
+        return "Attention: You have an interview in "+ getValue("place")+" from "+getFrom().toString()
+                +" to "+ getTo().toString();
+    }
+    public String getJobDescription(){
+        return "The interview is for the "+getValue("job")+" of "+getValue("company");
+    }
 }

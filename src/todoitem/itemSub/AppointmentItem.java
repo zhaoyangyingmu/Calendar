@@ -46,7 +46,14 @@ public class AppointmentItem extends Item {
     public String getLocation() {
         return getValue("place");
     }
-
+    public String getDetailDescription(){
+        return "Description: You will date your dear "+getParticipants()
+                +" in "+getLocation();
+    }
+    public String getTimeDescription(){
+        return "Time: Your happy time will be from "+getValue("startTime")
+                +" to "+getValue("endTime");
+    }
 //    public void setLocation(String location) {
 //        this.location = location;
 //    }

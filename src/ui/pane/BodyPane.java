@@ -168,7 +168,7 @@ public class BodyPane extends StackPane {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Display.addDetailPane(from, to);
+//                Display.addDetailPane(from, to);
             }
         }
     }

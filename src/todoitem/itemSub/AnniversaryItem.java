@@ -41,4 +41,12 @@ public class AnniversaryItem extends Item {
     public String getStartDay() {
         return getValue("startDay");
     }
+
+    public String getDetailDescription(){
+        return "Pay Attention: You have a "+getAnniversaryType()+" type of anniversary at "
+                + getFrom().getMonth()+"-"+getFrom().getDay();
+    }
+    public String getStartDayDescription(){
+        return "Tip: The anniversary begin at "+ getFrom().getStringWithoutHour();
+    }
 }

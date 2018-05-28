@@ -47,4 +47,14 @@ public class TravelItem extends Item {
     public String getRemark() {
         return getValue("remark");
     }
+    public String getPlaceDescription(){
+        return "Attention: This travel destination is "+getValue("place");
+    }
+    public String getTransDescription(){
+        return "You will go by "+getValue("way")+"("+getValue("number")+")"+" at "
+                +getFrom().getStringWithoutHour();
+    }
+    public String getTimeDescription(){
+        return "You will have a happy time from "+getFrom().getStringWithoutHour()+" to "+getTo().getStringWithoutHour();
+    }
 }

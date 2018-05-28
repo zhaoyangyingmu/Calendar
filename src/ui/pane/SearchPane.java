@@ -92,7 +92,7 @@ public class SearchPane extends GridPane {
                 TimeStamp from = new TimeStamp(fromYear, fromMonth, fromDay, fromHour, fromMinute);
                 TimeStamp to = new TimeStamp(toYear, toMonth, toDay, toHour, toMinute);
                 if (to.isValid() && from.isValid()) {
-                    Display.addDetailPane(from, to);
+//                    Display.addDetailPane(from, to);
                     Display.removeSearchPane();
                 }
             }catch (Exception e){
