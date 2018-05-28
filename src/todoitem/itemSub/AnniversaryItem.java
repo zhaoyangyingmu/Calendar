@@ -33,7 +33,6 @@ public class AnniversaryItem extends Item {
         super(from, to, detailText, ItemType.ANNIVERSARY, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
         setAnniversaryType(anniversaryType);
         setStartDay(from);
-        setYear(from.getYear());
     }
 
     public String getAnniversaryType() {
