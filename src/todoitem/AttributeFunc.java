@@ -3,11 +3,19 @@ package todoitem;
 public interface AttributeFunc {
     int getPriority();
 
+    void setPriority(int priority);
+
     int getStatus();
+
+    void setStatus(int status);
 
     int getID();
 
+    void setID(int ID);
+
     int getFatherID();
+
+    void setFatherID(int fatherID);
 
     long minutesAhead();
 
@@ -18,6 +26,8 @@ public interface AttributeFunc {
     void setMinutesDelta(long minutesDelta);
 
     boolean isFather();
+
+    void setIsFather(boolean isFather);
 
     boolean promptStatus();
 

@@ -22,10 +22,12 @@ public class MeetingItem extends Item {
          */
         this(from, to, detailText, topic, location, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
+
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
                        int priority) throws Exception {
         this(from, to, detailText, topic, location, priority, Const.STATUS, Const.IS_FATHER);
     }
+
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
                        int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, topic, location, priority, status, isFather,
@@ -36,23 +38,23 @@ public class MeetingItem extends Item {
                        int priority, int status, boolean isFather, boolean promptStatus,
                        long ahead, boolean showOnStage, long delta) throws Exception {
         super(from, to, detailText, ItemType.MEETING, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
-        addAttr("place", location);
-        addAttr("topic", topic);
+        setLocation(location);
+        setTopic(topic);
     }
 
     public String getTopic() {
         return getValue("topic");
     }
 
-//    public void setTopic(String topic) {
-//        this.topic = topic;
-//    }
+    public void setTopic(String topic) {
+        addAttr("topic", topic == null ? "" : topic);
+    }
 
     public String getLocation() {
         return getValue("place");
     }
 
-//    public void setLocation(String location) {
-//        this.location = location;
-//    }
+    public void setLocation(String location) {
+        addAttr("place", location == null ? "" : location);
+    }
 }

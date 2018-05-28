@@ -31,28 +31,22 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
             throw new Exception("Time is invalid");
         }
         attrsMap = new HashMap<>();
-        if (null==from||null==to){
-            addAttr("startTime","");//开始时间
-            addAttr("endTime", "");  //结束时间
-        }else {
-            addAttr("startTime",from.toString());//开始时间
-            addAttr("endTime", to.toString());  //结束时间
-        }
-
-        addAttr("content", detailText); //具体描述
-        addAttr("type", itemType.getTypeStr());  //待办事项类型
-        addAttr("priority", priority + ""); //优先级
-        addAttr("status", status + "");     //完成进度
-        addAttr("isFather", isFather + ""); //是否是父待办事项
-        addAttr("fatherID", Const.FATHER_ID + "");  // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为0
-        addAttr("scheduleID", Const.ID + "");
+        setFrom(from);                      //开始时间
+        setTo(to);                          //结束时间
+        setDetailText(detailText);          //具体描述
+        setItemType(itemType);              //待办事项类型
+        setPriority(priority);              //优先级
+        setStatus(status);                  //完成进度
+        setIsFather(isFather);              //是否是父待办事项
+        setFatherID(Const.FATHER_ID);       // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为0
+        setID(Const.ID);
         /*
          *提醒
          **/
-        addAttr("promptStatus", promptStatus + "");    //是否进行提醒，默认不提醒
-        addAttr("minutesAhead", ahead + "");  //提前多久进行提醒，默认提前一小时
-        addAttr("showOnStage", showOnStage + "");  //是否在主界面区域显示，默认显示
-        addAttr("minutesDelta", delta + "");    //多久提醒一次，默认5分钟
+        setPromptStatus(promptStatus);      //是否进行提醒，默认不提醒
+        setMinutesAhead(ahead);             //提前多久进行提醒，默认提前一小时
+        setShowOnStage(showOnStage);        //是否在主界面区域显示，默认显示
+        setMinutesDelta(delta);             //多久提醒一次，默认5分钟
     }
 
 
@@ -71,7 +65,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setFrom(TimeStamp from) {
-        addAttr("startTime", from.toString());
+        addAttr("startTime", from == null ? "" : from.toString());
     }
 
     @Override
@@ -81,7 +75,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setTo(TimeStamp to) {
-        addAttr("endTime", to.toString());
+        addAttr("endTime", to == null ? "" : to.toString());
     }
 
     @Override
@@ -91,7 +85,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setDetailText(String detailText) {
-        addAttr("content", detailText);
+        addAttr("content", detailText == null ? "" : detailText);
     }
 
     @Override
@@ -101,7 +95,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setItemType(ItemType itemType) {
-        addAttr("type", itemType.getTypeStr());
+        addAttr("type", itemType == null ? "" : itemType.getTypeStr());
     }
 
     @Override
@@ -110,11 +104,17 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
+    public void setPriority(int priority) {
+        addAttr("priority", priority + "");
+    }
+
+    @Override
     public int getStatus() {
         // 状态，进行中，完成
         return Integer.parseInt(getValue("status"));
     }
 
+    @Override
     public void setStatus(int status) {
         addAttr("status", status + "");
     }
@@ -125,8 +125,18 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
+    public void setID(int ID) {
+        addAttr("scheduleID", ID + "");
+    }
+
+    @Override
     public int getFatherID() {
         return Integer.parseInt(getValue("fatherID"));
+    }
+
+    @Override
+    public void setFatherID(int fatherID) {
+        addAttr("fatherID", fatherID + "");
     }
 
     @Override
@@ -137,7 +147,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setMinutesAhead(long minutesAhead) {
-        addAttr("minutesAhead" , minutesAhead+"");
+        addAttr("minutesAhead", minutesAhead + "");
     }
 
     @Override
@@ -148,12 +158,17 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setMinutesDelta(long minutesDelta) {
-        addAttr("minutesDelta" , minutesDelta+"");
+        addAttr("minutesDelta", minutesDelta + "");
     }
 
     @Override
     public boolean isFather() {
         return Boolean.parseBoolean(getValue("isFather"));
+    }
+
+    @Override
+    public void setIsFather(boolean isFather) {
+        addAttr("isFather", isFather + "");
     }
 
     @Override
@@ -164,7 +179,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setPromptStatus(boolean promptStatus) {
-        addAttr("promptStatus" , "" + promptStatus);
+        addAttr("promptStatus", "" + promptStatus);
     }
 
     @Override
@@ -175,7 +190,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setShowOnStage(boolean showOnStage) {
-        addAttr("showOnStage" , showOnStage+"");
+        addAttr("showOnStage", showOnStage + "");
     }
 
     @Override
@@ -211,8 +226,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
 
     public enum ItemType {
-        CUSTOM("CUSTOM","自定义"), MEETING("MEETING", "会议"), DATE("DATE" , "约会"), ANNIVERSARY("ANNIVERSARY" , "纪念日"),
-        COURSE("COURSE", "课程"), TRAVEL("TRAVEL" , "旅行"), INTERVIEW("INTERVIEW" , "面试");
+        CUSTOM("CUSTOM", "自定义"), MEETING("MEETING", "会议"), DATE("DATE", "约会"), ANNIVERSARY("ANNIVERSARY", "纪念日"),
+        COURSE("COURSE", "课程"), TRAVEL("TRAVEL", "旅行"), INTERVIEW("INTERVIEW", "面试");
         private String typeStr;
         private String cnTypeStr;
 

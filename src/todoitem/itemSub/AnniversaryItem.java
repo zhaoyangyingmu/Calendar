@@ -3,6 +3,7 @@ package todoitem.itemSub;
 import todoitem.Const;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 
 import java.util.HashMap;
 
@@ -18,7 +19,7 @@ public class AnniversaryItem extends Item {
 
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType,
                            int priority) throws Exception {
-        this(from, to, detailText, anniversaryType, priority,Const.STATUS, Const.IS_FATHER);
+        this(from, to, detailText, anniversaryType, priority, Const.STATUS, Const.IS_FATHER);
     }
 
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType,
@@ -30,15 +31,34 @@ public class AnniversaryItem extends Item {
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType, int priority, int status, boolean isFather,
                            boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
         super(from, to, detailText, ItemType.ANNIVERSARY, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
-        addAttr("anniversaryType", anniversaryType);
-        addAttr("startDay", from.toString());
+        setAnniversaryType(anniversaryType);
+        setStartDay(from);
+        setYear(from.getYear());
     }
 
     public String getAnniversaryType() {
         return getValue("anniversaryType");
     }
 
-    public String getStartDay() {
-        return getValue("startDay");
+    private void setAnniversaryType(String anniversaryType) {
+        addAttr("anniversaryType", anniversaryType == null ? "" : anniversaryType);
+    }
+
+    public TimeStamp getStartDay() {
+        return TimeStampFactory.createStampByString(getValue("startDay"));
+    }
+
+    private void setStartDay(TimeStamp day) {
+        if (day != null)
+            addAttr("startDay", day.toString());
+    }
+
+
+    public int getYear() {
+        return Integer.parseInt(getValue("year"));
+    }
+
+    public void setYear(int year) {
+        addAttr("year", year + "");
     }
 }

@@ -74,28 +74,28 @@ public class EditPane extends GridPane {
         fromFirstRow.add(fromLabel, 0, 0);
 
         GridPane fromYearRow = LabelAndCombo.getInstance("year:  ", 1800, 2100);
-        ((LabelAndCombo) fromYearRow).getComboBox().setValue(from.getYear() + "");
+        ((LabelAndCombo) fromYearRow).getComboBox().setValue(from == null ? "2018" : from.getYear() + "");
         ((LabelAndCombo) fromYearRow).getComboBox().setMinSize(70, 25);
         ((LabelAndCombo) fromYearRow).getComboBox().setMaxSize(70, 25);
         fromFirstRow.add(fromYearRow, 1, 0);
 
         GridPane fromMonthRow = LabelAndCombo.getInstance("month:  ", 1, 12);
-        ((LabelAndCombo) fromMonthRow).getComboBox().setValue(from.getMonth() + "");
+        ((LabelAndCombo) fromMonthRow).getComboBox().setValue(from == null ? "1" : from.getMonth() + "");
         fromFirstRow.add(fromMonthRow, 2, 0);
 
         GridPane fromDayRow = LabelAndCombo.getInstance("day:  ", 1, 31);
-        ((LabelAndCombo) fromDayRow).getComboBox().setValue(from.getDay() + "");
+        ((LabelAndCombo) fromDayRow).getComboBox().setValue(from == null ? "1" : from.getDay() + "");
         fromFirstRow.add(fromDayRow, 3, 0);
         checkGrid.add(fromFirstRow, checkCol, checkRow++);
 
 
         GridPane fromSecondRow = new GridPane();
         GridPane fromHourRow = LabelAndCombo.getInstance("hour:  ", 0, 23);
-        ((LabelAndCombo) fromHourRow).getComboBox().setValue(from.getHour() + "");
+        ((LabelAndCombo) fromHourRow).getComboBox().setValue(from == null ? "0" : from.getHour() + "");
         fromSecondRow.add(fromHourRow, 4, 0);
 
         GridPane fromMinuteRow = LabelAndCombo.getInstance("minute:  ", 0, 59);
-        ((LabelAndCombo) fromMinuteRow).getComboBox().setValue(from.getMinute() + "");
+        ((LabelAndCombo) fromMinuteRow).getComboBox().setValue(from == null ? "0" : from.getMinute() + "");
         fromSecondRow.add(fromMinuteRow, 5, 0);
         checkGrid.add(fromSecondRow, checkCol, checkRow++);
         fromSecondRow.setAlignment(Pos.CENTER);
@@ -109,27 +109,27 @@ public class EditPane extends GridPane {
         toFirstRow.add(toLabel, 0, 0);
 
         GridPane toYearRow = LabelAndCombo.getInstance("year:  ", 1800, 2300);
-        ((LabelAndCombo) toYearRow).getComboBox().setValue(to.getYear() + "");
+        ((LabelAndCombo) toYearRow).getComboBox().setValue(to == null ? "2018" : to.getYear() + "");
         ((LabelAndCombo) toYearRow).getComboBox().setMaxSize(70, 25);
         ((LabelAndCombo) toYearRow).getComboBox().setMinSize(70, 25);
         toFirstRow.add(toYearRow, 2, 0);
 
         GridPane toMonthRow = LabelAndCombo.getInstance("month:  ", 1, 12);
-        ((LabelAndCombo) toMonthRow).getComboBox().setValue(to.getMonth() + "");
+        ((LabelAndCombo) toMonthRow).getComboBox().setValue(to == null ? "1" : to.getMonth() + "");
         toFirstRow.add(toMonthRow, 4, 0);
 
         GridPane toDayRow = LabelAndCombo.getInstance("day:  ", 1, 31);
-        ((LabelAndCombo) toDayRow).getComboBox().setValue(to.getDay() + "");
+        ((LabelAndCombo) toDayRow).getComboBox().setValue(to == null ? "1" : to.getDay() + "");
         toFirstRow.add(toDayRow, 6, 0);
         checkGrid.add(toFirstRow, checkCol, checkRow++);
 
         GridPane toSecondRow = new GridPane();
         GridPane toHourRow = LabelAndCombo.getInstance("hour:  ", 0, 23);
-        ((LabelAndCombo) toHourRow).getComboBox().setValue(to.getHour() + "");
+        ((LabelAndCombo) toHourRow).getComboBox().setValue(to == null ? "23" : to.getHour() + "");
         toSecondRow.add(toHourRow, 8, 0);
 
         GridPane toMinuteRow = LabelAndCombo.getInstance("minute:  ", 0, 59);
-        ((LabelAndCombo) toMinuteRow).getComboBox().setValue(to.getMinute() + "");
+        ((LabelAndCombo) toMinuteRow).getComboBox().setValue(to == null ? "59" : to.getMinute() + "");
         toSecondRow.add(toMinuteRow, 10, 0);
         checkGrid.add(toSecondRow, checkCol, checkRow++);
         toSecondRow.setAlignment(Pos.CENTER);

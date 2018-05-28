@@ -1,7 +1,9 @@
 package todoitem;
 
+import exception.DataErrorException;
 import javafx.collections.FXCollections;
 import todoitem.Item.ItemType;
+import todoitem.itemSub.AnniversaryItem;
 import todoitem.util.TimeStamp;
 import todoitem.util.TimeStampFactory;
 
@@ -32,7 +34,22 @@ public class ItemManager {
     }
 
     public ArrayList<Item> getItemList() {
+        itemListSort();
         return itemList;
+    }
+    private void itemListSort(){
+        if (itemList==null)
+            return;
+        int length=itemList.size();
+        Item tempItem;
+        int j;
+        for (int i = 1; i < length; i++) {
+            tempItem=itemList.get(i);
+            for ( j = i; j >0 && tempItem.getPriority()<itemList.get(j-1).getPriority(); j--) {
+                itemList.set(j,itemList.get(j-1));
+            }
+            itemList.set(j,tempItem);
+        }
     }
 
     public static void destroy() {
@@ -102,16 +119,16 @@ public class ItemManager {
 
         ArrayList<Item> resultList = new ArrayList<>();
 
-        long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
-        for(Item tmp : itemList) {
-            if(tmp.getFrom() == null || tmp.getTo() == null) {
+        long currentMinute = System.currentTimeMillis() / (60 * 1000);
+        for (Item tmp : itemList) {
+            if (tmp.getFrom() == null || tmp.getTo() == null) {
                 continue;
             }
             if (tmp.promptStatus()) {
                 long startMinute = tmp.getFrom().getMinutes() - tmp.minutesAhead();
                 long endMinute = tmp.getFrom().getMinutes();
                 long minutesDelta = tmp.minutesDelta();
-                for(long i = startMinute; i <= endMinute ; i+= minutesDelta) {
+                for (long i = startMinute; i <= endMinute; i += minutesDelta) {
                     if (i == currentMinute) {
                         resultList.add(tmp);
                     }
@@ -127,6 +144,17 @@ public class ItemManager {
 
     public ArrayList<Item> getItemsByFatherItem(Item item) {
         ArrayList<HashMap<String, String>> itemsMsg = Mysql.queryByFatherID(item.getID());
+        if (item.getItemType().equals(ItemType.ANNIVERSARY)) {//纪念日
+            AnniversaryItem anniversaryItem = (AnniversaryItem) item;
+            if (itemsMsg != null) {
+                for (HashMap<String, String> msg : itemsMsg) {
+                    TimeStamp frTime = TimeStampFactory.createStampByString(msg.get("startTime"));//TODO mysql
+                    if (frTime != null && frTime.getYear() != anniversaryItem.getYear()) {  //只保留当年的纪念日的子待办事项
+                        itemsMsg.remove(msg);
+                    }
+                }
+            }
+        }
         return getItems(itemsMsg);
     }
 
@@ -157,37 +185,35 @@ public class ItemManager {
             System.out.println("=====================  分割线  =======================");
         }
     }
-//    public boolean addItem(Item item) {
-//        if (item != null)
-//            if (canOverlapped(item) && canCombine(item)) {
-//                updateStatus(item);
-//                return Mysql.addSchedule(item.getAttrs()) != 0;
-//            }
-//        return false;
-//    }
-
 
     /**
-     * what if delete the same thing twice;
+     * @param item    待添加的待办事项
+     * @param confirm 确认是否添加
+     * @return 添加成功返回true，否则返回false
      */
-    public void deleteItem(Item item) {
-        itemList.remove(item);
+    public boolean addItem(Item item, boolean confirm) throws DataErrorException {
+        if (confirm && item != null)
+            if (canOverlapped(item)) {
+                updateStatus(item);
+                return Mysql.addSchedule(item.getAttrs()) != 0;
+            }
+        return false;
     }
-//    public boolean deleteItem(Item item) {
-//        return Mysql.deleteSchedule(item.getID()) != 0;
-//    }
-
 
     /**
-     * 待办事项的组合
+     * @param father 待添加的代办事项的父待办事项
+     * @param item   待添加的待办事项
+     * @return 添加成功返回true
+     * @throws DataErrorException 添加失败抛出异常（失败原因）
      */
-    private boolean canCombine(Item item) {
+    public boolean addChildItem(Item father, Item item) throws DataErrorException {
+        if (father == null || item == null) {
+            throw new DataErrorException("添加失败");
+        }
         //保证待办事项的子待办事项不会再能添加子待办事项
-        if (!item.isFather())
-            return false;
-
-        //纪念日的子待办事项不需要每年重复
-
+        if (!father.isFather()) {
+            throw new DataErrorException("子待办事项不能再添加子待办事项了！");
+        }
 
         /*
         *某些待办事项不能互相包含，即他们之间是互斥的
@@ -199,11 +225,9 @@ public class ItemManager {
         types.addAll(FXCollections.observableArrayList(
                 ItemType.MEETING.getTypeStr(), ItemType.DATE.getTypeStr(),
                 ItemType.COURSE.getTypeStr(), ItemType.INTERVIEW.getTypeStr()));
-        HashMap<String, String> fatherItemMsg = Mysql.queryByID(item.getFatherID());
-        if (fatherItemMsg != null) {
-            if (types.remove(fatherItemMsg.get("type")))  //true表示父类型为四种类型之一
-                if (types.contains(item.getItemType().getTypeStr())) //true表示子待办事项类型为互斥类型
-                    return false;
+        if (types.remove(father.getItemType().getTypeStr()))  //true表示父类型为四种类型之一
+            if (types.contains(item.getItemType().getTypeStr())) //true表示子待办事项类型为互斥类型
+                throw new DataErrorException("会议，课程，约会，面试等为互斥类型！");
 
 
         /*
@@ -211,20 +235,48 @@ public class ItemManager {
         *例如: 设置了时间的待办事项不能添加没有设置时间的子待办事项
         *     没有设置时间的待办事项不能设置子待办事项。
         **/
-            TimeStamp fatherFr = TimeStampFactory.createStampByString(fatherItemMsg.get("startTime"));
-            TimeStamp fatherTo = TimeStampFactory.createStampByString(fatherItemMsg.get("endTime"));
-            TimeStamp fr = item.getFrom();
-            TimeStamp to = item.getTo();
-            //必须有起止时间
-            return fatherFr != null && fatherTo != null && fr != null && to != null && !fr.isBefore(fatherFr) && !to.isAfter(fatherTo);
-        } else
-            return true;    //此为父待办事项
+        TimeStamp fatherFr = father.getFrom();
+        TimeStamp fatherTo = father.getTo();
+        TimeStamp fr = item.getFrom();
+        TimeStamp to = item.getTo();
+        //必须有起止时间
+        if (fatherFr == null || fatherTo == null) {
+            throw new DataErrorException("未设置时间的代办事项不能添加子待办事项");
+        }
+        if (fr == null || to == null)
+            throw new DataErrorException("未设置时间的待办事项不能添加为子待办事项");
+        if (fr.isBefore(fatherFr) || to.isAfter(fatherTo)) {
+            throw new DataErrorException("子待办事项的时间应在父待办事项时间范围内");
+        }
+        return addItem(item, true);
     }
 
     /**
-     * 待办事项时间重叠
+     * what if delete the same thing twice;
      */
-    private boolean canOverlapped(Item item) {
+
+    public void deleteItem(Item item) {
+        itemList.remove(item);
+    }
+
+//    public boolean deleteItem(Item item) {
+//        if (item.isFather()) {//删除子待办事项
+//            boolean deleteAll = true;
+//            ArrayList<HashMap<String, String>> childrenMsg = Mysql.queryByFatherID(item.getID());
+//            if (childrenMsg != null)
+//                for (HashMap<String, String> msg : childrenMsg)
+//                    deleteAll &= Mysql.deleteSchedule(Integer.parseInt(msg.get("scheduleID"))) != 0;
+//            return deleteAll;
+//        } else
+//            return Mysql.deleteSchedule(item.getID()) != 0;
+//    }
+//
+    /**
+     * 待办事项时间重叠
+     *
+     * @param item 待添加的待办事项
+     */
+    private boolean canOverlapped(Item item) throws DataErrorException {
         /*
         *以下类型的待办事项（会议，课程，约会，面试，旅程）不能出现时间重叠情况，包括相同类型的情况
         *后添加的时间冲突的待办事项不能添加成功并且为用户提示错误（具体到与哪个待办事项在XX时间冲突了）
@@ -236,7 +288,7 @@ public class ItemManager {
         if (itemsMsg != null)
             for (HashMap<String, String> itemMsg : itemsMsg) {
                 if (overlappedTypes.contains(itemMsg.get("type")))
-                    return false;
+                    throw new DataErrorException("与其他待办事项时间重叠！\n会议，课程，约会，面试，旅程等类型不允许时间重叠！");
             }
         return true;
     }

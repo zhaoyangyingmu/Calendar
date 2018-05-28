@@ -88,7 +88,7 @@ public class DetailPane extends GridPane {
             line.setStroke(Color.YELLOW);
             this.add(line , 0, rowIndex++);
 
-            Text fromToText = new Text("From: " + item.getFrom().toString() + " To: " + item.getTo().toString());
+            Text fromToText = new Text("From: " + item.getValue("startTime") + " To: " + item.getValue("endTime"));
             this.add(fromToText,0 , rowIndex++);
             this.setMargin(fromToText, new Insets(5, 0 , 0 , 0 ));
 
