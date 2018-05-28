@@ -14,7 +14,10 @@ public class InterviewItem extends Item {
     public InterviewItem(TimeStamp from, TimeStamp to, String place, String company, String job, String remark) throws Exception {
         this(from, to, place, company, job, remark,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
-
+    public InterviewItem(TimeStamp from, TimeStamp to, String place, String company, String job, String remark,
+                         int priority) throws Exception {
+        this(from, to, place, company, job, remark,  priority, Const.STATUS, Const.IS_FATHER);
+    }
     public InterviewItem(TimeStamp from, TimeStamp to, String place, String company, String job, String remark,
                          int priority, int status, boolean isFather) throws Exception {
         this(from, to, company, company, job, remark, priority, status, isFather,

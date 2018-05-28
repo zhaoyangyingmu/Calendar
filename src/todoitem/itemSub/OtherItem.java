@@ -17,7 +17,10 @@ public class OtherItem extends Item {
     public OtherItem(TimeStamp from, TimeStamp to, String detailText) throws Exception {
         this(from, to, detailText, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
-
+    public OtherItem(TimeStamp from, TimeStamp to, String detailText,
+                     int priority) throws Exception {
+        this(from, to, detailText, priority, Const.STATUS, Const.IS_FATHER);
+    }
     public OtherItem(TimeStamp from, TimeStamp to, String detailText,
                      int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, priority, status, isFather,

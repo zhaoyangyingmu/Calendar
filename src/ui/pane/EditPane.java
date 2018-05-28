@@ -2,9 +2,7 @@ package ui.pane;
 
 import io.ItemIO;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import kernel.Display;
 import todoitem.Item;
@@ -20,6 +18,7 @@ public class EditPane extends GridPane {
     private TimeStamp from;
     private TimeStamp to;
     private Item.ItemType itemType;
+    int priority;
     private String detail;
     private String location;
     private String meetingTopic;
@@ -38,6 +37,10 @@ public class EditPane extends GridPane {
     //    private String[] interviewInformation=new String[4];
     private GridPane[] interviewControl = new GridPane[4];
     private GridPane[] customControl = new GridPane[1];
+    private GridPane priorityRow = new GridPane();
+    private CheckBox importantCheckBox = new CheckBox();
+    private CheckBox urgentCheckBox = new CheckBox();
+    private RadioButton customIsSetTime = new RadioButton();
 
 
     public EditPane(Item item, boolean fromAdd) {
@@ -50,8 +53,8 @@ public class EditPane extends GridPane {
     }
 
     private void initial(boolean fromAdd) {
-        int checkCol = 0 ;
-        int checkRow = 0 ;
+        int checkCol = 0;
+        int checkRow = 0;
         GridPane checkGrid = new GridPane();
         //将选择的内容放在checkGrid里面。 再放到主体里面
 
@@ -173,7 +176,7 @@ public class EditPane extends GridPane {
 //        GridPane participantsRow = new LabelAndTextRow("participants: ", dateParticipants);
 //        participantsRow.setAlignment(Pos.CENTER);
 
-
+        checkGrid.add(priorityRow, checkCol, checkRow++);
         checkGrid.add(informationRow, checkCol, checkRow++);
         informationRow.setVgap(10);
         informationRow.setAlignment(Pos.CENTER);
@@ -182,6 +185,7 @@ public class EditPane extends GridPane {
             for (int i = 0; i < totalControl.length; i++) {
                 informationRow.getChildren().remove(totalControl[i]);
             }
+            informationRow.getChildren().remove(customIsSetTime);
             switch (newValue) {
                 case "MEETING":
                     informationRow.add(totalControl[0], 0, 0);
@@ -203,6 +207,7 @@ public class EditPane extends GridPane {
                     break;
                 case "CUSTOM":
                     informationRow.add(totalControl[6], 0, 0);
+                    informationRow.add(customIsSetTime, 0, 1);
                     break;
 
             }
@@ -224,7 +229,7 @@ public class EditPane extends GridPane {
         checkGrid.setVgap(10);
         checkGrid.getStylesheets().add("/stylesheet/greenAndRed.css");
         checkGrid.getStyleClass().add("checkGrid");
-        this.add(checkGrid ,  mainCol , mainRow++);
+        this.add(checkGrid, mainCol, mainRow++);
         checkGrid.setAlignment(Pos.CENTER);
 
 
@@ -256,28 +261,37 @@ public class EditPane extends GridPane {
                 if (tmpType == null) {
                     throw new Exception("No such item type!");
                 }
+                if (!importantCheckBox.isSelected() && !urgentCheckBox.isSelected()) {
+                    priority = 4;
+                } else if (!urgentCheckBox.isSelected() && importantCheckBox.isSelected()) {
+                    priority = 3;
+                } else if (urgentCheckBox.isSelected() && !importantCheckBox.isSelected()) {
+                    priority = 2;
+                } else {
+                    priority = 1;
+                }
                 Item tmpItem = null;
                 switch (tmpType) {
                     case MEETING:
-                        tmpItem=meetingTypeItem(fromStamp,toStamp);
+                        tmpItem = meetingTypeItem(fromStamp, toStamp);
                         break;
                     case DATE:
-                        tmpItem=dateTypeItem(fromStamp,toStamp);
+                        tmpItem = dateTypeItem(fromStamp, toStamp);
                         break;
                     case ANNIVERSARY:
-                        tmpItem=anniversaryTypeItem(fromStamp,toStamp);
+                        tmpItem = anniversaryTypeItem(fromStamp, toStamp);
                         break;
                     case COURSE:
-                        tmpItem=courseTypeItem(fromStamp,toStamp);
+                        tmpItem = courseTypeItem(fromStamp, toStamp);
                         break;
                     case TRAVEL:
-                        tmpItem=travelTypeItem(fromStamp,toStamp);
+                        tmpItem = travelTypeItem(fromStamp, toStamp);
                         break;
                     case INTERVIEW:
-                        tmpItem=interviewTypeItem(fromStamp,toStamp);
+                        tmpItem = interviewTypeItem(fromStamp, toStamp);
                         break;
                     case CUSTOM:
-                        tmpItem=customTypeItem(fromStamp,toStamp);
+                        tmpItem = customTypeItem(fromStamp, toStamp);
                         break;
 
                 }
@@ -314,12 +328,12 @@ public class EditPane extends GridPane {
         Label promptBt = new Label("设置提醒");
         promptBt.getStyleClass().add("button");
 
-        buttonRow.add(promptBt , 0 , 0);
+        buttonRow.add(promptBt, 0, 0);
         buttonRow.add(saveBt, 1, 0);
         buttonRow.add(cancelBt, 2, 0);
         buttonRow.setHgap(10);
         buttonRow.getStyleClass().add("buttons");
-        this.add(buttonRow, mainCol,mainRow++);
+        this.add(buttonRow, mainCol, mainRow++);
     }
 
     public void initialInformationControl() {
@@ -343,9 +357,9 @@ public class EditPane extends GridPane {
         way.add("train");
         way.add("bus");
         travelControl[0] = LabelAndCombo.getInstance("trans", way);
-        ((LabelAndCombo)travelControl[0]).getComboBox().setEditable(true);
-        ((LabelAndCombo)travelControl[0]).getComboBox().setMinWidth(100);
-        ((LabelAndCombo)travelControl[0]).getComboBox().setMaxWidth(100);
+        ((LabelAndCombo) travelControl[0]).getComboBox().setEditable(true);
+        ((LabelAndCombo) travelControl[0]).getComboBox().setMinWidth(100);
+        ((LabelAndCombo) travelControl[0]).getComboBox().setMaxWidth(100);
         travelControl[1] = new LabelAndTextRow("schedule", "");
         travelControl[2] = new LabelAndTextRow("place", "");
         travelControl[3] = new LabelAndTextRow("remark", "");
@@ -354,6 +368,14 @@ public class EditPane extends GridPane {
         interviewControl[2] = new LabelAndTextRow("job", "");
         interviewControl[3] = new LabelAndTextRow("remark", "");
         customControl[0] = new LabelAndTextRow("content", "");
+        customIsSetTime.setText("Set Time");
+        customIsSetTime.setAlignment(Pos.CENTER);
+        importantCheckBox.setText("important");
+        urgentCheckBox.setText("urgent");
+        priorityRow.add(importantCheckBox, 0, 0);
+        priorityRow.add(urgentCheckBox, 1, 0);
+        priorityRow.setHgap(10);
+        priorityRow.setAlignment(Pos.CENTER);
         for (int i = 0; i < totalControl.length; i++) {
             totalControl[i] = new GridPane();
             totalControl[i].setAlignment(Pos.CENTER);
@@ -380,20 +402,20 @@ public class EditPane extends GridPane {
         String meetingPlace = ((LabelAndTextRow) meetingControl[0]).getTextField().getText();
         String meetingTopic = ((LabelAndTextRow) meetingControl[1]).getTextField().getText();
         String meetingContent = ((LabelAndTextRow) meetingControl[2]).getTextField().getText();
-        return new MeetingItem(from, to, meetingContent, meetingTopic, meetingPlace);
+        return new MeetingItem(from, to, meetingContent, meetingTopic, meetingPlace, priority);
     }
 
     private Item dateTypeItem(TimeStamp from, TimeStamp to) throws Exception {
         String datePlace = ((LabelAndTextRow) dateControl[0]).getTextField().getText();
         String datePeople = ((LabelAndTextRow) dateControl[1]).getTextField().getText();
         String dateContent = ((LabelAndTextRow) dateControl[2]).getTextField().getText();
-        return new AppointmentItem(from, to, dateContent, datePeople, datePlace);
+        return new AppointmentItem(from, to, dateContent, datePeople, datePlace, priority);
     }
 
     private Item anniversaryTypeItem(TimeStamp from, TimeStamp to) throws Exception {
         String anniversaryType = ((LabelAndTextRow) anniversaryControl[0]).getTextField().getText();
         String anniversaryContent = ((LabelAndTextRow) anniversaryControl[1]).getTextField().getText();
-        return new AnniversaryItem(from, to, anniversaryContent, anniversaryType);
+        return new AnniversaryItem(from, to, anniversaryContent, anniversaryType, priority);
     }
 
     private Item courseTypeItem(TimeStamp from, TimeStamp to) throws Exception {
@@ -405,26 +427,30 @@ public class EditPane extends GridPane {
         String courseRemark = ((LabelAndTextRow) courseControl[5]).getTextField().getText();
         String courseDay = ((LabelAndTextRow) courseControl[6]).getTextField().getText();
         return new CourseItem(from, to, courseName, courseContent, courseDuration, courseTeacher, courseRemark,
-                coursePlace, courseDay);
+                coursePlace, courseDay, priority);
     }
-    private Item travelTypeItem(TimeStamp from,TimeStamp to) throws Exception {
-        String travelWay=((LabelAndCombo)travelControl[0]).getComboBox().getValue();
-        String travelPlace=((LabelAndTextRow)travelControl[1]).getTextField().getText();
-        String travelNumber=((LabelAndTextRow)travelControl[2]).getTextField().getText();
-        String travelRemark=((LabelAndTextRow)travelControl[3]).getTextField().getText();
-        return new TravelItem(from,to,travelWay,travelPlace,travelNumber,travelRemark);
+
+    private Item travelTypeItem(TimeStamp from, TimeStamp to) throws Exception {
+        String travelWay = ((LabelAndCombo) travelControl[0]).getComboBox().getValue();
+        String travelPlace = ((LabelAndTextRow) travelControl[1]).getTextField().getText();
+        String travelNumber = ((LabelAndTextRow) travelControl[2]).getTextField().getText();
+        String travelRemark = ((LabelAndTextRow) travelControl[3]).getTextField().getText();
+        return new TravelItem(from, to, travelWay, travelPlace, travelNumber, travelRemark, priority);
     }
-    private Item interviewTypeItem(TimeStamp from,TimeStamp to) throws Exception {
-        String interviewPlace=((LabelAndTextRow)interviewControl[0]).getTextField().getText();
-        String interviewCompany=((LabelAndTextRow)interviewControl[1]).getTextField().getText();
-        String interviewJob=((LabelAndTextRow)interviewControl[2]).getTextField().getText();
-        String interviewRemark=((LabelAndTextRow)interviewControl[3]).getTextField().getText();
-        return new InterviewItem(from,to,interviewPlace,interviewCompany,interviewJob,interviewRemark);
+
+    private Item interviewTypeItem(TimeStamp from, TimeStamp to) throws Exception {
+        String interviewPlace = ((LabelAndTextRow) interviewControl[0]).getTextField().getText();
+        String interviewCompany = ((LabelAndTextRow) interviewControl[1]).getTextField().getText();
+        String interviewJob = ((LabelAndTextRow) interviewControl[2]).getTextField().getText();
+        String interviewRemark = ((LabelAndTextRow) interviewControl[3]).getTextField().getText();
+        return new InterviewItem(from, to, interviewPlace, interviewCompany, interviewJob, interviewRemark, priority);
     }
-    private Item customTypeItem(TimeStamp from,TimeStamp to) throws Exception {
-        String customContent=((LabelAndTextRow)customControl[0]).getTextField().getText();
-        return  new OtherItem(from,to,customContent);
+
+    private Item customTypeItem(TimeStamp from, TimeStamp to) throws Exception {
+        String customContent = ((LabelAndTextRow) customControl[0]).getTextField().getText();
+        return customIsSetTime.isSelected() ? new OtherItem(from, to, customContent, priority) : new OtherItem(null, null, customContent, priority);
     }
+
     private class LabelAndTextRow extends GridPane {
         private Label label;
         private TextField textField;
