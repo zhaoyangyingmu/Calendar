@@ -14,7 +14,9 @@ public class TravelItem extends Item {
     public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark) throws Exception {
         this(from, to, way, place, number, remark,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
-
+    public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark, int priority) throws Exception {
+        this(from, to, way, place, number, remark,  priority, Const.STATUS, Const.IS_FATHER);
+    }
     public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark, int priority,
                       int status, boolean isFather) throws Exception {
         this(from, to, way, place, number, remark, priority, status, isFather,

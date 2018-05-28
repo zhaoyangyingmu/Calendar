@@ -17,7 +17,10 @@ public class AppointmentItem extends Item {
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) throws Exception {
         this(from, to, detailText, participants, location, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
-
+    public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location
+            , int priority) throws Exception {
+        this(from,to,detailText,participants,location,priority,Const.STATUS, Const.IS_FATHER);
+    }
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location
             , int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, participants, location, priority, status, isFather,
