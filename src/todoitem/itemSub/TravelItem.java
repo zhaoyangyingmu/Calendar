@@ -12,11 +12,13 @@ public class TravelItem extends Item {
     }
 
     public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark) throws Exception {
-        this(from, to, way, place, number, remark,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
+        this(from, to, way, place, number, remark, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
+
     public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark, int priority) throws Exception {
-        this(from, to, way, place, number, remark,  priority, Const.STATUS, Const.IS_FATHER);
+        this(from, to, way, place, number, remark, priority, Const.STATUS, Const.IS_FATHER);
     }
+
     public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark, int priority,
                       int status, boolean isFather) throws Exception {
         this(from, to, way, place, number, remark, priority, status, isFather,
@@ -26,26 +28,42 @@ public class TravelItem extends Item {
     public TravelItem(TimeStamp from, TimeStamp to, String way, String place, String number, String remark, int priority,
                       int status, boolean isFather, boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
         super(from, to, "", ItemType.TRAVEL, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
-        addAttr("way", way);
-        addAttr("place", place);
-        addAttr("number", number);
-        addAttr("remark", remark);
+        setWay(way);
+        setPlace(place);
+        setNumber(number);
+        setRemark(remark);
     }
 
     public String getWay() {
         return getValue("way");
     }
 
+    private void setWay(String way) {
+        addAttr("way", way == null ? "" : way);
+    }
+
     public String getPlace() {
         return getValue("place");
+    }
+
+    private void setPlace(String place) {
+        addAttr("place", place == null ? "" : place);
     }
 
     public String getNumber() {
         return getValue("number");
     }
 
+    private void setNumber(String number) {
+        addAttr("number", number == null ? "" : number);
+    }
+
     public String getRemark() {
         return getValue("remark");
+    }
+
+    private void setRemark(String remark) {
+        addAttr("remark", remark == null ? "" : remark);
     }
     public String getPlaceDescription(){
         return "Attention: This travel destination is "+getValue("place");

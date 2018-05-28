@@ -432,13 +432,13 @@ public class EditPane extends GridPane {
     private Item courseTypeItem(TimeStamp from, TimeStamp to) throws Exception {
         String courseName = ((LabelAndTextRow) courseControl[0]).getTextField().getText();
         String courseContent = ((LabelAndTextRow) courseControl[1]).getTextField().getText();
-        String courseDuration = ((LabelAndTextRow) courseControl[2]).getTextField().getText();
+        int courseDuration = Integer.parseInt(((LabelAndTextRow) courseControl[2]).getTextField().getText());
         String courseTeacher = ((LabelAndTextRow) courseControl[3]).getTextField().getText();
         String coursePlace = ((LabelAndTextRow) courseControl[4]).getTextField().getText();
         String courseRemark = ((LabelAndTextRow) courseControl[5]).getTextField().getText();
-        String courseDay = ((LabelAndTextRow) courseControl[6]).getTextField().getText();
-        return new CourseItem(from, to, courseName, courseContent, courseDuration, courseTeacher, courseRemark,
-                coursePlace, courseDay, priority);
+        int courseDay = Integer.parseInt(((LabelAndTextRow) courseControl[6]).getTextField().getText());
+        return new CourseItem(from, to, courseName, courseContent, courseTeacher, courseRemark,
+                coursePlace,courseDuration,  courseDay, priority);
     }
 
     private Item travelTypeItem(TimeStamp from, TimeStamp to) throws Exception {

@@ -17,10 +17,12 @@ public class AppointmentItem extends Item {
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location) throws Exception {
         this(from, to, detailText, participants, location, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
+
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location
             , int priority) throws Exception {
-        this(from,to,detailText,participants,location,priority,Const.STATUS, Const.IS_FATHER);
+        this(from, to, detailText, participants, location, priority, Const.STATUS, Const.IS_FATHER);
     }
+
     public AppointmentItem(TimeStamp from, TimeStamp to, String detailText, String participants, String location
             , int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, participants, location, priority, status, isFather,
@@ -31,20 +33,24 @@ public class AppointmentItem extends Item {
                            int priority, int status, boolean isFather, boolean promptStatus,
                            long ahead, boolean showOnStage, long delta) throws Exception {
         super(from, to, detailText, ItemType.DATE, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
-        addAttr("place", location);
-        addAttr("people", participants);
+        setLocation(location);
+        setParticipants(participants);
     }
 
     public String getParticipants() {
         return getValue("people");
     }
 
-//    public void setParticipants(String participants) {
-//        this.participants = participants;
-//    }
+    private void setParticipants(String participants) {
+        addAttr("people", participants == null ? "" : participants);
+    }
 
     public String getLocation() {
         return getValue("place");
+    }
+
+    private void setLocation(String location) {
+        addAttr("place", location == null ? "" : location);
     }
     public String getDetailDescription(){
         return "Description: You will date your dear "+getParticipants()

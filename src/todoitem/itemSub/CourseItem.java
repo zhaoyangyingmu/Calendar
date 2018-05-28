@@ -3,6 +3,7 @@ package todoitem.itemSub;
 import todoitem.Const;
 import todoitem.Item;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 
 import java.util.HashMap;
 
@@ -11,61 +12,89 @@ public class CourseItem extends Item {
         super(attrsMap);
     }
 
-    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
-                      String remark, String place, String day) throws Exception {
-        this(from, to, name, detailText, duration, teacher, remark, place, day, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
+    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String teacher,
+                      String remark, String place, int duration, int day) throws Exception {
+        this(from, to, name, detailText, teacher, remark, place, duration, day, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
 
-    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
-                      String remark, String place, String day, int priority) throws Exception {
-        this(from, to, name, detailText, duration, teacher, remark, place, day, priority, Const.STATUS, Const.IS_FATHER);
+    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String teacher,
+                      String remark, String place, int duration, int day, int priority) throws Exception {
+        this(from, to, name, detailText, teacher, remark, place, duration, day, priority, Const.STATUS, Const.IS_FATHER);
     }
 
-    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
-                      String remark, String place, String day, int priority, int status, boolean isFather) throws Exception {
-        this(from, to, name, detailText, duration, teacher, remark, place, day, priority, status, isFather,
+    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String teacher,
+                      String remark, String place, int duration, int day, int priority, int status, boolean isFather) throws Exception {
+        this(from, to, name, detailText, teacher, remark, place, duration, day, priority, status, isFather,
                 Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
-    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
-                      String remark, String place, String day, int priority, int status, boolean isFather,
+    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String teacher,
+                      String remark, String place, int duration, int day, int priority, int status, boolean isFather,
                       boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
         super(from, to, detailText, ItemType.COURSE, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
-        addAttr("name", name);
-        addAttr("startDay", from.toString());
-        addAttr("duration", duration);
-        addAttr("teacher", teacher);
-        addAttr("remark", remark);
-        addAttr("place", place);
-        addAttr("day", day);
+        setName(name);
+        setStartDay(from);
+        setDuration(duration);
+        setTeacher(teacher);
+        setRemark(remark);
+        setPlace(place);
+        setDay(day);
     }
 
     public String getName() {
         return getValue("name");
     }
 
-    public String getStartDay() {
-        return getValue("startDay");
+    private void setName(String name) {
+        addAttr("name", name);
     }
 
-    public String getDuration() {
-        return getValue("duration");
+    public TimeStamp getStartDay() {
+        return TimeStampFactory.createStampByString(getValue("startDay"));
+    }
+
+    private void setStartDay(TimeStamp day) {
+        addAttr("startDay", day.toString());
+    }
+
+    public int getDuration() {
+        return Integer.parseInt(getValue("duration"));
+    }
+
+    private void setDuration(int duration) {
+        addAttr("duration", duration <= 0 ? 1 + "" : duration + "");
     }
 
     public String getTeacher() {
         return getValue("teacher");
     }
 
+    private void setTeacher(String teacher) {
+        addAttr("teacher", teacher == null ? "" : teacher);
+    }
+
     public String getRemark() {
         return getValue("remark");
+    }
+
+    private void setRemark(String remark) {
+        addAttr("remark", remark == null ? "" : remark);
     }
 
     public String getPlace() {
         return getValue("place");
     }
 
-    public String getDay() {
-        return getValue("day");
+    public void setPlace(String place) {
+        addAttr("place", place == null ? "" : place);
+    }
+
+    public int getDay() {
+        return Integer.parseInt(getValue("day"));
+    }
+
+    private void setDay(int day) {
+        addAttr("day", day + "");
     }
 
     public String getDetailDescription() {
@@ -80,19 +109,19 @@ public class CourseItem extends Item {
     }
     private String getDayOfWeek() {
         switch (getDay()) {
-            case "1":
+            case 1:
                 return "Monday";
-            case "2":
+            case 2:
                 return "Tuesday";
-            case "3":
+            case 3:
                 return "Wednesday";
-            case "4":
+            case 4:
                 return "Thursday";
-            case "5":
+            case 5:
                 return "Friday";
-            case "6":
+            case 6:
                 return "Saturday";
-            case "7":
+            case 7:
                 return "Sunday";
             default:
                 return "  ";

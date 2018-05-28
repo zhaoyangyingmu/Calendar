@@ -5,20 +5,26 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import kernel.Display;
 import todoitem.util.TimeStamp;
 import ui.util.LabelAndCombo;
 
-public class SearchPane extends GridPane {
+public class SearchPane extends StackPane {
     private static SearchPane searchPane;
     private SearchPane() {
         int thisRowIndex = 0;
+        GridPane contentGrid = new GridPane();
+        contentGrid.getStyleClass().add("contentGrid");
         Label title = new Label("Detail Search");
-        title.setStyle("-fx-font-size: 20px;");
-        title.getStyleClass().add("myLabel");
-        this.add(title, 0, thisRowIndex++);
-        this.setHalignment(title, HPos.CENTER);
+        title.getStyleClass().add("title");
+        contentGrid.add(title, 0, thisRowIndex++);
+        contentGrid.setHalignment(title, HPos.CENTER);
 
+
+        GridPane checkGrid = new GridPane();
+        int checkCol = 0;
+        int checkRow = 0;
         GridPane fromFirstRow = new GridPane();
         Label fromLabel = new Label("From:");
         fromLabel.getStyleClass().add("myLabel");
@@ -32,8 +38,8 @@ public class SearchPane extends GridPane {
         GridPane monthUnit = LabelAndCombo.getInstance("month:  " , 1, 12);
         fromFirstRow.add(monthUnit, 2, 0);
         fromFirstRow.setHgap(10);
-        this.add(fromFirstRow, 0, thisRowIndex++);
-        this.setHalignment(fromFirstRow, HPos.CENTER);
+        checkGrid.add(fromFirstRow, 0, checkRow++);
+        checkGrid.setHalignment(fromFirstRow, HPos.CENTER);
 
         GridPane fromSecondRow = new GridPane();
         GridPane dayUnit = LabelAndCombo.getInstance("day:  ", 1, 31);
@@ -44,8 +50,8 @@ public class SearchPane extends GridPane {
 
         GridPane minuteUnit = LabelAndCombo.getInstance("minute:  " , 0 , 59);
         fromSecondRow.add(minuteUnit, 3, 0);
-        this.add(fromSecondRow, 0, thisRowIndex++);
-        this.setHalignment(fromSecondRow, HPos.CENTER);
+        checkGrid.add(fromSecondRow, 0, checkRow++);
+        checkGrid.setHalignment(fromSecondRow, HPos.CENTER);
 
         GridPane toFirstRow = new GridPane();
         Label toLabel = new Label("To:");
@@ -60,8 +66,8 @@ public class SearchPane extends GridPane {
         GridPane toMonthUnit = LabelAndCombo.getInstance("month:  " , 1, 12);
         toFirstRow.add(toMonthUnit, 2, 0);
         toFirstRow.setHgap(10);
-        this.add(toFirstRow, 0, thisRowIndex++);
-        this.setHalignment(toFirstRow, HPos.CENTER);
+        checkGrid.add(toFirstRow, 0, checkRow++);
+        checkGrid.setHalignment(toFirstRow, HPos.CENTER);
 
         GridPane toSecondRow = new GridPane();
         GridPane toDayUnit = LabelAndCombo.getInstance("day:  ", 1, 31);
@@ -73,10 +79,17 @@ public class SearchPane extends GridPane {
         GridPane toMinuteUnit = LabelAndCombo.getInstance("minute:  " , 0 ,59);
         toSecondRow.add(toMinuteUnit, 2, 0);
         toSecondRow.setHgap(3);
-        this.add(toSecondRow, 0, thisRowIndex++);
-        this.setHalignment(toSecondRow, HPos.CENTER);
+        checkGrid.add(toSecondRow, 0, checkRow++);
+        checkGrid.setHalignment(toSecondRow, HPos.CENTER);
+        checkGrid.getStyleClass().add("checkGrid");
+        checkGrid.setVgap(8);
 
-        Button searchBt = new Button("search");
+
+        contentGrid.add(checkGrid , 0 ,thisRowIndex++);
+        checkGrid.setAlignment(Pos.CENTER);
+
+        GridPane buttons = new GridPane();
+        Label searchBt = new Label("search");
         searchBt.setOnMouseClicked(event -> {
             try {
                 int fromYear = Integer.parseInt(((LabelAndCombo) yearUnit).getComboBox().getValue());
@@ -99,20 +112,28 @@ public class SearchPane extends GridPane {
                 Display.showToast("Type in number, please! ");
             }
         });
-        searchBt.getStyleClass().add("btn");
-        searchBt.setMaxSize(90 , 60);
-        this.add(searchBt, 0, thisRowIndex++);
-        this.setHalignment(searchBt, HPos.CENTER);
-        this.setAlignment(Pos.CENTER);
-        this.setVgap(20);
+        searchBt.getStyleClass().add("button");
+        buttons.add(searchBt , 0 , 0);
+        Label cancelBt = new Label("cancel");
+        cancelBt.setOnMouseClicked(event -> {
+            Display.removeSearchPane();
+        });
+        cancelBt.getStyleClass().add("button");
+        buttons.add(cancelBt , 1 , 0);
+        buttons.setHgap(10);
 
-        final int paneFixWidth = 440;
-        final int paneFixHeight = 440;
-        this.setMaxSize(paneFixWidth , paneFixHeight);
-        this.setMinSize(paneFixWidth , paneFixHeight);
-        this.getStyleClass().add("aside");
-        this.getStylesheets().add("/stylesheet/buttonAndLabel.css");
-        this.getStylesheets().add("/stylesheet/searchPane.css");
+
+        buttons.getStyleClass().add("buttons");
+        contentGrid.add(buttons, 0, thisRowIndex++);
+        contentGrid.setHalignment(buttons, HPos.CENTER);
+        contentGrid.setAlignment(Pos.CENTER);
+
+        contentGrid.getStylesheets().add("/stylesheet/searchPane.css");
+
+        this.setMaxSize(1200 , 720);
+        this.setMinSize(1200 , 720);
+        this.setStyle("-fx-background-color: rgba(0, 0 , 0 , 0.7);");
+        this.getChildren().add(contentGrid);
 
     }
 
