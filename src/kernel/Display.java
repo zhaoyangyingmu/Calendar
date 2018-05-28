@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import todoitem.Item;
@@ -90,6 +91,18 @@ public class Display extends Application {
         setPrompt();
     }
 
+    public static void startItemListStage(TimeStamp from, TimeStamp to) {
+        fromStatic = from;
+        toStatic = to;
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.alwaysOnTopProperty();
+        stage.setTitle("Memos");
+        stage.setResizable(false);
+        stage.setScene(new Scene(new ItemListPane(from, to, stage)));
+        stage.showAndWait();
+    }
+
     public static void addDetailPane(TimeStamp from, TimeStamp to) {
         if (hasEdit) {
             return;
@@ -163,11 +176,12 @@ public class Display extends Application {
     }
 
     public static void removePromptSetPane() {
-        if(hasPromptSet) {
+        if (hasPromptSet) {
             imageCalendarPane.getChildren().remove(promptSetPane);
             hasPromptSet = false;
         }
     }
+
 
     /**
      * paint the days of whole current month on the frame with the given kernel.CalendarDate
@@ -209,18 +223,17 @@ public class Display extends Application {
                 @Override
                 public void run() {
                     ArrayList<Item> items = ItemManager.getInstance().getPrompts();
-                    for(Item item : items) {
-                        if(item.showOnStage()) {
+                    for (Item item : items) {
+                        if (item.showOnStage()) {
                             addPromptPane(item);
-                        }
-                        else {
+                        } else {
                             addPromptPopPane(item);
                         }
                     }
                     if (items.size() == 0) {
                         System.out.println("当前没有要提醒的事项！");
                     }
-                    
+
                 }
             };
             // Platform 不再执行，当主线程关闭时。
