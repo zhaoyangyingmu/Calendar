@@ -37,18 +37,19 @@ public class ItemManager {
         itemListSort();
         return itemList;
     }
-    private void itemListSort(){
-        if (itemList==null)
+
+    private void itemListSort() {
+        if (itemList == null)
             return;
-        int length=itemList.size();
+        int length = itemList.size();
         Item tempItem;
         int j;
         for (int i = 1; i < length; i++) {
-            tempItem=itemList.get(i);
-            for ( j = i; j >0 && tempItem.getPriority()<itemList.get(j-1).getPriority(); j--) {
-                itemList.set(j,itemList.get(j-1));
+            tempItem = itemList.get(i);
+            for (j = i; j > 0 && tempItem.getPriority() < itemList.get(j - 1).getPriority(); j--) {
+                itemList.set(j, itemList.get(j - 1));
             }
-            itemList.set(j,tempItem);
+            itemList.set(j, tempItem);
         }
     }
 
@@ -137,8 +138,31 @@ public class ItemManager {
         }
         return resultList;
     }
+
 //    public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
 //        ArrayList<HashMap<String, String>> itemsMsg = Mysql.queryByTime(from.toString(), to.toString());
+//        if (itemsMsg != null) {
+//            int year = 0;
+//            for (HashMap<String, String> msg : itemsMsg) {
+//                if (msg.get("type").equals(ItemType.ANNIVERSARY.getTypeStr())) {
+//                    if (year == 0) {
+//                        TimeStamp stamp = TimeStampFactory.createStampByString(msg.get("startDay"));
+//                        if (stamp != null) {    //获取第一次在时间段内的纪念日时间
+//                            while (stamp.isBefore(from)) {
+//                                TimeStamp temp = stamp;
+//                                stamp = TimeStampFactory.createStampDayStart(stamp.getYear() + 1, stamp.getMonth(), stamp.getDay());
+//                                if (!stamp.isValid()) {
+//                                    stamp = TimeStampFactory.createStampDayStart(temp.getYear() + 2, temp.getMonth(), temp.getDay());
+//                                }
+//                            }
+//                            year = stamp.getYear();
+//                        }
+//                    }
+//                    msg.put("year", year + "");
+//                    year++;
+//                }
+//            }
+//        }
 //        return getItems(itemsMsg);
 //    }
 
@@ -271,6 +295,7 @@ public class ItemManager {
 //            return Mysql.deleteSchedule(item.getID()) != 0;
 //    }
 //
+
     /**
      * 待办事项时间重叠
      *
