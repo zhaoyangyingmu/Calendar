@@ -30,8 +30,8 @@
 .checkGrid {
     -fx-max-width: 683;
     -fx-min-width: 683;
-    -fx-max-height: 410;
-    -fx-min-height: 410;
+    -fx-max-height: 430;
+    -fx-min-height: 430;
     -fx-background-color: white;
 }
 

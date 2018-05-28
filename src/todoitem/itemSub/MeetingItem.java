@@ -22,7 +22,10 @@ public class MeetingItem extends Item {
          */
         this(from, to, detailText, topic, location, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
-
+    public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
+                       int priority) throws Exception {
+        this(from, to, detailText, topic, location, priority, Const.STATUS, Const.IS_FATHER);
+    }
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location,
                        int priority, int status, boolean isFather) throws Exception {
         this(from, to, detailText, topic, location, priority, status, isFather,

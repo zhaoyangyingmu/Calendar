@@ -14,5 +14,4 @@ public class Const {
     public final static boolean IS_FATHER = true;
     public final static boolean PROMPT_STATUS = false;
     public final static boolean SHOW_ON_STAGE = true;
-
 }

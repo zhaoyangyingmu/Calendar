@@ -24,15 +24,21 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType,
                 int priority, int status, boolean isFather,
                 boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
-        if (to == null || from == null) {
+        if ((to == null || from == null) && (itemType != ItemType.CUSTOM)) {
             throw new Exception("to or from TimeStamp is null! ");
         }
-        if ((!from.isValid()) || (!to.isValid()) || !from.isBefore(to)) { // from  strictly after to
+        if ((to != null && from != null) && ((!from.isValid()) || (!to.isValid()) || !from.isBefore(to))) { // from  strictly after to
             throw new Exception("Time is invalid");
         }
         attrsMap = new HashMap<>();
-        addAttr("startTime", from.toString());//开始时间
-        addAttr("endTime", to.toString());  //结束时间
+        if (null==from||null==to){
+            addAttr("startTime","");//开始时间
+            addAttr("endTime", "");  //结束时间
+        }else {
+            addAttr("startTime",from.toString());//开始时间
+            addAttr("endTime", to.toString());  //结束时间
+        }
+
         addAttr("content", detailText); //具体描述
         addAttr("type", itemType.getTypeStr());  //待办事项类型
         addAttr("priority", priority + ""); //优先级
@@ -41,8 +47,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
         addAttr("fatherID", Const.FATHER_ID + "");  // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为0
         addAttr("scheduleID", Const.ID + "");
         /*
-        *提醒
-        **/
+         *提醒
+         **/
         addAttr("promptStatus", promptStatus + "");    //是否进行提醒，默认不提醒
         addAttr("minutesAhead", ahead + "");  //提前多久进行提醒，默认提前一小时
         addAttr("showOnStage", showOnStage + "");  //是否在主界面区域显示，默认显示
@@ -129,9 +135,19 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
+    public void setMinutesAhead(long minutesAhead) {
+        addAttr("minutesAhead" , minutesAhead+"");
+    }
+
+    @Override
     public long minutesDelta() {
         //时间间隔
         return Long.parseLong(getValue("minutesDelta"));
+    }
+
+    @Override
+    public void setMinutesDelta(long minutesDelta) {
+        addAttr("minutesDelta" , minutesDelta+"");
     }
 
     @Override
@@ -146,9 +162,19 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
+    public void setPromptStatus(boolean promptStatus) {
+        addAttr("promptStatus" , "" + promptStatus);
+    }
+
+    @Override
     public boolean showOnStage() {
         // 是否在页面上显示
         return Boolean.parseBoolean(getValue("showOnStage"));
+    }
+
+    @Override
+    public void setShowOnStage(boolean showOnStage) {
+        addAttr("showOnStage" , showOnStage+"");
     }
 
     @Override
@@ -184,16 +210,22 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
 
     public enum ItemType {
-        CUSTOM("CUSTOM"), MEETING("MEETING"), DATE("DATE"), ANNIVERSARY("ANNIVERSARY"),
-        COURSE("COURSE"), TRAVEL("TRAVEL"), INTERVIEW("INTERVIEW");
+        CUSTOM("CUSTOM","自定义"), MEETING("MEETING", "会议"), DATE("DATE" , "约会"), ANNIVERSARY("ANNIVERSARY" , "纪念日"),
+        COURSE("COURSE", "课程"), TRAVEL("TRAVEL" , "旅行"), INTERVIEW("INTERVIEW" , "面试");
         private String typeStr;
+        private String cnTypeStr;
 
-        ItemType(String typeStr) {
+        ItemType(String typeStr, String cnTypeStr) {
             this.typeStr = typeStr;
+            this.cnTypeStr = cnTypeStr;
         }
 
         public String getTypeStr() {
             return typeStr;
+        }
+
+        public String getCnTypeStr() {
+            return cnTypeStr;
         }
 
         public static ItemType parseItemType(String typeStr) {
@@ -220,8 +252,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     @Override
     public boolean equals(Object object) {
         Item item = (Item) object;
-        return ((getValue("startTime")).equals(item.getFrom().toString()))
-                && ((getValue("endTime")).equals(item.getTo().toString()))
+        return ((getValue("startTime")).equals(item.getValue("startTime")))
+                && ((getValue("endTime")).equals(item.getValue("endTime")))
                 && (getValue("content").equals(item.getDetailText()))
                 && ((getValue("type")).equals(item.getItemType().getTypeStr()));
     }

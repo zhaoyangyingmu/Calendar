@@ -5,9 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import kernel.Display;
-import todoitem.AheadTimeType;
+import todoitem.MinutesAheadType;
 import todoitem.Item;
-import todoitem.TimeInterType;
+import todoitem.MinutesDeltaType;
 import ui.Config;
 import ui.util.LabelAndCombo;
 
@@ -16,6 +16,10 @@ import java.util.ArrayList;
 public class PromptSetPane extends StackPane {
     private static PromptSetPane promptSetPane;
     private Item item;
+    private LabelAndCombo promptStatusCombo;
+    private LabelAndCombo minutesAheadCombo;
+    private LabelAndCombo promptMode;
+    private LabelAndCombo minutesDeltaCombo;
 
     public static PromptSetPane getInstance() {
         if (promptSetPane  == null) {
@@ -32,43 +36,43 @@ public class PromptSetPane extends StackPane {
         grid.add(promptLabel , col , row++);
 
 
-        ArrayList<String> promptStr = new ArrayList<>();
-        promptStr.add("是");
-        promptStr.add("否");
-        LabelAndCombo promptOnCombo = LabelAndCombo.getInstance("是否提醒", promptStr);
+        ArrayList<String> promptStatusStr = new ArrayList<>();
+        promptStatusStr.add("是");
+        promptStatusStr.add("否");
+        promptStatusCombo = LabelAndCombo.getInstance("是否提醒", promptStatusStr);
 
-        ArrayList<String> aheadTimeStr = new ArrayList<>();
-        for (int i = 0 ; i < AheadTimeType.values().length; i++) {
-            aheadTimeStr.add(AheadTimeType.values()[i].getInfo());
+        ArrayList<String> minutesAheadStr = new ArrayList<>();
+        for (int i = 0; i < MinutesAheadType.values().length; i++) {
+            minutesAheadStr.add(MinutesAheadType.values()[i].getInfo());
         }
-        LabelAndCombo aheadTime = LabelAndCombo.getInstance("提前：" , aheadTimeStr);
+        minutesAheadCombo = LabelAndCombo.getInstance("提前：" , minutesAheadStr);
 
         ArrayList<String> promptModeStr = new ArrayList<>();
         promptModeStr.add("页面提示区提醒");
         promptModeStr.add("弹出框提醒");
-        LabelAndCombo promptMode = LabelAndCombo.getInstance("提醒方式：" , promptModeStr);
+        promptMode = LabelAndCombo.getInstance("提醒方式：" , promptModeStr);
 
-        ArrayList<String> interModeStr = new ArrayList<>();
-        for (int i = 0 ; i < TimeInterType.values().length; i++) {
-            interModeStr.add(TimeInterType.values()[i].getInfo());
+        ArrayList<String> minutesDeltaStr = new ArrayList<>();
+        for (int i = 0; i < MinutesDeltaType.values().length; i++) {
+            minutesDeltaStr.add(MinutesDeltaType.values()[i].getInfo());
         }
-        LabelAndCombo interMode = LabelAndCombo.getInstance("间隔：" , interModeStr);
+        minutesDeltaCombo = LabelAndCombo.getInstance("间隔：" , minutesDeltaStr);
 
         GridPane checkGrid = new GridPane();
         int checkCol = 0;
         int checkRow = 0;
-        checkGrid.add(promptOnCombo,checkCol , checkRow++);
-        promptOnCombo.getComboBox().getEditor().setEditable(false);
-        promptOnCombo.getComboBox().getStyleClass().add("combo1");
-        checkGrid.add(aheadTime , checkCol , checkRow++);
-        aheadTime.getComboBox().getEditor().setEditable(false);
-        aheadTime.getComboBox().getStyleClass().add("combo2");
+        checkGrid.add(promptStatusCombo,checkCol , checkRow++);
+        promptStatusCombo.getComboBox().getEditor().setEditable(false);
+        promptStatusCombo.getComboBox().getStyleClass().add("combo1");
+        checkGrid.add(minutesAheadCombo , checkCol , checkRow++);
+        minutesAheadCombo.getComboBox().getEditor().setEditable(false);
+        minutesAheadCombo.getComboBox().getStyleClass().add("combo2");
         checkGrid.add(promptMode , checkCol , checkRow++);
         promptMode.getComboBox().getEditor().setEditable(false);
         promptMode.getComboBox().getStyleClass().add("combo3");
-        checkGrid.add(interMode, checkCol, checkRow++);
-        interMode.getComboBox().getEditor().setEditable(false);
-        interMode.getComboBox().getStyleClass().add("combo4");
+        checkGrid.add(minutesDeltaCombo, checkCol, checkRow++);
+        minutesDeltaCombo.getComboBox().getEditor().setEditable(false);
+        minutesDeltaCombo.getComboBox().getStyleClass().add("combo4");
         checkGrid.getStyleClass().add("checkGrid");
         checkGrid.setVgap(10);
 
@@ -83,7 +87,23 @@ public class PromptSetPane extends StackPane {
         Label confirmBt = new Label("确定");
         confirmBt.getStyleClass().add("button");
         confirmBt.setOnMouseClicked(event -> {
-            // TODO: 2018/5/27  
+            // TODO: 2018/5/27
+            boolean promptStatus = false;
+            if(promptStatusCombo.getComboBox().getValue().equals("是")) {
+                promptStatus = true;
+            }
+            boolean showOnStage = true;
+            if (promptMode.getComboBox().getValue().equals("弹出框提醒")) {
+                showOnStage = false;
+            }
+
+            long minutesAhead = MinutesAheadType.parseAheadType(minutesAheadCombo.getComboBox().getValue()).getMinutes();
+            long minutesDelta = MinutesDeltaType.parseInterType(minutesDeltaCombo.getComboBox().getValue()).getMinutes();
+
+            item.setPromptStatus(promptStatus);
+            item.setShowOnStage(showOnStage);
+            item.setMinutesAhead(minutesAhead);
+            item.setMinutesDelta(minutesDelta);
             Display.removePromptSetPane();
         });
         GridPane buttons = new GridPane();
@@ -104,5 +124,20 @@ public class PromptSetPane extends StackPane {
 
     public void setItem(Item item) {
         this.item = item;
+        if (!item.promptStatus()) {
+            promptStatusCombo.getComboBox().setValue("否");
+        }
+        else {
+            promptStatusCombo.getComboBox().setValue("是");
+        }
+        if (!item.showOnStage()) {
+            promptMode.getComboBox().setValue("弹出框提醒");
+        }
+        else {
+            promptMode.getComboBox().setValue("页面提示区提醒");
+        }
+        minutesAheadCombo.getComboBox().setValue(
+                MinutesAheadType.parseAheadType(item.minutesAhead()).getInfo());
+        minutesDeltaCombo.getComboBox().setValue(MinutesDeltaType.parseInterType(item.minutesDelta()).getInfo());
     }
 }

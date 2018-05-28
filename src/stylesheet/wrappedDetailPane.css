@@ -29,6 +29,7 @@
     -fx-background-color: #808080;
     -fx-text-fill: white;
     -fx-text-alignment: center;
+    -fx-padding: 0 0 0 20;
 }
 
 .scrollView {

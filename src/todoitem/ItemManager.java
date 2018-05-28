@@ -103,23 +103,22 @@ public class ItemManager {
 
         ArrayList<Item> resultList = new ArrayList<>();
 
-//        long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
-//        for(Item tmp : itemList) {
-//            if(tmp.getFrom() == null || tmp.getTo() == null) {
-//                continue;
-//            }
-//            if ((boolean) tmp.getValue("promptStatus")) {
-//                long startMinute = tmp.getFrom().getMinutes();
-//                long endMinute = tmp.getTo().getMinutes();
-//                long minutesDelta = (long) tmp.getValue("minutesDelta");
-//                for(long i = startMinute; i <= endMinute ; i+= minutesDelta) {
-//                    if (i == currentMinute) {
-//                        resultList.add(tmp);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
+        long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
+        for(Item tmp : itemList) {
+            if(tmp.getFrom() == null || tmp.getTo() == null) {
+                continue;
+            }
+            if (tmp.promptStatus()) {
+                long startMinute = tmp.getFrom().getMinutes() - tmp.minutesAhead();
+                long endMinute = tmp.getFrom().getMinutes();
+                long minutesDelta = tmp.minutesDelta();
+                for(long i = startMinute; i <= endMinute ; i+= minutesDelta) {
+                    if (i == currentMinute) {
+                        resultList.add(tmp);
+                    }
+                }
+            }
+        }
         return resultList;
     }
 //    public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
