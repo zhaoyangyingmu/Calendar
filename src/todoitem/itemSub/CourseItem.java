@@ -15,7 +15,10 @@ public class CourseItem extends Item {
                       String remark, String place, String day) throws Exception {
         this(from, to, name, detailText, duration, teacher, remark, place, day,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
-
+    public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
+                      String remark, String place, String day,  int priority) throws Exception {
+        this(from, to, name, detailText, duration, teacher, remark, place, day, priority, Const.STATUS, Const.IS_FATHER);
+    }
     public CourseItem(TimeStamp from, TimeStamp to, String name, String detailText, String duration, String teacher,
                       String remark, String place, String day, int priority, int status, boolean isFather) throws Exception {
         this(from, to, name, detailText, duration, teacher, remark, place, day, priority, status, isFather,

@@ -24,15 +24,21 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     public Item(TimeStamp from, TimeStamp to, String detailText, ItemType itemType,
                 int priority, int status, boolean isFather,
                 boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
-        if (to == null || from == null) {
+        if ((to == null || from == null) && (itemType != ItemType.CUSTOM)) {
             throw new Exception("to or from TimeStamp is null! ");
         }
-        if ((!from.isValid()) || (!to.isValid()) || !from.isBefore(to)) { // from  strictly after to
+        if ((to != null && from != null) && ((!from.isValid()) || (!to.isValid()) || !from.isBefore(to))) { // from  strictly after to
             throw new Exception("Time is invalid");
         }
         attrsMap = new HashMap<>();
-        addAttr("startTime", from.toString());//开始时间
-        addAttr("endTime", to.toString());  //结束时间
+        if (null==from||null==to){
+            addAttr("startTime","");//开始时间
+            addAttr("endTime", "");  //结束时间
+        }else {
+            addAttr("startTime",from.toString());//开始时间
+            addAttr("endTime", to.toString());  //结束时间
+        }
+
         addAttr("content", detailText); //具体描述
         addAttr("type", itemType.getTypeStr());  //待办事项类型
         addAttr("priority", priority + ""); //优先级
@@ -41,8 +47,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
         addAttr("fatherID", Const.FATHER_ID + "");  // 默认此为父待办事项，因此不存在父待办事项，即父待办事项ID为0
         addAttr("scheduleID", Const.ID + "");
         /*
-        *提醒
-        **/
+         *提醒
+         **/
         addAttr("promptStatus", promptStatus + "");    //是否进行提醒，默认不提醒
         addAttr("minutesAhead", ahead + "");  //提前多久进行提醒，默认提前一小时
         addAttr("showOnStage", showOnStage + "");  //是否在主界面区域显示，默认显示
@@ -220,8 +226,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     @Override
     public boolean equals(Object object) {
         Item item = (Item) object;
-        return ((getValue("startTime")).equals(item.getFrom().toString()))
-                && ((getValue("endTime")).equals(item.getTo().toString()))
+        return ((getValue("startTime")).equals(item.getValue("startTime")))
+                && ((getValue("endTime")).equals(item.getValue("endTime")))
                 && (getValue("content").equals(item.getDetailText()))
                 && ((getValue("type")).equals(item.getItemType().getTypeStr()));
     }

@@ -12,8 +12,13 @@ public class AnniversaryItem extends Item {
     }
 
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType) throws Exception {
-        this(from, to, detailText, anniversaryType,  Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
+        this(from, to, detailText, anniversaryType, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
 
+    }
+
+    public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType,
+                           int priority) throws Exception {
+        this(from, to, detailText, anniversaryType, priority,Const.STATUS, Const.IS_FATHER);
     }
 
     public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType,
