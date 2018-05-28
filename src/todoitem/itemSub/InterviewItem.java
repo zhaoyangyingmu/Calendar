@@ -74,4 +74,5 @@ public class InterviewItem extends Item {
     public String getJobDescription(){
         return "The interview is for the "+getValue("job")+" of "+getValue("company");
     }
+
 }
