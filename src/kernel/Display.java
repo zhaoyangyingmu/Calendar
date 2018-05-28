@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import todoitem.Item;
+import todoitem.ItemManager;
 import todoitem.itemSub.AppointmentItem;
 import todoitem.util.TimeStamp;
 import ui.Config;
@@ -48,8 +49,6 @@ public class Display extends Application {
     private static WrappedEditPane editPane;
     private static boolean hasEdit = false;
     private static volatile boolean isClosed = false;
-    private static PromptPane promptPane = PromptPane.getInstance();
-    private static boolean hasPrompt = false;
     private static PromptSetPane promptSetPane = PromptSetPane.getInstance();
     private static boolean hasPromptSet = false;
 
@@ -75,7 +74,6 @@ public class Display extends Application {
         backgroundImage.setEffect(new GaussianBlur(40));
         imageCalendarPane.getChildren().add(backgroundImage);
         imageCalendarPane.getChildren().add(calendarPane);
-        addPromptPane();
 
 
         Scene scene = new Scene(imageCalendarPane, Config.getWindowWidth(), Config.getWindowHeight());
@@ -126,6 +124,7 @@ public class Display extends Application {
     public static void removeEditPane() {
         BodyPane.getInstance().refresh();
         imageCalendarPane.getChildren().remove(editPane);
+        refreshDetailPane();
         hasEdit = false;
     }
 
@@ -138,18 +137,22 @@ public class Display extends Application {
         imageCalendarPane.getChildren().remove(SearchPane.getInstance());
     }
 
-    public static void addPromptPane() {
-        if (!hasPrompt) {
-            imageCalendarPane.getChildren().add(promptPane);
-            hasPrompt = true;
-        }
+    public static void addPromptPopPane(Item item) {
+        PromptPopPane promptPopPane = new PromptPopPane(item);
+        imageCalendarPane.getChildren().add(promptPopPane);
     }
 
-    public static void removePromptPane() {
-        if (hasPrompt) {
-            imageCalendarPane.getChildren().remove(promptPane);
-            hasPrompt = false;
-        }
+    public static void removePromptPopPane(PromptPopPane promptPopPane) {
+        imageCalendarPane.getChildren().remove(promptPopPane);
+    }
+
+    public static void addPromptPane(Item item) {
+        PromptPane promptPane = new PromptPane(item);
+        imageCalendarPane.getChildren().add(promptPane);
+    }
+
+    public static void removePromptPane(PromptPane pane) {
+        imageCalendarPane.getChildren().remove(pane);
     }
 
     public static void addPromptSetPane() {
@@ -195,77 +198,29 @@ public class Display extends Application {
     }
 
     public static void setPrompt() {
-//        long time = 60 * 1000;
-
-//
-//        Thread thread = new Thread(() -> {
-//            try {
-//                while (true) {
-//                    Thread.sleep(time);
-////                    ArrayList<Item> items = new ArrayList<>();
-////                    if (items.size() != 0) {
-////
-////                    }
-////                    TimeStamp from = new TimeStamp(2018, 5, 26, 16, 25);
-////                    TimeStamp to = new TimeStamp(2018, 5, 27, 17, 33);
-////                    Item dating = new AppointmentItem(from, to, "今天，我有个约会", "女票", "邯郸");
-////                    PromptPane.getInstance().setItem(dating);
-////                    addPromptPane();
-//                    Platform.runLater(run);
-//
-//                    if (isClosed) {
-//                        break;
-//                    }
-//                }
-//            } catch (Exception exp) {
-//                exp.printStackTrace();
-//            }
-//        });
-//        thread.start();
-//        final Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                System.out.println(System.currentTimeMillis());
-//                Runnable run = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        TimeStamp from = new TimeStamp(2018, 5, 26, 16, 25);
-//                        TimeStamp to = new TimeStamp(2018, 5, 27, 17, 33);
-//                        Item dating = null;
-//                        try {
-//                            dating = new AppointmentItem(from, to, "今天，我有个约会", "女票", "邯郸");
-//                            PromptPane.getInstance().setItem(dating);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//                // Platform 不再执行，当主线程关闭时。
-//                Platform.runLater(run);
-//                if (isClosed) {
-//                    timer.cancel();
-//                }
-//            }
-//        }, 1000, 1000);
 
         ScheduledExecutorService service = Executors.newScheduledThreadPool(5);
-//        ScheduledFuture scheduledFuture = service.schedule()
 
+        long currentSeconds = (System.currentTimeMillis() / 1000) % 60;
+        long waitSeconds = 60 - currentSeconds;
         service.scheduleAtFixedRate(() -> {
             System.out.println(System.currentTimeMillis());
             Runnable run = new Runnable() {
                 @Override
                 public void run() {
-                    TimeStamp from = new TimeStamp(2018, 5, 26, 16, 25);
-                    TimeStamp to = new TimeStamp(2018, 5, 27, 17, 33);
-                    Item dating = null;
-                    try {
-                        dating = new AppointmentItem(from, to, "今天，我有个约会", "女票", "邯郸");
-                        PromptPane.getInstance().setItem(dating);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    ArrayList<Item> items = ItemManager.getInstance().getPrompts();
+                    for(Item item : items) {
+                        if(item.showOnStage()) {
+                            addPromptPane(item);
+                        }
+                        else {
+                            addPromptPopPane(item);
+                        }
                     }
+                    if (items.size() == 0) {
+                        System.out.println("当前没有要提醒的事项！");
+                    }
+                    
                 }
             };
             // Platform 不再执行，当主线程关闭时。
@@ -273,6 +228,6 @@ public class Display extends Application {
             if (isClosed) {
                 service.shutdown();
             }
-        }, 0, 60, TimeUnit.SECONDS);
+        }, waitSeconds, 60, TimeUnit.SECONDS);
     }
 }

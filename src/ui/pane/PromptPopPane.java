@@ -3,23 +3,24 @@ package ui.pane;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import kernel.Display;
 import todoitem.Item;
 import ui.Config;
 
-public class PromptPane extends GridPane {
+public class PromptPopPane extends StackPane {
     private Item item;
     private Label label;
-
-    public PromptPane(Item item) {
+    public PromptPopPane(Item item) {
         int row = 0 ;
         int col = 0;
+        GridPane contentGrid = new GridPane();
         Label promptLabel = new Label("提示");
         promptLabel.getStyleClass().add("promptLabel");
-        this.add(promptLabel , col , row++);
+        contentGrid.add(promptLabel , col , row++);
         label = new Label("暂无待办事项");
         label.getStyleClass().add("hintLabel");
-        this.add(label, col , row++);
+        contentGrid.add(label, col , row++);
         Label knowBt = new Label("朕知道了");
         knowBt.getStyleClass().add("button");
         Label setBt = new Label("设置");
@@ -36,21 +37,15 @@ public class PromptPane extends GridPane {
 
         buttons.add(knowBt , 1, 0);
         knowBt.setOnMouseClicked(event -> {
-            Display.removePromptPane(this);
+            Display.removePromptPopPane(this);
         });
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setHgap(10);
-        this.add(buttons, col , row++);
-        this.setMaxSize(280, 240);
-        this.setMinSize(280 , 240);
-        this.getStyleClass().add("mainPrompt");
-        this.getStylesheets().add(Config.class.getResource("/stylesheet/prompt.css").toString());
-        this.setTranslateX(10);
-        this.setTranslateY(10);
-        this.setLayoutX(10);
-        this.setLayoutY(10);
-        this.relocate(10,10);
+        contentGrid.add(buttons, col , row++);
+        contentGrid.setMaxSize(390, 240);
+        contentGrid.setMinSize(390 , 240);
+        contentGrid.getStyleClass().add("mainPrompt");
         this.item = item;
         long currentMinutes = System.currentTimeMillis()/ (60*1000);
         long startMinutes = item.getFrom().getMinutes();
@@ -89,7 +84,7 @@ public class PromptPane extends GridPane {
                 break;
             case TRAVEL:
                 otherStr += "\n目的地：" + item.getValue("place")
-                         + "\n方式：" + item.getValue("way")
+                        + "\n方式：" + item.getValue("way")
                         + "\n航班号：" + item.getValue("number")
                         + "\n备忘： " + item.getValue("remark");
             case INTERVIEW:
@@ -101,5 +96,11 @@ public class PromptPane extends GridPane {
         }
 
         label.setText(timeStr + typeStr + detailStr + otherStr);
+        this.getChildren().add(contentGrid);
+        this.getStyleClass().add("mainScene");
+        this.setMaxSize(1200, 720);
+        this.setMinSize(1200 , 720);
+        this.setStyle("-fx-background-color: rgba(0 ,0 , 0 , 0.7);");
+        contentGrid.getStylesheets().add(Config.class.getResource("/stylesheet/promptPopPane.css").toString());
     }
 }

@@ -293,6 +293,12 @@ public class EditPane extends GridPane {
 //                } else {
 //                    tmpItem = new OtherItem(fromStamp, toStamp, detail);
 //                }
+                // 相当于这里新建了一个item， 但是没有保存原来所有的信息。
+                tmpItem.setPromptStatus(this.item.promptStatus());
+                tmpItem.setShowOnStage(this.item.showOnStage());
+                tmpItem.setMinutesDelta(this.item.minutesDelta());
+                tmpItem.setMinutesAhead(this.item.minutesAhead());
+
                 ItemManager.getInstance().deleteItem(this.item);
                 ItemManager.getInstance().addItem(tmpItem);
                 ItemIO.output();
@@ -313,6 +319,10 @@ public class EditPane extends GridPane {
         });
         Label promptBt = new Label("设置提醒");
         promptBt.getStyleClass().add("button");
+        promptBt.setOnMouseClicked(event -> {
+            PromptSetPane.getInstance().setItem(item);
+            Display.addPromptSetPane();
+        });
 
         buttonRow.add(promptBt , 0 , 0);
         buttonRow.add(saveBt, 1, 0);

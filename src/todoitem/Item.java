@@ -129,9 +129,19 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
+    public void setMinutesAhead(long minutesAhead) {
+        addAttr("minutesAhead" , minutesAhead+"");
+    }
+
+    @Override
     public long minutesDelta() {
         //时间间隔
         return Long.parseLong(getValue("minutesDelta"));
+    }
+
+    @Override
+    public void setMinutesDelta(long minutesDelta) {
+        addAttr("minutesDelta" , minutesDelta+"");
     }
 
     @Override
@@ -146,9 +156,19 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
+    public void setPromptStatus(boolean promptStatus) {
+        addAttr("promptStatus" , "" + promptStatus);
+    }
+
+    @Override
     public boolean showOnStage() {
         // 是否在页面上显示
         return Boolean.parseBoolean(getValue("showOnStage"));
+    }
+
+    @Override
+    public void setShowOnStage(boolean showOnStage) {
+        addAttr("showOnStage" , showOnStage+"");
     }
 
     @Override
@@ -184,16 +204,22 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
 
     public enum ItemType {
-        CUSTOM("CUSTOM"), MEETING("MEETING"), DATE("DATE"), ANNIVERSARY("ANNIVERSARY"),
-        COURSE("COURSE"), TRAVEL("TRAVEL"), INTERVIEW("INTERVIEW");
+        CUSTOM("CUSTOM","自定义"), MEETING("MEETING", "会议"), DATE("DATE" , "约会"), ANNIVERSARY("ANNIVERSARY" , "纪念日"),
+        COURSE("COURSE", "课程"), TRAVEL("TRAVEL" , "旅行"), INTERVIEW("INTERVIEW" , "面试");
         private String typeStr;
+        private String cnTypeStr;
 
-        ItemType(String typeStr) {
+        ItemType(String typeStr, String cnTypeStr) {
             this.typeStr = typeStr;
+            this.cnTypeStr = cnTypeStr;
         }
 
         public String getTypeStr() {
             return typeStr;
+        }
+
+        public String getCnTypeStr() {
+            return cnTypeStr;
         }
 
         public static ItemType parseItemType(String typeStr) {
