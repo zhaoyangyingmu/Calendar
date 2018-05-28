@@ -23,4 +23,6 @@ public interface ItemInterface {
     Item.ItemType getItemType();
 
     void setItemType(Item.ItemType itemType);
+
+    String getSummary();
 }
