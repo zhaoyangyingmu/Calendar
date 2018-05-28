@@ -14,15 +14,13 @@ import javafx.scene.text.Text;
 import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
-import todoitem.itemSub.AppointmentItem;
-import todoitem.itemSub.MeetingItem;
-import todoitem.itemSub.OtherItem;
+import todoitem.itemSub.*;
 import todoitem.util.TimeStamp;
 
 import java.util.ArrayList;
 
 public class DetailPane extends GridPane {
-    public DetailPane(TimeStamp from , TimeStamp to) {
+    public DetailPane(Item item) {
         int mainCol = 0 ;
         int mainRow = 0 ;
         this.getStyleClass().add("mainContent");
@@ -31,12 +29,14 @@ public class DetailPane extends GridPane {
         title.getStyleClass().add("title");
         this.add(title , mainCol , mainRow++);
 
-        ArrayList<Item> itemList = ItemManager.getInstance().getItemsByStamp(from, to);
+//        ArrayList<Item> itemList = ItemManager.getInstance().getItemsByStamp(from, to);
         GridPane detailContent = new GridPane();
-        for (int i = 0; i < itemList.size(); i++) {
-            ItemPane itemPane = new ItemPane(itemList.get(i));
-            detailContent.add(itemPane, 0, i);
-        }
+        ItemPane itemPane=new ItemPane(item);
+        detailContent.add(itemPane,0,0);
+//        for (int i = 0; i < itemList.size(); i++) {
+//            ItemPane itemPane = new ItemPane(itemList.get(i));
+//            detailContent.add(itemPane, 0, i);
+//        }
         ScrollPane scrollContent = new ScrollPane();
         scrollContent.setContent(detailContent);
         scrollContent.getStyleClass().add("scrollView");
@@ -45,11 +45,13 @@ public class DetailPane extends GridPane {
         HBox btRow = new HBox();
         Button addBt = new Button("add");
         addBt.setOnMouseClicked(event -> {
-            Item item = null;
+            Item tmpItem = null;
             try {
-                item = new OtherItem(from, to , "" );
-                ItemManager.getInstance().addItem(item);
+                tmpItem = new OtherItem(item.getFrom(), item.getTo() , "" );
+                ItemManager.getInstance().addItem(tmpItem);
                 ItemIO.output();
+//                Display.removeDetailPane();
+                Display.addEditPane(tmpItem, true);
                 Display.removeDetailPane();
                 Display.addEditPane(item, true);
             } catch (Exception e) {
@@ -88,19 +90,19 @@ public class DetailPane extends GridPane {
             line.setStroke(Color.YELLOW);
             this.add(line , 0, rowIndex++);
 
-            Text fromToText = new Text("From: " + item.getValue("startTime") + " To: " + item.getValue("endTime"));
-            this.add(fromToText,0 , rowIndex++);
-            this.setMargin(fromToText, new Insets(5, 0 , 0 , 0 ));
+//            Text fromToText = new Text("From: " + item.getValue("startTime") + " To: " + item.getValue("endTime"));
+//            this.add(fromToText,0 , rowIndex++);
+//            this.setMargin(fromToText, new Insets(5, 0 , 0 , 0 ));
+//
+//            String typeStr = "Type: " + item.getItemType().getTypeStr();
+//            Text typeText = new Text(typeStr);
+//            this.add(typeText,0 , rowIndex++);
+//            this.setMargin(typeText, new Insets(5, 0 , 0 , 0 ));
 
-            String typeStr = "Type: " + item.getItemType().getTypeStr();
-            Text typeText = new Text(typeStr);
-            this.add(typeText,0 , rowIndex++);
-            this.setMargin(typeText, new Insets(5, 0 , 0 , 0 ));
 
-
-            Text detailText = new Text("Detail: " + item.getDetailText());
-            this.add(detailText, 0 , rowIndex++);
-            this.setMargin(detailText, new Insets(5, 0 , 0 , 0 ));
+//            Text detailText = new Text("Detail: " + item.getDetailText());
+//            this.add(detailText, 0 , rowIndex++);
+//            this.setMargin(detailText, new Insets(5, 0 , 0 , 0 ));
 
 
             rowIndex = addOtherInfo(this,item,rowIndex);
@@ -138,30 +140,156 @@ public class DetailPane extends GridPane {
         }
 
         private int addOtherInfo(ItemPane itemPane,Item item,int rowIndex){
-            if (item.getItemType() == Item.ItemType.DATE){//约会则还需显示人员和地点
-                Text participantText = new Text("Participants: " + ((AppointmentItem)item).getParticipants());
-                itemPane.add(participantText, 0 , rowIndex++);
-                itemPane.setMargin(participantText, new Insets(5, 0 , 0 , 0 ));
+            Item.ItemType itemType=item.getItemType();
+            switch (itemType){
+                case MEETING:
+                    return addMeetingInfo(itemPane,item,rowIndex);
+                case DATE:
+                    return addDateInfo(itemPane,item,rowIndex);
+                case ANNIVERSARY:
+                    return addAnniversaryInfo(itemPane,item,rowIndex);
+                case TRAVEL:
+                    return addTravelInfo(itemPane,item,rowIndex);
+                case INTERVIEW:
+                    return addInterviewInfo(itemPane,item,rowIndex);
+                case COURSE:
+                    return addCourseInfo(itemPane,item,rowIndex);
+                case CUSTOM:
+                    return addCustomInfo(itemPane,item,rowIndex);
+            }
+            return rowIndex;
+//            if (item.getItemType() == Item.ItemType.DATE){//约会则还需显示人员和地点
+//                Text participantText = new Text("Participants: " + ((AppointmentItem)item).getParticipants());
+//                itemPane.add(participantText, 0 , rowIndex++);
+//                itemPane.setMargin(participantText, new Insets(5, 0 , 0 , 0 ));
+//
+//                Text locationText = new Text("Location: " + ((AppointmentItem)item).getLocation());
+//                itemPane.add(locationText, 0 , rowIndex++);
+//                itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
+//                return rowIndex;
+//            }else if(item.getItemType() == Item.ItemType.MEETING){//会议还需显示地点和主题
+//                Text locationText = new Text("Location: " + ((MeetingItem)item).getLocation());
+//                itemPane.add(locationText, 0 , rowIndex++);
+//                itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
+//
+//                Text topicText = new Text("Topic: " + ((MeetingItem)item).getTopic());
+//                itemPane.add(topicText, 0 , rowIndex++);
+//                itemPane.setMargin(topicText, new Insets(5, 0 , 0 , 0 ));
+//                return rowIndex;
+//            }else{
+//                //其他则什么都不干,直接返回rowIndex
+//
 
-                Text locationText = new Text("Location: " + ((AppointmentItem)item).getLocation());
-                itemPane.add(locationText, 0 , rowIndex++);
-                itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
-                return rowIndex;
-            }else if(item.getItemType() == Item.ItemType.MEETING){//会议还需显示地点和主题
-                Text locationText = new Text("Location: " + ((MeetingItem)item).getLocation());
-                itemPane.add(locationText, 0 , rowIndex++);
-                itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
+//            }
+        }
+        private int addMeetingInfo(ItemPane itemPane,Item item,int rowIndex){
+            Text fromToText = new Text("From: " + item.getValue("startTime") + " To: " + item.getValue("endTime"));
+            this.add(fromToText,0 , rowIndex++);
+            this.setMargin(fromToText, new Insets(5, 0 , 0 , 0 ));
 
-                Text topicText = new Text("Topic: " + ((MeetingItem)item).getTopic());
-                itemPane.add(topicText, 0 , rowIndex++);
-                itemPane.setMargin(topicText, new Insets(5, 0 , 0 , 0 ));
-                return rowIndex;
-            }else{
-                //其他则什么都不干,直接返回rowIndex
+            String typeStr = "Type: " + item.getItemType().getTypeStr();
+            Text typeText = new Text(typeStr);
+            this.add(typeText,0 , rowIndex++);
+            this.setMargin(typeText, new Insets(5, 0 , 0 , 0 ));
+            Text locationText = new Text("Location: " + ((MeetingItem)item).getLocation());
+            itemPane.add(locationText, 0 , rowIndex++);
+            itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
 
-                return rowIndex;
+            Text topicText = new Text("Topic: " + ((MeetingItem)item).getTopic());
+            itemPane.add(topicText, 0 , rowIndex++);
+            itemPane.setMargin(topicText, new Insets(5, 0 , 0 , 0 ));
+            return rowIndex;
+        }
+        private int addDateInfo(ItemPane itemPane,Item item,int rowIndex){
+            Text descriptionText = new Text(((AppointmentItem)item).getDetailDescription());
+            itemPane.add(descriptionText, 0 , rowIndex++);
+            itemPane.setMargin(descriptionText, new Insets(5, 0 , 0 , 0 ));
+
+            Text timeText = new Text(((AppointmentItem)item).getTimeDescription());
+            itemPane.add(timeText, 0 , rowIndex++);
+            itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
+            return rowIndex;
+        }
+        private int addAnniversaryInfo(ItemPane itemPane,Item item,int rowIndex){
+            Text descriptionText = new Text(((AnniversaryItem)item).getDetailDescription());
+            itemPane.add(descriptionText, 0 , rowIndex++);
+            itemPane.setMargin(descriptionText, new Insets(5, 0 , 0 , 0 ));
+
+            Text content = new Text(((AnniversaryItem)item).getValue("content"));
+            itemPane.add(content, 0 , rowIndex++);
+            itemPane.setMargin(content, new Insets(5, 0 , 0 , 0 ));
+
+            Text startDayText = new Text(((AnniversaryItem)item).getStartDayDescription());
+            itemPane.add(startDayText, 0 , rowIndex++);
+            itemPane.setMargin(startDayText, new Insets(5, 0 , 0 , 0 ));
+            return rowIndex;
+        }
+        private int addTravelInfo(ItemPane itemPane,Item item,int rowIndex){
+            Text descriptionText = new Text(((TravelItem)item).getPlaceDescription());
+            itemPane.add(descriptionText, 0 , rowIndex++);
+            itemPane.setMargin(descriptionText, new Insets(5, 0 , 0 , 0 ));
+
+            Text transText = new Text(((TravelItem)item).getTransDescription());
+            itemPane.add(transText, 0 , rowIndex++);
+            itemPane.setMargin(transText, new Insets(5, 0 , 0 , 0 ));
+
+            Text timeText = new Text(((TravelItem)item).getTimeDescription());
+            itemPane.add(timeText, 0 , rowIndex++);
+            itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
+
+            Text remark=new Text("Remark: "+((TravelItem)item).getValue("remark"));
+            itemPane.add(remark, 0 , rowIndex++);
+            itemPane.setMargin(remark, new Insets(5, 0 , 0 , 0 ));
+            return rowIndex;
+        }
+        private int addInterviewInfo(ItemPane itemPane,Item item,int rowIndex){
+            Text placeDescriptionText = new Text(((InterviewItem)item).getPlaceDescription());
+            itemPane.add(placeDescriptionText, 0 , rowIndex++);
+            itemPane.setMargin(placeDescriptionText, new Insets(5, 0 , 0 , 0 ));
+
+            Text jobText = new Text(((InterviewItem)item).getJobDescription());
+            itemPane.add(jobText, 0 , rowIndex++);
+            itemPane.setMargin(jobText, new Insets(5, 0 , 0 , 0 ));
+
+            Text remark=new Text("Remark: "+((InterviewItem)item).getValue("remark"));
+            itemPane.add(remark, 0 , rowIndex++);
+            itemPane.setMargin(remark, new Insets(5, 0 , 0 , 0 ));
+            return rowIndex;
+        }
+        private int addCourseInfo(ItemPane itemPane,Item item,int rowIndex){
+            Text detailDescriptionText = new Text(((CourseItem)item).getDetailDescription());
+            itemPane.add(detailDescriptionText, 0 , rowIndex++);
+            itemPane.setMargin(detailDescriptionText, new Insets(5, 0 , 0 , 0 ));
+
+            Text courseContentText = new Text(((CourseItem)item).getCourseContent());
+            itemPane.add(courseContentText, 0 , rowIndex++);
+            itemPane.setMargin(courseContentText, new Insets(5, 0 , 0 , 0 ));
+
+            Text durationContentText = new Text(((CourseItem)item).getDurationDescription());
+            itemPane.add(durationContentText, 0 , rowIndex++);
+            itemPane.setMargin(durationContentText, new Insets(5, 0 , 0 , 0 ));
+
+            Text remark=new Text("Remark: "+((CourseItem)item).getValue("remark"));
+            itemPane.add(remark, 0 , rowIndex++);
+            itemPane.setMargin(remark, new Insets(5, 0 , 0 , 0 ));
+            return rowIndex;
+        }
+        private int addCustomInfo(ItemPane itemPane,Item item,int rowIndex){
+            if (item.getFrom()!=null&&item.getTo()!=null){
+                String time="From: "+((OtherItem)item).getFrom().toString()+"  To: "+((OtherItem)item).getTo().toString();
+                Text timeText = new Text(time);
+                itemPane.add(timeText, 0 , rowIndex++);
+                itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
+            }else {
+                Text timeText = new Text("No time");
+                itemPane.add(timeText, 0 , rowIndex++);
+                itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
             }
 
+            Text detailText = new Text("Detail: " + item.getDetailText());
+            itemPane.add(detailText, 0 , rowIndex++);
+            itemPane.setMargin(detailText, new Insets(5, 0 , 0 , 0 ));
+            return rowIndex;
         }
     }
 }

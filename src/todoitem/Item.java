@@ -54,6 +54,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     public boolean isDuringTime(TimeStamp from, TimeStamp to) {
         TimeStamp thisFrom = TimeStampFactory.createStampByString(getValue("startTime"));
         TimeStamp thisTo = TimeStampFactory.createStampByString(getValue("endTime"));
+        // 用to.isAfter(thisFrom) 和 from.isBefore(thisTo);比较好。因为from 和to 不会为null
         return thisFrom != null && thisTo != null && thisFrom.isBefore(to) && thisTo.isAfter(from);
     }
 

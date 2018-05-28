@@ -200,4 +200,10 @@ public class TimeStamp implements Serializable {
     public String toString() {
         return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute;
     }
+    public String getStringWithoutHour(){
+        return year + "-" + month + "-" + day;
+    }
+    public String getStringWithoutDay(){
+        return hour+":"+minute;
+    }
 }

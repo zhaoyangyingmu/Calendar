@@ -184,6 +184,7 @@ public class BodyPane extends StackPane {
                 } else
                     Display.startItemListStage(from, to);
 
+//                Display.addDetailPane(from, to);
             }
         }
     }

@@ -52,7 +52,7 @@ public class Display extends Application {
     private static volatile boolean isClosed = false;
     private static PromptSetPane promptSetPane = PromptSetPane.getInstance();
     private static boolean hasPromptSet = false;
-
+    private static Item fromItem;
     public Display() {
 
     }
@@ -91,6 +91,7 @@ public class Display extends Application {
         setPrompt();
     }
 
+
     public static void startItemListStage(TimeStamp from, TimeStamp to) {
         fromStatic = from;
         toStatic = to;
@@ -103,16 +104,17 @@ public class Display extends Application {
         stage.showAndWait();
     }
 
-    public static void addDetailPane(TimeStamp from, TimeStamp to) {
+    public static void addDetailPane(Item item) {
         if (hasEdit) {
             return;
         }
         if (detailPane != null) {
             removeDetailPane();
         }
-        detailPane = new WrappedDetailPane(from, to);
-        fromStatic = from;
-        toStatic = to;
+        detailPane = new WrappedDetailPane(item);
+        fromStatic = item.getFrom();
+        toStatic = item.getTo();
+        fromItem = item;
         imageCalendarPane.getChildren().add(detailPane);
     }
 
@@ -123,7 +125,7 @@ public class Display extends Application {
 
     public static void refreshDetailPane() {
         imageCalendarPane.getChildren().remove(detailPane);
-        detailPane = new WrappedDetailPane(fromStatic, toStatic);
+        detailPane = new WrappedDetailPane(fromItem);
         imageCalendarPane.getChildren().add(detailPane);
     }
 

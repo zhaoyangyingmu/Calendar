@@ -370,7 +370,7 @@ public class EditPane extends GridPane {
         ((LabelAndCombo) travelControl[0]).getComboBox().setEditable(true);
         ((LabelAndCombo) travelControl[0]).getComboBox().setMinWidth(100);
         ((LabelAndCombo) travelControl[0]).getComboBox().setMaxWidth(100);
-        travelControl[1] = new LabelAndTextRow("schedule", "");
+        travelControl[1] = new LabelAndTextRow("shifts", "");
         travelControl[2] = new LabelAndTextRow("place", "");
         travelControl[3] = new LabelAndTextRow("remark", "");
         interviewControl[0] = new LabelAndTextRow("place", "");
@@ -380,6 +380,7 @@ public class EditPane extends GridPane {
         customControl[0] = new LabelAndTextRow("content", "");
         customIsSetTime.setText("Set Time");
         customIsSetTime.setAlignment(Pos.CENTER);
+        customIsSetTime.setSelected(true);
         importantCheckBox.setText("important");
         urgentCheckBox.setText("urgent");
         priorityRow.add(importantCheckBox, 0, 0);
@@ -431,13 +432,13 @@ public class EditPane extends GridPane {
     private Item courseTypeItem(TimeStamp from, TimeStamp to) throws Exception {
         String courseName = ((LabelAndTextRow) courseControl[0]).getTextField().getText();
         String courseContent = ((LabelAndTextRow) courseControl[1]).getTextField().getText();
-        String courseDuration = ((LabelAndTextRow) courseControl[2]).getTextField().getText();
+        int courseDuration = Integer.parseInt(((LabelAndTextRow) courseControl[2]).getTextField().getText());
         String courseTeacher = ((LabelAndTextRow) courseControl[3]).getTextField().getText();
         String coursePlace = ((LabelAndTextRow) courseControl[4]).getTextField().getText();
         String courseRemark = ((LabelAndTextRow) courseControl[5]).getTextField().getText();
-        String courseDay = ((LabelAndTextRow) courseControl[6]).getTextField().getText();
+        int courseDay = Integer.parseInt(((LabelAndTextRow) courseControl[6]).getTextField().getText());
         return new CourseItem(from, to, courseName, courseContent, courseTeacher, courseRemark,
-                coursePlace, courseDuration, courseDay, priority);
+                coursePlace,courseDuration,  courseDay, priority);
     }
 
     private Item travelTypeItem(TimeStamp from, TimeStamp to) throws Exception {
