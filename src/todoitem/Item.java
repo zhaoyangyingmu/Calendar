@@ -64,7 +64,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setFrom(TimeStamp from) {
-        addAttr("startTime", from.toString());
+        addAttr("startTime", from == null ? "" : from.toString());
     }
 
     @Override
@@ -74,7 +74,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setTo(TimeStamp to) {
-        addAttr("endTime", to.toString());
+        addAttr("endTime", to == null ? "" : to.toString());
     }
 
     @Override
@@ -84,7 +84,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setDetailText(String detailText) {
-        addAttr("content", detailText);
+        addAttr("content", detailText == null ? "" : detailText);
     }
 
     @Override
@@ -94,7 +94,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public void setItemType(ItemType itemType) {
-        addAttr("type", itemType.getTypeStr());
+        addAttr("type", itemType == null ? "" : itemType.getTypeStr());
     }
 
     @Override
