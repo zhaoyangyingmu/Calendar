@@ -34,7 +34,22 @@ public class ItemManager {
     }
 
     public ArrayList<Item> getItemList() {
+        itemListSort();
         return itemList;
+    }
+    private void itemListSort(){
+        if (itemList==null)
+            return;
+        int length=itemList.size();
+        Item tempItem;
+        int j;
+        for (int i = 1; i < length; i++) {
+            tempItem=itemList.get(i);
+            for ( j = i; j >0 && tempItem.getPriority()<itemList.get(j-1).getPriority(); j--) {
+                itemList.set(j,itemList.get(j-1));
+            }
+            itemList.set(j,tempItem);
+        }
     }
 
     public static void destroy() {
