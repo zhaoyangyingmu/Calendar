@@ -50,7 +50,7 @@ public class DetailPane extends GridPane {
                 item = new OtherItem(from, to , "" );
                 ItemManager.getInstance().addItem(item);
                 ItemIO.output();
-//                Display.removeDetailPane();
+                Display.removeDetailPane();
                 Display.addEditPane(item, true);
             } catch (Exception e) {
                 Display.showToast("请输入正确的时间与正确的类型！");

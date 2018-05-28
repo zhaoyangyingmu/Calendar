@@ -2,6 +2,7 @@ package ui.pane;
 
 import holiday.DayManager;
 import holiday.DayType;
+import io.ItemIO;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,6 +14,7 @@ import kernel.DateUtil;
 import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
+import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 import ui.Config;
 import ui.view.*;
@@ -168,7 +170,20 @@ public class BodyPane extends StackPane {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Display.addDetailPane(from, to);
+//                Display.addDetailPane(from, to);
+                if (ItemManager.getInstance().getItemsByStamp(from, to).isEmpty()) {
+                    Item item = null;
+                    try {
+                        item = new OtherItem(from, to, "");
+                        ItemManager.getInstance().addItem(item);
+                        ItemIO.output();
+                        Display.addEditPane(item, true);
+                    } catch (Exception e) {
+                        Display.showToast("请输入正确的时间与正确的类型！");
+                    }
+                } else
+                    Display.startItemListStage(from, to);
+
             }
         }
     }

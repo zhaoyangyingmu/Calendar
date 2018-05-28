@@ -436,8 +436,8 @@ public class EditPane extends GridPane {
         String coursePlace = ((LabelAndTextRow) courseControl[4]).getTextField().getText();
         String courseRemark = ((LabelAndTextRow) courseControl[5]).getTextField().getText();
         String courseDay = ((LabelAndTextRow) courseControl[6]).getTextField().getText();
-        return new CourseItem(from, to, courseName, courseContent, courseDuration, courseTeacher, courseRemark,
-                coursePlace, courseDay, priority);
+        return new CourseItem(from, to, courseName, courseContent, courseTeacher, courseRemark,
+                coursePlace, courseDuration, courseDay, priority);
     }
 
     private Item travelTypeItem(TimeStamp from, TimeStamp to) throws Exception {
