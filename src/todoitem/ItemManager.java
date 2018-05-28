@@ -3,6 +3,7 @@ package todoitem;
 import exception.DataErrorException;
 import javafx.collections.FXCollections;
 import todoitem.Item.ItemType;
+import todoitem.itemSub.AnniversaryItem;
 import todoitem.util.TimeStamp;
 import todoitem.util.TimeStampFactory;
 
@@ -103,16 +104,16 @@ public class ItemManager {
 
         ArrayList<Item> resultList = new ArrayList<>();
 
-        long currentMinute = System.currentTimeMillis() / (60 * 1000) ;
-        for(Item tmp : itemList) {
-            if(tmp.getFrom() == null || tmp.getTo() == null) {
+        long currentMinute = System.currentTimeMillis() / (60 * 1000);
+        for (Item tmp : itemList) {
+            if (tmp.getFrom() == null || tmp.getTo() == null) {
                 continue;
             }
             if (tmp.promptStatus()) {
                 long startMinute = tmp.getFrom().getMinutes() - tmp.minutesAhead();
                 long endMinute = tmp.getFrom().getMinutes();
                 long minutesDelta = tmp.minutesDelta();
-                for(long i = startMinute; i <= endMinute ; i+= minutesDelta) {
+                for (long i = startMinute; i <= endMinute; i += minutesDelta) {
                     if (i == currentMinute) {
                         resultList.add(tmp);
                     }
@@ -127,10 +128,18 @@ public class ItemManager {
 //    }
 
     public ArrayList<Item> getItemsByFatherItem(Item item) {
-        if (item.getItemType().equals(ItemType.ANNIVERSARY)) {//纪念日
-
-        }
         ArrayList<HashMap<String, String>> itemsMsg = Mysql.queryByFatherID(item.getID());
+        if (item.getItemType().equals(ItemType.ANNIVERSARY)) {//纪念日
+            AnniversaryItem anniversaryItem = (AnniversaryItem) item;
+            if (itemsMsg != null) {
+                for (HashMap<String, String> msg : itemsMsg) {
+                    TimeStamp frTime = TimeStampFactory.createStampByString(msg.get("startTime"));//TODO mysql
+                    if (frTime != null && frTime.getYear() != anniversaryItem.getYear()) {  //只保留当年的纪念日的子待办事项
+                        itemsMsg.remove(msg);
+                    }
+                }
+            }
+        }
         return getItems(itemsMsg);
     }
 
@@ -231,22 +240,22 @@ public class ItemManager {
      * what if delete the same thing twice;
      */
 
-//    public void deleteItem(Item item) {
-//        itemList.remove(item);
-//    }
-//
-    public boolean deleteItem(Item item) {
-        if (item.isFather()) {
-            boolean deleteAll = true;
-            ArrayList<HashMap<String, String>> childrenMsg = Mysql.queryByFatherID(item.getID());
-            if (childrenMsg != null)
-                for (HashMap<String, String> msg : childrenMsg)
-                    deleteAll &= Mysql.deleteSchedule(Integer.parseInt(msg.get("scheduleID"))) != 0;
-            return deleteAll;
-        } else
-            return Mysql.deleteSchedule(item.getID()) != 0;
+    public void deleteItem(Item item) {
+        itemList.remove(item);
     }
 
+//    public boolean deleteItem(Item item) {
+//        if (item.isFather()) {//删除子待办事项
+//            boolean deleteAll = true;
+//            ArrayList<HashMap<String, String>> childrenMsg = Mysql.queryByFatherID(item.getID());
+//            if (childrenMsg != null)
+//                for (HashMap<String, String> msg : childrenMsg)
+//                    deleteAll &= Mysql.deleteSchedule(Integer.parseInt(msg.get("scheduleID"))) != 0;
+//            return deleteAll;
+//        } else
+//            return Mysql.deleteSchedule(item.getID()) != 0;
+//    }
+//
     /**
      * 待办事项时间重叠
      *
