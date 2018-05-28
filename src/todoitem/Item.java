@@ -274,6 +274,14 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
+    public String getSummary() {
+        String summary = "Type: " + getItemType().getTypeStr() + "\n";
+        summary += "From: " + getFrom().toString() + " ~ To: " + getFrom().toString() + "\n";
+        summary += "Content: " + getDetailText() + "\n";
+        return summary;
+    }
+
+    @Override
     public String toString() {
         return "item";
     }
