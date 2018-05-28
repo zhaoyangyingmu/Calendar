@@ -14,4 +14,7 @@ public class Const {
     public final static boolean IS_FATHER = true;
     public final static boolean PROMPT_STATUS = false;
     public final static boolean SHOW_ON_STAGE = true;
+    public final static String STATUS_STRING[] = new String[]{
+            "未开始", "进行中", "已完成", "过期"
+    };
 }
