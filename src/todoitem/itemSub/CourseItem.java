@@ -101,15 +101,18 @@ public class CourseItem extends Item {
     }
 
     public String getDetailDescription() {
-        return "You have the " + getName() + " course at " +getDayOfWeek()+" from "
-                +getFrom().getStringWithoutDay()+" to "+getTo().getStringWithoutDay()+" at "+getPlace();
+        return "You have the " + getName() + " course at " + getDayOfWeek() + " from "
+                + getFrom().getStringWithoutDay() + " to " + getTo().getStringWithoutDay() + " at " + getPlace();
     }
-    public String getCourseContent(){
-        return "The course is about "+getValue("content")+" and taught by "+getTeacher();
+
+    public String getCourseContent() {
+        return "The course is about " + getValue("content") + " and taught by " + getTeacher();
     }
-    public String getDurationDescription(){
-        return "The course begin at "+getFrom().getStringWithoutHour()+" and last "+getDuration()+" weeks";
+
+    public String getDurationDescription() {
+        return "The course begin at " + getFrom().getStringWithoutHour() + " and last " + getDuration() + " weeks";
     }
+
     private String getDayOfWeek() {
         switch (getDay()) {
             case 1:

@@ -52,13 +52,15 @@ public class AppointmentItem extends Item {
     private void setLocation(String location) {
         addAttr("place", location == null ? "" : location);
     }
-    public String getDetailDescription(){
-        return "Description: You will date your dear "+getParticipants()
-                +" in "+getLocation();
+
+    public String getDetailDescription() {
+        return "Description: You will date your dear " + getParticipants()
+                + " in " + getLocation();
     }
-    public String getTimeDescription(){
-        return "Time: Your happy time will be from "+getValue("startTime")
-                +" to "+getValue("endTime");
+
+    public String getTimeDescription() {
+        return "Time: Your happy time will be from " + getValue("startTime")
+                + " to " + getValue("endTime");
     }
 //    public void setLocation(String location) {
 //        this.location = location;

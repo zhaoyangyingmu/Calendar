@@ -61,11 +61,12 @@ public class AnniversaryItem extends Item {
         addAttr("year", year + "");
     }
 
-    public String getDetailDescription(){
-        return "Pay Attention: You have a "+getAnniversaryType()+" type of anniversary at "
-                + getFrom().getMonth()+"-"+getFrom().getDay();
+    public String getDetailDescription() {
+        return "Pay Attention: You have a " + getAnniversaryType() + " type of anniversary at "
+                + getFrom().getMonth() + "-" + getFrom().getDay();
     }
-    public String getStartDayDescription(){
-        return "Tip: The anniversary begin at "+ getFrom().getStringWithoutHour();
+
+    public String getStartDayDescription() {
+        return "Tip: The anniversary begin at " + getFrom().getStringWithoutHour();
     }
 }

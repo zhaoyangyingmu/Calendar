@@ -15,11 +15,7 @@ public class MeetingItem extends Item {
     }
 
     public MeetingItem(TimeStamp from, TimeStamp to, String detailText, String topic, String location) throws Exception {
-        /*
-         * 默认优先级为4，即不重要 & 不紧急
-         * 默认状态为1， 即未开始
-         * 默认为父待办事项
-         */
+
         this(from, to, detailText, topic, location, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
     }
 

@@ -4,13 +4,13 @@ import todoitem.util.TimeStamp;
 import todoitem.util.TimeStampFactory;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Item implements Serializable, ItemInterface, AttributeMap, AttributeFunc {
     private HashMap<String, String> attrsMap;
 
     public Item(HashMap<String, String> attrsMap) {
+        this.attrsMap = new HashMap<>();
         addAttrs(attrsMap);
     }
 
@@ -153,44 +153,44 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     @Override
     public long minutesDelta() {
         //时间间隔
-        return Long.parseLong(getValue("minutesDelta"));
+        return Long.parseLong(getValue("minuteDelta"));
     }
 
     @Override
     public void setMinutesDelta(long minutesDelta) {
-        addAttr("minutesDelta", minutesDelta + "");
+        addAttr("minuteDelta", minutesDelta + "");
     }
 
     @Override
     public boolean isFather() {
-        return Boolean.parseBoolean(getValue("isFather"));
+        return getValue("isFather").equals("1");
     }
 
     @Override
     public void setIsFather(boolean isFather) {
-        addAttr("isFather", isFather + "");
+        addAttr("isFather", (isFather ? 1 : 0) + "");
     }
 
     @Override
     public boolean promptStatus() {
         // 是否提醒
-        return Boolean.parseBoolean(getValue("promptStatus"));
+        return getValue("promptStatus").equals("1");
     }
 
     @Override
     public void setPromptStatus(boolean promptStatus) {
-        addAttr("promptStatus", "" + promptStatus);
+        addAttr("promptStatus", "" + (promptStatus ? 1 : 0));
     }
 
     @Override
     public boolean showOnStage() {
         // 是否在页面上显示
-        return Boolean.parseBoolean(getValue("showOnStage"));
+        return getValue("showOnStage").equals("1");
     }
 
     @Override
     public void setShowOnStage(boolean showOnStage) {
-        addAttr("showOnStage", showOnStage + "");
+        addAttr("showOnStage", (showOnStage ? 1 : 0) + "");
     }
 
     @Override
@@ -200,7 +200,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     }
 
     @Override
-    public void addAttrs(Map<String, String> attrs) {
+    public void addAttrs(HashMap<String, String> attrs) {
         attrsMap.putAll(attrs);
     }
 
@@ -217,11 +217,12 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
         return attrsMap;
     }
 
+
     @Override
     public String getValue(String key) {
         if (attrsMap.containsKey(key))
             return attrsMap.get(key);
-        return null;
+        return "-1";
     }
 
 
@@ -280,6 +281,19 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
         summary += "From: " + getFrom().toString() + " ~ To: " + getFrom().toString() + "\n";
         summary += "Content: " + getDetailText() + "\n";
         return summary;
+    }
+
+    @Override
+    public TreeMap<String, String> getDetailAttrs() {
+        TreeMap<String, String> detailMap = new TreeMap<>();
+        detailMap.put("类型", this.getItemType().getTypeStr());
+        detailMap.put("状态", Const.STATUS_STRING[this.getStatus()]);
+        detailMap.put("时间段", this.getFrom() + " ~ " + this.getTo());
+        detailMap.put("类型", this.getItemType().getTypeStr());
+        detailMap.put("类型", this.getItemType().getTypeStr());
+        detailMap.put("类型", this.getItemType().getTypeStr());
+        detailMap.put("类型", this.getItemType().getTypeStr());
+        return detailMap;
     }
 
     @Override

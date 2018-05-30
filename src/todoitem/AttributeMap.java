@@ -1,7 +1,7 @@
 package todoitem;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.TreeMap;
 
 public interface AttributeMap {
     HashMap<String, String> getAttrs();
@@ -13,5 +13,8 @@ public interface AttributeMap {
     void removeAttr(String key);
 
 
-    void addAttrs(Map<String, String> attrs);
+    void addAttrs(HashMap<String, String> attrs);
+
+
+    TreeMap<String, String> getDetailAttrs();
 }
