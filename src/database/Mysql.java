@@ -1,5 +1,4 @@
 package database;
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -355,6 +354,7 @@ public class Mysql {
         return 0;
     }//测试完毕
 
+
     public  int updateState(int scheduleID,int status){
         String sql="UPDATE schedule SET status = '"+status+"'WHERE ID= '"+scheduleID+"' ";   //SQL语句
         try {
@@ -678,6 +678,30 @@ public class Mysql {
                     result.add(hashMap);
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clear(){
+        String sql1 = "DELETE FROM calendar.date";
+        String sql2 = "DELETE FROM calendar.custom";
+        String sql3 = "DELETE FROM calendar.anniversary";
+        String sql4 = "DELETE FROM calendar.course";
+        String sql5 = "DELETE FROM calendar.interview";
+        String sql6 = "DELETE FROM calendar.meeting";
+        String sql7 = "DELETE FROM calendar.schedule";
+        String sql8 = "DELETE FROM calendar.travel";
+
+        try {
+            stmt.executeUpdate(sql1);
+            stmt.executeUpdate(sql2);
+            stmt.executeUpdate(sql3);
+            stmt.executeUpdate(sql4);
+            stmt.executeUpdate(sql5);
+            stmt.executeUpdate(sql6);
+            stmt.executeUpdate(sql7);
+            stmt.executeUpdate(sql8);
         } catch (SQLException e) {
             e.printStackTrace();
         }
