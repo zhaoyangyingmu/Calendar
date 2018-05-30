@@ -1,3 +1,4 @@
+import exception.DataErrorException;
 import exception.InvalidDateException;
 import io.ItemIO;
 import kernel.CalendarDate;
@@ -137,7 +138,11 @@ public class IntegrationTest {
             expectedItems.add(item);
             //存入数据库
             ItemManager manager = ItemManager.getInstance();
-            manager.addItem(item);
+            try {
+                manager.addItem(item, true);
+            } catch (DataErrorException e) {
+                System.out.println();
+            }
             ItemIO.output("test.txt");
         } else {
             assertNull(item);

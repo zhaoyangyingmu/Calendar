@@ -1,5 +1,6 @@
 package io;
 
+import exception.DataErrorException;
 import org.junit.Test;
 import todoitem.Item;
 import todoitem.ItemManager;
@@ -45,7 +46,11 @@ public class ItemIOTest {
         // ItemManager.add()
 
         for (Item aList : list) {
-            ItemManager.getInstance().addItem(aList);
+            try {
+                ItemManager.getInstance().addItem(aList, true);
+            } catch (DataErrorException e) {
+                System.out.println();
+            }
         }
         // output
         ItemIO.output("test.txt");

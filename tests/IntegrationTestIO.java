@@ -1,3 +1,4 @@
+import exception.DataErrorException;
 import io.ItemIO;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -54,7 +55,11 @@ public class IntegrationTestIO {
                 e.printStackTrace();
             }
             expectedItems.add(item);
-            manager.addItem(item);
+            try {
+                manager.addItem(item, true);
+            } catch (DataErrorException e) {
+                System.out.println();
+            }
             ItemIO.output("test.txt");
             ItemManager.destroy();
             ItemIO.input("test.txt");
