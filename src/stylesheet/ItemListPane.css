@@ -24,6 +24,7 @@
     -fx-border-color: transparent transparent rgba(0, 0, 0, .05) transparent;
     -fx-border-insets: 0 0 1 0;
     -fx-border-style: solid;
+    -fx-cursor: hand;
 }
 
 #memoListPane #num_label {

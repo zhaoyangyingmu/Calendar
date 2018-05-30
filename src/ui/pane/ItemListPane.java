@@ -1,5 +1,6 @@
 package ui.pane;
 
+import exception.DataErrorException;
 import io.ItemIO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -62,7 +63,7 @@ public class ItemListPane extends VBox {
         vBox.setPadding(insets);
         for (Item memo : memos) {
             BorderPane pane = new BorderPane();
-            pane.setPrefWidth(380);
+            pane.setPrefWidth(360);
             pane.getStyleClass().add("item");
             HBox hBox = new HBox();
             hBox.setSpacing(10);
@@ -70,7 +71,8 @@ public class ItemListPane extends VBox {
             hBox.setPadding(insets);
             ItemPane itemPane = new ItemPane(memo);
             itemPane.setOnMouseClicked(event -> {
-                //TODO 进入详情界面
+                Display.addDetailPane(memo);
+                stage.close();
             });
             Label label = new Label("");
             Label delLabel = new Label("DEL");
@@ -84,7 +86,7 @@ public class ItemListPane extends VBox {
             delLabel.getStyleClass().addAll("del_label", "label");
             delLabel.setOnMouseClicked(event -> {
                 ItemManager.getInstance().deleteItem(memo);
-                ItemIO.output();
+//                ItemIO.output();
                 vBox.getChildren().remove(pane);
                 numLabel.setText("Total " + ItemManager.getInstance().getItemsByStamp(frTime, toTime).size() + " to-do");
                 BodyPane.getInstance().refresh();
@@ -101,10 +103,12 @@ public class ItemListPane extends VBox {
             Item item = null;
             try {
                 item = new OtherItem(this.frTime, this.toTime, "");
-                ItemManager.getInstance().addItem(item);
-                ItemIO.output();
+                ItemManager.getInstance().addItem(item, false);
+//                ItemIO.output();
                 stage.close();
                 Display.addEditPane(item, true);
+            } catch (DataErrorException e) {
+                Display.showToast(e.getMessage());
             } catch (Exception e) {
                 Display.showToast("请输入正确的时间与正确的类型！");
             }
@@ -130,10 +134,10 @@ public class ItemListPane extends VBox {
             this.getStyleClass().add("memo_item");
             this.setPadding(insets);
 
-            this.typeLabel = new Label(this.memo.getItemType().getCnTypeStr());
+            this.typeLabel = new Label(this.memo.getItemType().getTypeStr());
             this.frLabel = new Label(this.memo.getFrom().toString());
             this.toLabel = new Label(this.memo.getTo().toString());
-            this.descLabel = new Label("内容: " + this.memo.getDetailText());
+            this.descLabel = new Label("Content: " + this.memo.getDetailText());
             this.statusLabel = new Label(Const.STATUS_STRING[this.memo.getStatus()]);
 
             this.typeLabel.getStyleClass().addAll("item_title", "label");

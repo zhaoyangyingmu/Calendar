@@ -1,5 +1,6 @@
 package ui.pane;
 
+import exception.DataErrorException;
 import holiday.DayManager;
 import holiday.DayType;
 import io.ItemIO;
@@ -175,9 +176,11 @@ public class BodyPane extends StackPane {
                     Item item = null;
                     try {
                         item = new OtherItem(from, to, "");
-                        ItemManager.getInstance().addItem(item);
-                        ItemIO.output();
+                        ItemManager.getInstance().addItem(item, false);
+//                        ItemIO.output();
                         Display.addEditPane(item, true);
+                    } catch (DataErrorException e) {
+                        Display.showToast(e.getMessage());
                     } catch (Exception e) {
                         Display.showToast("请输入正确的时间与正确的类型！");
                     }

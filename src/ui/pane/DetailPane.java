@@ -1,5 +1,6 @@
 package ui.pane;
 
+import exception.DataErrorException;
 import io.ItemIO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,22 +22,17 @@ import java.util.ArrayList;
 
 public class DetailPane extends GridPane {
     public DetailPane(Item item) {
-        int mainCol = 0 ;
-        int mainRow = 0 ;
+        int mainCol = 0;
+        int mainRow = 0;
         this.getStyleClass().add("mainContent");
         this.getStylesheets().add("/stylesheet/buttonAndLabel.css");
         Label title = new Label("Detail");
         title.getStyleClass().add("title");
-        this.add(title , mainCol , mainRow++);
+        this.add(title, mainCol, mainRow++);
 
-//        ArrayList<Item> itemList = ItemManager.getInstance().getItemsByStamp(from, to);
         GridPane detailContent = new GridPane();
-        ItemPane itemPane=new ItemPane(item);
-        detailContent.add(itemPane,0,0);
-//        for (int i = 0; i < itemList.size(); i++) {
-//            ItemPane itemPane = new ItemPane(itemList.get(i));
-//            detailContent.add(itemPane, 0, i);
-//        }
+        ItemPane itemPane = new ItemPane(item);
+        detailContent.add(itemPane, 0, 0);
         ScrollPane scrollContent = new ScrollPane();
         scrollContent.setContent(detailContent);
         scrollContent.getStyleClass().add("scrollView");
@@ -47,31 +43,33 @@ public class DetailPane extends GridPane {
         addBt.setOnMouseClicked(event -> {
             Item tmpItem = null;
             try {
-                tmpItem = new OtherItem(item.getFrom(), item.getTo() , "" );
-                ItemManager.getInstance().addItem(tmpItem);
-                ItemIO.output();
-//                Display.removeDetailPane();
+                tmpItem = new OtherItem(item.getFrom(), item.getTo(), "");
+                ItemManager.getInstance().addItem(tmpItem, false);
+//                ItemIO.output();
+                Display.removeDetailPane();
                 Display.addEditPane(tmpItem, true);
                 Display.removeDetailPane();
                 Display.addEditPane(item, true);
+            } catch (DataErrorException e) {
+                Display.showToast(e.getMessage());
             } catch (Exception e) {
                 Display.showToast("请输入正确的时间与正确的类型！");
             }
         });
         addBt.getStyleClass().add("btn");
-        addBt.setMaxSize(45 , 30);
-        addBt.setMinSize(45 , 30);
+        addBt.setMaxSize(45, 30);
+        addBt.setMinSize(45, 30);
         Button quitBt = new Button("quit");
         quitBt.setOnMouseClicked(event -> {
             Display.removeDetailPane();
         });
         quitBt.getStyleClass().add("btn");
         quitBt.setMaxSize(45, 30);
-        addBt.setMinSize(45 , 30);
+        addBt.setMinSize(45, 30);
         btRow.getChildren().add(0, addBt);
-        btRow.getChildren().add(1,quitBt);
-        btRow.setMargin(addBt , new Insets(10, 10 , 10 , 0));
-        btRow.setMargin(quitBt , new Insets(10,0,10,10));
+        btRow.getChildren().add(1, quitBt);
+        btRow.setMargin(addBt, new Insets(10, 10, 10, 0));
+        btRow.setMargin(quitBt, new Insets(10, 0, 10, 10));
         btRow.getStyleClass().add("buttons");
 
         this.add(btRow, mainCol, mainRow++);
@@ -82,13 +80,14 @@ public class DetailPane extends GridPane {
 
     private class ItemPane extends GridPane {
         private Item item;
+
         public ItemPane(Item item) {
             // TODO: 2018/5/11
             this.item = item;
             int rowIndex = 0;
-            Line line = new Line(0 , 0 , 500 , 0);
+            Line line = new Line(0, 0, 500, 0);
             line.setStroke(Color.YELLOW);
-            this.add(line , 0, rowIndex++);
+            this.add(line, 0, rowIndex++);
 
 //            Text fromToText = new Text("From: " + item.getValue("startTime") + " To: " + item.getValue("endTime"));
 //            this.add(fromToText,0 , rowIndex++);
@@ -105,7 +104,7 @@ public class DetailPane extends GridPane {
 //            this.setMargin(detailText, new Insets(5, 0 , 0 , 0 ));
 
 
-            rowIndex = addOtherInfo(this,item,rowIndex);
+            rowIndex = addOtherInfo(this, item, rowIndex);
 
             GridPane buttonPane = new GridPane();
             Button removeBt = new Button("remove");
@@ -114,8 +113,8 @@ public class DetailPane extends GridPane {
             removeBt.setMinSize(80, 23);
             removeBt.setOnMouseClicked(event -> {
                 ItemManager.getInstance().deleteItem(item);
-                ItemIO.output();
-                Display.refreshDetailPane();
+//                ItemIO.output();
+                Display.removeDetailPane();
                 BodyPane.getInstance().refresh();
             });
             removeBt.setCursor(Cursor.HAND);
@@ -130,32 +129,32 @@ public class DetailPane extends GridPane {
             editBt.setMinSize(80, 23);
             editBt.setCursor(Cursor.HAND);
 
-            buttonPane.add(removeBt,0,0);
-            buttonPane.add(editBt, 1,0);
+            buttonPane.add(removeBt, 0, 0);
+            buttonPane.add(editBt, 1, 0);
             buttonPane.setHgap(10);
-            this.add(buttonPane,0,rowIndex++);
-            this.setMargin(buttonPane, new Insets(5, 0 , 0 , 0 ));
-            this.setPadding(new Insets(10, 10,0 , 10));
+            this.add(buttonPane, 0, rowIndex++);
+            this.setMargin(buttonPane, new Insets(5, 0, 0, 0));
+            this.setPadding(new Insets(10, 10, 0, 10));
             this.getStylesheets().add("/stylesheet/greenAndRed.css");
         }
 
-        private int addOtherInfo(ItemPane itemPane,Item item,int rowIndex){
-            Item.ItemType itemType=item.getItemType();
-            switch (itemType){
+        private int addOtherInfo(ItemPane itemPane, Item item, int rowIndex) {
+            Item.ItemType itemType = item.getItemType();
+            switch (itemType) {
                 case MEETING:
-                    return addMeetingInfo(itemPane,item,rowIndex);
+                    return addMeetingInfo(itemPane, item, rowIndex);
                 case DATE:
-                    return addDateInfo(itemPane,item,rowIndex);
+                    return addDateInfo(itemPane, item, rowIndex);
                 case ANNIVERSARY:
-                    return addAnniversaryInfo(itemPane,item,rowIndex);
+                    return addAnniversaryInfo(itemPane, item, rowIndex);
                 case TRAVEL:
-                    return addTravelInfo(itemPane,item,rowIndex);
+                    return addTravelInfo(itemPane, item, rowIndex);
                 case INTERVIEW:
-                    return addInterviewInfo(itemPane,item,rowIndex);
+                    return addInterviewInfo(itemPane, item, rowIndex);
                 case COURSE:
-                    return addCourseInfo(itemPane,item,rowIndex);
+                    return addCourseInfo(itemPane, item, rowIndex);
                 case CUSTOM:
-                    return addCustomInfo(itemPane,item,rowIndex);
+                    return addCustomInfo(itemPane, item, rowIndex);
             }
             return rowIndex;
 //            if (item.getItemType() == Item.ItemType.DATE){//约会则还需显示人员和地点
@@ -182,113 +181,120 @@ public class DetailPane extends GridPane {
 
 //            }
         }
-        private int addMeetingInfo(ItemPane itemPane,Item item,int rowIndex){
+
+        private int addMeetingInfo(ItemPane itemPane, Item item, int rowIndex) {
             Text fromToText = new Text("From: " + item.getValue("startTime") + " To: " + item.getValue("endTime"));
-            this.add(fromToText,0 , rowIndex++);
-            this.setMargin(fromToText, new Insets(5, 0 , 0 , 0 ));
+            this.add(fromToText, 0, rowIndex++);
+            this.setMargin(fromToText, new Insets(5, 0, 0, 0));
 
             String typeStr = "Type: " + item.getItemType().getTypeStr();
             Text typeText = new Text(typeStr);
-            this.add(typeText,0 , rowIndex++);
-            this.setMargin(typeText, new Insets(5, 0 , 0 , 0 ));
-            Text locationText = new Text("Location: " + ((MeetingItem)item).getLocation());
-            itemPane.add(locationText, 0 , rowIndex++);
-            itemPane.setMargin(locationText, new Insets(5, 0 , 0 , 0 ));
+            this.add(typeText, 0, rowIndex++);
+            this.setMargin(typeText, new Insets(5, 0, 0, 0));
+            Text locationText = new Text("Location: " + ((MeetingItem) item).getLocation());
+            itemPane.add(locationText, 0, rowIndex++);
+            itemPane.setMargin(locationText, new Insets(5, 0, 0, 0));
 
-            Text topicText = new Text("Topic: " + ((MeetingItem)item).getTopic());
-            itemPane.add(topicText, 0 , rowIndex++);
-            itemPane.setMargin(topicText, new Insets(5, 0 , 0 , 0 ));
+            Text topicText = new Text("Topic: " + ((MeetingItem) item).getTopic());
+            itemPane.add(topicText, 0, rowIndex++);
+            itemPane.setMargin(topicText, new Insets(5, 0, 0, 0));
             return rowIndex;
         }
-        private int addDateInfo(ItemPane itemPane,Item item,int rowIndex){
-            Text descriptionText = new Text(((AppointmentItem)item).getDetailDescription());
-            itemPane.add(descriptionText, 0 , rowIndex++);
-            itemPane.setMargin(descriptionText, new Insets(5, 0 , 0 , 0 ));
 
-            Text timeText = new Text(((AppointmentItem)item).getTimeDescription());
-            itemPane.add(timeText, 0 , rowIndex++);
-            itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
+        private int addDateInfo(ItemPane itemPane, Item item, int rowIndex) {
+            Text descriptionText = new Text(((AppointmentItem) item).getDetailDescription());
+            itemPane.add(descriptionText, 0, rowIndex++);
+            itemPane.setMargin(descriptionText, new Insets(5, 0, 0, 0));
+
+            Text timeText = new Text(((AppointmentItem) item).getTimeDescription());
+            itemPane.add(timeText, 0, rowIndex++);
+            itemPane.setMargin(timeText, new Insets(5, 0, 0, 0));
             return rowIndex;
         }
-        private int addAnniversaryInfo(ItemPane itemPane,Item item,int rowIndex){
-            Text descriptionText = new Text(((AnniversaryItem)item).getDetailDescription());
-            itemPane.add(descriptionText, 0 , rowIndex++);
-            itemPane.setMargin(descriptionText, new Insets(5, 0 , 0 , 0 ));
 
-            Text content = new Text(((AnniversaryItem)item).getValue("content"));
-            itemPane.add(content, 0 , rowIndex++);
-            itemPane.setMargin(content, new Insets(5, 0 , 0 , 0 ));
+        private int addAnniversaryInfo(ItemPane itemPane, Item item, int rowIndex) {
+            Text descriptionText = new Text(((AnniversaryItem) item).getDetailDescription());
+            itemPane.add(descriptionText, 0, rowIndex++);
+            itemPane.setMargin(descriptionText, new Insets(5, 0, 0, 0));
 
-            Text startDayText = new Text(((AnniversaryItem)item).getStartDayDescription());
-            itemPane.add(startDayText, 0 , rowIndex++);
-            itemPane.setMargin(startDayText, new Insets(5, 0 , 0 , 0 ));
+            Text content = new Text(((AnniversaryItem) item).getValue("content"));
+            itemPane.add(content, 0, rowIndex++);
+            itemPane.setMargin(content, new Insets(5, 0, 0, 0));
+
+            Text startDayText = new Text(((AnniversaryItem) item).getStartDayDescription());
+            itemPane.add(startDayText, 0, rowIndex++);
+            itemPane.setMargin(startDayText, new Insets(5, 0, 0, 0));
             return rowIndex;
         }
-        private int addTravelInfo(ItemPane itemPane,Item item,int rowIndex){
-            Text descriptionText = new Text(((TravelItem)item).getPlaceDescription());
-            itemPane.add(descriptionText, 0 , rowIndex++);
-            itemPane.setMargin(descriptionText, new Insets(5, 0 , 0 , 0 ));
 
-            Text transText = new Text(((TravelItem)item).getTransDescription());
-            itemPane.add(transText, 0 , rowIndex++);
-            itemPane.setMargin(transText, new Insets(5, 0 , 0 , 0 ));
+        private int addTravelInfo(ItemPane itemPane, Item item, int rowIndex) {
+            Text descriptionText = new Text(((TravelItem) item).getPlaceDescription());
+            itemPane.add(descriptionText, 0, rowIndex++);
+            itemPane.setMargin(descriptionText, new Insets(5, 0, 0, 0));
 
-            Text timeText = new Text(((TravelItem)item).getTimeDescription());
-            itemPane.add(timeText, 0 , rowIndex++);
-            itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
+            Text transText = new Text(((TravelItem) item).getTransDescription());
+            itemPane.add(transText, 0, rowIndex++);
+            itemPane.setMargin(transText, new Insets(5, 0, 0, 0));
 
-            Text remark=new Text("Remark: "+((TravelItem)item).getValue("remark"));
-            itemPane.add(remark, 0 , rowIndex++);
-            itemPane.setMargin(remark, new Insets(5, 0 , 0 , 0 ));
+            Text timeText = new Text(((TravelItem) item).getTimeDescription());
+            itemPane.add(timeText, 0, rowIndex++);
+            itemPane.setMargin(timeText, new Insets(5, 0, 0, 0));
+
+            Text remark = new Text("Remark: " + ((TravelItem) item).getValue("remark"));
+            itemPane.add(remark, 0, rowIndex++);
+            itemPane.setMargin(remark, new Insets(5, 0, 0, 0));
             return rowIndex;
         }
-        private int addInterviewInfo(ItemPane itemPane,Item item,int rowIndex){
-            Text placeDescriptionText = new Text(((InterviewItem)item).getPlaceDescription());
-            itemPane.add(placeDescriptionText, 0 , rowIndex++);
-            itemPane.setMargin(placeDescriptionText, new Insets(5, 0 , 0 , 0 ));
 
-            Text jobText = new Text(((InterviewItem)item).getJobDescription());
-            itemPane.add(jobText, 0 , rowIndex++);
-            itemPane.setMargin(jobText, new Insets(5, 0 , 0 , 0 ));
+        private int addInterviewInfo(ItemPane itemPane, Item item, int rowIndex) {
+            Text placeDescriptionText = new Text(((InterviewItem) item).getPlaceDescription());
+            itemPane.add(placeDescriptionText, 0, rowIndex++);
+            itemPane.setMargin(placeDescriptionText, new Insets(5, 0, 0, 0));
 
-            Text remark=new Text("Remark: "+((InterviewItem)item).getValue("remark"));
-            itemPane.add(remark, 0 , rowIndex++);
-            itemPane.setMargin(remark, new Insets(5, 0 , 0 , 0 ));
+            Text jobText = new Text(((InterviewItem) item).getJobDescription());
+            itemPane.add(jobText, 0, rowIndex++);
+            itemPane.setMargin(jobText, new Insets(5, 0, 0, 0));
+
+            Text remark = new Text("Remark: " + ((InterviewItem) item).getValue("remark"));
+            itemPane.add(remark, 0, rowIndex++);
+            itemPane.setMargin(remark, new Insets(5, 0, 0, 0));
             return rowIndex;
         }
-        private int addCourseInfo(ItemPane itemPane,Item item,int rowIndex){
-            Text detailDescriptionText = new Text(((CourseItem)item).getDetailDescription());
-            itemPane.add(detailDescriptionText, 0 , rowIndex++);
-            itemPane.setMargin(detailDescriptionText, new Insets(5, 0 , 0 , 0 ));
 
-            Text courseContentText = new Text(((CourseItem)item).getCourseContent());
-            itemPane.add(courseContentText, 0 , rowIndex++);
-            itemPane.setMargin(courseContentText, new Insets(5, 0 , 0 , 0 ));
+        private int addCourseInfo(ItemPane itemPane, Item item, int rowIndex) {
+            Text detailDescriptionText = new Text(((CourseItem) item).getDetailDescription());
+            itemPane.add(detailDescriptionText, 0, rowIndex++);
+            itemPane.setMargin(detailDescriptionText, new Insets(5, 0, 0, 0));
 
-            Text durationContentText = new Text(((CourseItem)item).getDurationDescription());
-            itemPane.add(durationContentText, 0 , rowIndex++);
-            itemPane.setMargin(durationContentText, new Insets(5, 0 , 0 , 0 ));
+            Text courseContentText = new Text(((CourseItem) item).getCourseContent());
+            itemPane.add(courseContentText, 0, rowIndex++);
+            itemPane.setMargin(courseContentText, new Insets(5, 0, 0, 0));
 
-            Text remark=new Text("Remark: "+((CourseItem)item).getValue("remark"));
-            itemPane.add(remark, 0 , rowIndex++);
-            itemPane.setMargin(remark, new Insets(5, 0 , 0 , 0 ));
+            Text durationContentText = new Text(((CourseItem) item).getDurationDescription());
+            itemPane.add(durationContentText, 0, rowIndex++);
+            itemPane.setMargin(durationContentText, new Insets(5, 0, 0, 0));
+
+            Text remark = new Text("Remark: " + ((CourseItem) item).getValue("remark"));
+            itemPane.add(remark, 0, rowIndex++);
+            itemPane.setMargin(remark, new Insets(5, 0, 0, 0));
             return rowIndex;
         }
-        private int addCustomInfo(ItemPane itemPane,Item item,int rowIndex){
-            if (item.getFrom()!=null&&item.getTo()!=null){
-                String time="From: "+((OtherItem)item).getFrom().toString()+"  To: "+((OtherItem)item).getTo().toString();
+
+        private int addCustomInfo(ItemPane itemPane, Item item, int rowIndex) {
+            if (item.getFrom() != null && item.getTo() != null) {
+                String time = "From: " + ((OtherItem) item).getFrom().toString() + "  To: " + ((OtherItem) item).getTo().toString();
                 Text timeText = new Text(time);
-                itemPane.add(timeText, 0 , rowIndex++);
-                itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
-            }else {
+                itemPane.add(timeText, 0, rowIndex++);
+                itemPane.setMargin(timeText, new Insets(5, 0, 0, 0));
+            } else {
                 Text timeText = new Text("No time");
-                itemPane.add(timeText, 0 , rowIndex++);
-                itemPane.setMargin(timeText, new Insets(5, 0 , 0 , 0 ));
+                itemPane.add(timeText, 0, rowIndex++);
+                itemPane.setMargin(timeText, new Insets(5, 0, 0, 0));
             }
 
             Text detailText = new Text("Detail: " + item.getDetailText());
-            itemPane.add(detailText, 0 , rowIndex++);
-            itemPane.setMargin(detailText, new Insets(5, 0 , 0 , 0 ));
+            itemPane.add(detailText, 0, rowIndex++);
+            itemPane.setMargin(detailText, new Insets(5, 0, 0, 0));
             return rowIndex;
         }
     }

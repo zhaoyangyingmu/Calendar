@@ -1,5 +1,6 @@
 package ui.pane;
 
+import exception.DataErrorException;
 import io.ItemIO;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -314,9 +315,11 @@ public class EditPane extends GridPane {
                 tmpItem.setMinutesAhead(this.item.minutesAhead());
 
                 ItemManager.getInstance().deleteItem(this.item);
-                ItemManager.getInstance().addItem(tmpItem);
-                ItemIO.output();
+                ItemManager.getInstance().addItem(tmpItem, true);
+//                ItemIO.output();
                 Display.removeEditPane();
+            } catch (DataErrorException e) {
+                Display.showToast(e.getMessage());
             } catch (Exception e) {
                 Display.showToast("请输入正确的时间与正确的类型！");
             }
@@ -327,7 +330,7 @@ public class EditPane extends GridPane {
         cancelBt.setOnMouseClicked(event -> {
             if (fromAdd) {
                 ItemManager.getInstance().deleteItem(item);
-                ItemIO.output();
+//                ItemIO.output();
             }
             Display.removeEditPane();
         });
@@ -432,13 +435,13 @@ public class EditPane extends GridPane {
     private Item courseTypeItem(TimeStamp from, TimeStamp to) throws Exception {
         String courseName = ((LabelAndTextRow) courseControl[0]).getTextField().getText();
         String courseContent = ((LabelAndTextRow) courseControl[1]).getTextField().getText();
-        int courseDuration = Integer.parseInt(((LabelAndTextRow) courseControl[2]).getTextField().getText());
+        String courseDuration = ((LabelAndTextRow) courseControl[2]).getTextField().getText();
         String courseTeacher = ((LabelAndTextRow) courseControl[3]).getTextField().getText();
         String coursePlace = ((LabelAndTextRow) courseControl[4]).getTextField().getText();
         String courseRemark = ((LabelAndTextRow) courseControl[5]).getTextField().getText();
-        int courseDay = Integer.parseInt(((LabelAndTextRow) courseControl[6]).getTextField().getText());
+        String courseDay = ((LabelAndTextRow) courseControl[6]).getTextField().getText();
         return new CourseItem(from, to, courseName, courseContent, courseTeacher, courseRemark,
-                coursePlace,courseDuration,  courseDay, priority);
+                coursePlace, courseDuration, courseDay, priority);
     }
 
     private Item travelTypeItem(TimeStamp from, TimeStamp to) throws Exception {

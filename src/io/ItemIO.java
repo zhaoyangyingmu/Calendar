@@ -22,14 +22,14 @@ public class ItemIO {
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)
         ) {
-            for(int i = 0 ; i < list.size() ; i++) {
+            for (int i = 0; i < list.size(); i++) {
                 objectOutputStream.writeObject(list.get(i));
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if(list.size() == 0) {
+        if (list.size() == 0) {
             file.delete();
         }
 
@@ -41,22 +41,22 @@ public class ItemIO {
 
     public static void input(String path) {
         File file = new File(path);
-        if(!file.exists()) {
+        if (!file.exists()) {
             return;
         }
 
-        try(
+        try (
                 FileInputStream fileInputStream = new FileInputStream(file);
                 ObjectInputStream objInput = new ObjectInputStream(fileInputStream);
         ) {
-            while(true) {
+            while (true) {
                 Item item = (Item) objInput.readObject();
-                ItemManager.getInstance().addItem(item);
+                ItemManager.getInstance().addItem(item, true);
             }
-        }catch (EOFException e) {
+        } catch (EOFException e) {
 
-        }catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println();
         }
     }
 
