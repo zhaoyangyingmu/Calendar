@@ -209,17 +209,17 @@ public class MysqlSimpleTest {
 //            }
 //        }
         //测试根据时间段查找父待办事件3 测试课程
-        ArrayList<HashMap<String,String>> arrayList = mysql.queryByTime("2018-6-15 1:00","2018-6-15 23:00");
-        System.out.println(arrayList.size());
-        for (int i=0;i<arrayList.size();i++){
-            Iterator iter = arrayList.get(i).entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry entry = (Map.Entry) iter.next();
-                Object key = entry.getKey();
-                Object value = entry.getValue();
-                System.out.println(key + ":" + value);
-            }
-        }
+//        ArrayList<HashMap<String,String>> arrayList = mysql.queryByTime("2018-6-15 1:00","2018-6-15 23:00");
+//        System.out.println(arrayList.size());
+//        for (int i=0;i<arrayList.size();i++){
+//            Iterator iter = arrayList.get(i).entrySet().iterator();
+//            while (iter.hasNext()) {
+//                Map.Entry entry = (Map.Entry) iter.next();
+//                Object key = entry.getKey();
+//                Object value = entry.getValue();
+//                System.out.println(key + ":" + value);
+//            }
+//        }
 
 
 //
@@ -261,6 +261,18 @@ public class MysqlSimpleTest {
 //        int minute =  cal.get(Calendar.MINUTE);
 //        System.out.println(hour);
 //        System.out.println(minute);
+
+        //测试根据id查找事件详细信息
+        hashMap =mysql.queryByID("203");
+        Iterator iter = hashMap.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            Object key = entry.getKey();
+            Object value = entry.getValue();
+            System.out.println(key + ":" + value);
+        }
+
+
         mysql.close();
     }
 }
