@@ -145,6 +145,114 @@ public class Mysql {
         return Integer.parseInt(scheduleID);
     }//测试完毕
 
+    public HashMap<String, String> queryByID(String id) {
+        String sql = "SELECT * FROM schedule WHERE ID = '" + id + "'";
+        ResultSet rs = null;     //将sql语句传至数据库，返回的值为一个字符集用一个变量接收
+        HashMap<String,String>  hashMap= new HashMap<String,String>();
+        try {
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {    //next（）获取里面的内容
+                hashMap.put("ID", rs.getString("ID"));
+                hashMap.put("type", rs.getString("type"));
+                hashMap.put("priority", rs.getString("priority"));
+                hashMap.put("status", rs.getString("status"));
+                hashMap.put("isFather", rs.getString("isFather"));
+                hashMap.put("fatherID", rs.getString("fatherID"));
+                hashMap.put("promptStatus", rs.getString("promptStatus"));
+                hashMap.put("minutesAhead", rs.getString("minutesAhead"));
+                hashMap.put("showOnStage", rs.getString("showOnStage"));
+                hashMap.put("minuteDelta", rs.getString("minuteDelta"));
+            }
+
+            String type = hashMap.get("type");
+            switch (type) {
+                case "DATE":
+                    sql = "SELECT * FROM calendar.date WHERE scheduleID = '" + id + "'";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {    //next（）获取里面的内容
+                        hashMap.put("place", rs.getString("place"));
+                        hashMap.put("people", rs.getString("people"));
+                        hashMap.put("content", rs.getString("content"));
+                        hashMap.put("startTime", rs.getString("startTime"));
+                        hashMap.put("endTime", rs.getString("endTime"));
+                    }
+                    break;
+                case "ANNIVERSARY":
+                    sql = "SELECT * FROM calendar.anniversary WHERE scheduleID = '" + id + "'";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {    //next（）获取里面的内容
+                        hashMap.put("anniversaryType", rs.getString("anniversaryType"));
+                        hashMap.put("content", rs.getString("content"));
+                        hashMap.put("startDay", rs.getString("startDay"));
+                    }
+                    break;
+                case "COURSE":
+                    sql = "SELECT * FROM calendar.course WHERE scheduleID = '" + id + "'";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {    //next（）获取里面的内容
+                        hashMap.put("name", rs.getString("name"));
+                        hashMap.put("teacher", rs.getString("teacher"));
+                        hashMap.put("content", rs.getString("content"));
+                        hashMap.put("startDay", rs.getString("startDay"));
+                        hashMap.put("duration", rs.getString("duration"));
+                        hashMap.put("remark", rs.getString("remark"));
+                        hashMap.put("startTime", rs.getString("startTime"));
+                        hashMap.put("endTime", rs.getString("endTime"));
+                        hashMap.put("place", rs.getString("place"));
+                        hashMap.put("day", rs.getString("day"));
+                    }
+                    break;
+                case "CUSTOM":
+                    sql = "SELECT * FROM calendar.custom WHERE scheduleID = '" + id + "'";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {    //next（）获取里面的内容
+                        hashMap.put("content", rs.getString("content"));
+                        hashMap.put("startTime", rs.getString("startTime"));
+                        hashMap.put("endTime", rs.getString("endTime"));
+                    }
+                    break;
+                case "INTERVIEW":
+                    sql = "SELECT * FROM calendar.interview WHERE scheduleID = '" + id + "'";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {    //next（）获取里面的内容
+                        hashMap.put("place", rs.getString("place"));
+                        hashMap.put("company", rs.getString("company"));
+                        hashMap.put("job", rs.getString("job"));
+                        hashMap.put("remark", rs.getString("remark"));
+                        hashMap.put("startTime", rs.getString("startTime"));
+                        hashMap.put("endTime", rs.getString("endTime"));
+                    }
+                    break;
+                case "MEETING":
+                    sql = "SELECT * FROM calendar.meeting WHERE scheduleID = '" + id + "'";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {    //next（）获取里面的内容
+                        hashMap.put("place", rs.getString("place"));
+                        hashMap.put("topic", rs.getString("topic"));
+                        hashMap.put("content", rs.getString("content"));
+                        hashMap.put("startTime", rs.getString("startTime"));
+                        hashMap.put("endTime", rs.getString("endTime"));
+                    }
+                    break;
+                case "TRAVEL":
+                    sql = "SELECT * FROM calendar.travel WHERE scheduleID = '" + id + "'";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {    //next（）获取里面的内容
+                        hashMap.put("place", rs.getString("place"));
+                        hashMap.put("way", rs.getString("way"));
+                        hashMap.put("number", rs.getString("number"));
+                        hashMap.put("remark", rs.getString("remark"));
+                        hashMap.put("startTime", rs.getString("startTime"));
+                        hashMap.put("endTime", rs.getString("endTime"));
+                    }
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return hashMap;
+    }
+
     public ArrayList<HashMap<String, String>> queryByTime(String startTime, String endTime) {
         //处理传入startTime endTime都为空，此时查找custom表中startTime，endTime都为空字符串的待办事项
         if (startTime.equals("") && endTime.equals("")) {
