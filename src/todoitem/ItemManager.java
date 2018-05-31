@@ -235,12 +235,12 @@ public class ItemManager {
     }
 
     /**
-     * @param father 待添加的代办事项的父待办事项
-     * @param item   待添加的待办事项
+     * @param item 待添加的待办事项
      * @return 添加成功返回true
      * @throws DataErrorException 添加失败抛出异常（失败原因）
      */
-    public boolean addChildItem(Item father, Item item) throws DataErrorException {
+    public boolean addChildItem(Item item) throws DataErrorException {
+        Item father = null;
         if (father == null || item == null) {
             throw new DataErrorException("添加失败");
         }
