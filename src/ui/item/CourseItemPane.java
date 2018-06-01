@@ -1,6 +1,5 @@
 package ui.item;
 
-import exception.DataErrorException;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -8,7 +7,6 @@ import javafx.scene.control.TextField;
 import todoitem.Const;
 import todoitem.Item;
 import todoitem.ItemFactory;
-import todoitem.ItemManager;
 import todoitem.itemSub.CourseItem;
 import todoitem.util.TimeStamp;
 
@@ -37,14 +35,14 @@ public class CourseItemPane extends ItemPane {
     private TextField placeText;
     private CourseItem item;
 
-    public CourseItemPane(Item item) {
-        super(item);
+    public CourseItemPane(Item item, boolean fromAdd) {
+        super(item, fromAdd);
         this.item = (CourseItem) item;
         init();
     }
 
     private void init() {
-        nameLabel = new Label("名称：");
+        nameLabel = new Label("课程名称：");
         frClassLabel = new Label("上课时间：");
         toClassLabel = new Label("下课时间：");
         durationLabel = new Label("持续周数：");
@@ -74,9 +72,10 @@ public class CourseItemPane extends ItemPane {
         remarkText.setPromptText("100字以内");
 
 
-        if (!item.isFather()) {
-            addChildButton.setDisable(true);
-        }
+//        if (!item.isFather()) {
+//            startDate.setDisable(true);
+//            endDate.setDisable(true);
+//        }
         bindEvent();
         paint();
     }
@@ -116,15 +115,13 @@ public class CourseItemPane extends ItemPane {
                 CourseItem tempItem = new CourseItem(item.getFrom(), item.getTo(), "", "", "", "", "", "", "");
                 tempItem.setFatherID(item.getID());
                 tempItem.setIsFather(false);
-                addNewItemPane(tempItem);
+                CommonItemPane.addPane(tempItem);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println();
             }
         });
 
-        saveButton.setOnMouseClicked(event -> {
-            save();
-        });
+
     }
 
     private void paint() {
@@ -154,7 +151,8 @@ public class CourseItemPane extends ItemPane {
         this.add(saveButton, 4, row);
     }
 
-    private void save() {
+    @Override
+    void save() {
         TimeStamp from = new TimeStamp(startDate.getValue().getYear(), startDate.getValue().getMonth().getValue(),
                 startDate.getValue().getDayOfMonth(), startHourChoiceBox.getValue(), startMinuteChoiceBox.getValue());
         TimeStamp to = new TimeStamp(endDate.getValue().getYear(), endDate.getValue().getMonth().getValue(),
@@ -169,13 +167,7 @@ public class CourseItemPane extends ItemPane {
         item.setPlace(placeText.getText());
         item.setDetailText(contentText.getText());
         item.setRemark(remarkText.getText());
-        try {
-            if (!item.isFather()) {
-                ItemManager.getInstance().addChildItem(item);
-            } else
-                ItemManager.getInstance().addItem(item, true);
-        } catch (DataErrorException e) {
-            System.out.println();
-        }
+        item.setStartDay(from);
+        saveItem(item);
     }
 }

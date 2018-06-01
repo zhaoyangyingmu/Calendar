@@ -41,7 +41,7 @@ public class InterviewItem extends Item {
         return getValue("place");
     }
 
-    private void setPlace(String place) {
+    public void setPlace(String place) {
         addAttr("place", place == null ? "" : place);
     }
 
@@ -49,7 +49,7 @@ public class InterviewItem extends Item {
         return getValue("company");
     }
 
-    private void setCompany(String company) {
+    public void setCompany(String company) {
         addAttr("company", company == null ? "" : company);
     }
 
@@ -57,7 +57,7 @@ public class InterviewItem extends Item {
         return getValue("job");
     }
 
-    private void setJob(String job) {
+    public void setJob(String job) {
         addAttr("job", job == null ? "" : job);
     }
 
@@ -65,7 +65,7 @@ public class InterviewItem extends Item {
         return getValue("remark");
     }
 
-    private void setRemark(String remark) {
+    public void setRemark(String remark) {
         addAttr("remark", remark == null ? "" : remark);
     }
 

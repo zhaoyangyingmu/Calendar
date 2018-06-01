@@ -117,68 +117,68 @@ public class ItemTest {
 
     @Test
     public void promptRelatedTest() throws Exception {
-        List<Object []> list = Arrays.asList(new Object[][]{
+        List<Object[]> list = Arrays.asList(new Object[][]{
                 {"2018-2-28", "2018-3-1", "no details",
-                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER ,
+                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER,
                         Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA}, // 提示默认值
-                {"2000-2-29", "2018-2-28",  "no details",
-                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER ,
+                {"2000-2-29", "2018-2-28", "no details",
+                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER,
                         Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA}, // 提示默认值
-                {"2020-2-29", "2028-4-1",  "no details",
-                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER ,
+                {"2020-2-29", "2028-4-1", "no details",
+                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER,
                         true, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA}, // 提示状态为真
-                {"2020-2-29", "2028-4-1",  "no details",
-                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER ,
+                {"2020-2-29", "2028-4-1", "no details",
+                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER,
                         true, MinutesAheadType.ONEDAY.getMinutes(), Const.SHOW_ON_STAGE, Const.MINUTES_DELTA}, // 提前一天提示
-                {"2020-2-29", "2028-4-1",  "no details",
-                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER ,
+                {"2020-2-29", "2028-4-1", "no details",
+                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER,
                         true, MinutesAheadType.ONEWEEK.getMinutes(), false, Const.MINUTES_DELTA}, // 弹出框显示为真
                 {"2020-2-29", "2028-4-1", "no details",
-                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER ,
+                        Const.PRIORITY, Const.STATUS, Const.IS_FATHER,
                         true, MinutesAheadType.ONEWEEK.getMinutes(), false, MinutesDeltaType.ONEHOUR.getMinutes()}, // 每隔一小时显示
         });
-        for(int i = 0 ; i < list.size() ; i++) {
-            CalendarDate fromCal = new CalendarDate(((String)list.get(i)[0]));
-            TimeStamp from = TimeStamp.createStampDayStart(fromCal.getYear() , fromCal.getMonth(), fromCal.getDay());
+        for (int i = 0; i < list.size(); i++) {
+            CalendarDate fromCal = new CalendarDate(((String) list.get(i)[0]));
+            TimeStamp from = TimeStamp.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
             CalendarDate toCal = new CalendarDate(list.get(i)[1].toString());
-            TimeStamp to = TimeStamp.createStampDayEnd(toCal.getYear() , toCal.getMonth(), toCal.getDay());
+            TimeStamp to = TimeStamp.createStampDayEnd(toCal.getYear(), toCal.getMonth(), toCal.getDay());
             Item itemTmp = new OtherItem(from, to, list.get(i)[2].toString(),
-                    ((Integer)list.get(i)[3]).intValue(),((Integer)list.get(i)[4]).intValue(),((Boolean)list.get(i)[5]).booleanValue(),
-                    ((Boolean)list.get(i)[6]).booleanValue(),((Long)list.get(i)[7]).longValue(),
-                    ((Boolean)list.get(i)[8]).booleanValue(),((Long)list.get(i)[9]).longValue());
-            assertTrue(itemTmp.promptStatus()==((Boolean)list.get(i)[6]).booleanValue());
-            assertTrue(itemTmp.minutesAhead() == ((Long)list.get(i)[7]).longValue());
-            assertTrue(itemTmp.showOnStage() == ((Boolean)list.get(i)[8]).booleanValue());
-            assertTrue(itemTmp.minutesDelta() == ((Long)list.get(i)[9]).longValue());
+                    ((Integer) list.get(i)[3]).intValue(), ((Integer) list.get(i)[4]).intValue(), ((Boolean) list.get(i)[5]).booleanValue(),
+                    ((Boolean) list.get(i)[6]).booleanValue(), ((Long) list.get(i)[7]).longValue(),
+                    ((Boolean) list.get(i)[8]).booleanValue(), ((Long) list.get(i)[9]).longValue());
+            assertTrue(itemTmp.promptStatus() == ((Boolean) list.get(i)[6]).booleanValue());
+            assertTrue(itemTmp.minutesAhead() == ((Long) list.get(i)[7]).longValue());
+            assertTrue(itemTmp.showOnStage() == ((Boolean) list.get(i)[8]).booleanValue());
+            assertTrue(itemTmp.minutesDelta() == ((Long) list.get(i)[9]).longValue());
         }
     }
 
     @Test
     public void statusPriorityFatherRelatedTest() throws Exception {
-        List<Object []> list = Arrays.asList(new Object[][]{
-                {"2018-2-28", "2018-3-1", "no details","生日" ,
-                        Const.PRIORITY, Const.BEFORE_BEGINNING, Const.IS_FATHER }, // 优先级： 4， 完成状态： 未开始，父类型： 真
-                {"2000-2-29", "2018-2-28",  "no details","生日" ,
+        List<Object[]> list = Arrays.asList(new Object[][]{
+                {"2018-2-28", "2018-3-1", "name", "no details", "生日",
+                        Const.PRIORITY, Const.BEFORE_BEGINNING, Const.IS_FATHER}, // 优先级： 4， 完成状态： 未开始，父类型： 真
+                {"2000-2-29", "2018-2-28", "name", "no details", "生日",
                         2, Const.IN_PROGRESS, !Const.IS_FATHER}, // 优先级： 2 ， 完成状态：进行中， 父类型： 假
-                {"2020-2-29", "2028-4-1",  "no details","生日" ,
+                {"2020-2-29", "2028-4-1", "name", "no details", "生日",
                         1, Const.BEFORE_BEGINNING, Const.IS_FATHER}, // 优先级： 1， 完成状态： 未开始 ， 父类型： 真
-                {"2020-2-29", "2028-4-1",  "no details","生日" ,
+                {"2020-2-29", "2028-4-1", "name", "no details", "生日",
                         3, Const.COMPLETED, !Const.IS_FATHER}, // 优先级： 3 ， 完成状态：完成， 父类型： 假
-                {"2020-2-29", "2028-4-1",  "no details","生日" ,
+                {"2020-2-29", "2028-4-1", "name", "no details", "生日",
                         4, Const.OVERDUE, Const.IS_FATHER}, // 优先级： 4， 完成状态： 过期， 父类型： 真
-                {"2020-2-29", "2028-4-1", "no details","生日" ,
+                {"2020-2-29", "2028-4-1", "name", "no details", "生日",
                         2, Const.OVERDUE, !Const.IS_FATHER}, // 优先级： 2 ， 完成状态： 过期， 父类型：假
         });
-        for(int i = 0 ; i < list.size() ; i++) {
-            CalendarDate fromCal = new CalendarDate(((String)list.get(i)[0]));
-            TimeStamp from = TimeStamp.createStampDayStart(fromCal.getYear() , fromCal.getMonth(), fromCal.getDay());
+        for (int i = 0; i < list.size(); i++) {
+            CalendarDate fromCal = new CalendarDate(((String) list.get(i)[0]));
+            TimeStamp from = TimeStamp.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
             CalendarDate toCal = new CalendarDate(list.get(i)[1].toString());
-            TimeStamp to = TimeStamp.createStampDayEnd(toCal.getYear() , toCal.getMonth(), toCal.getDay());
-            Item itemTmp = new AnniversaryItem(from, to, list.get(i)[2].toString(),((String)list.get(i)[3]),
-                    ((Integer)list.get(i)[4]).intValue(),((Integer)list.get(i)[5]).intValue(),((Boolean)list.get(i)[6]).booleanValue());
-            assertEquals(itemTmp.getPriority(), ((Integer)list.get(i)[4]).intValue());
-            assertEquals(itemTmp.getStatus(), ((Integer)list.get(i)[5]).intValue());
-            assertEquals(itemTmp.isFather(), ((Boolean)list.get(i)[6]).booleanValue());
+            TimeStamp to = TimeStamp.createStampDayEnd(toCal.getYear(), toCal.getMonth(), toCal.getDay());
+            Item itemTmp = new AnniversaryItem(from, to, list.get(i)[2].toString(), list.get(i)[3].toString(), ((String) list.get(i)[4]),
+                    ((Integer) list.get(i)[5]).intValue(), ((Integer) list.get(i)[6]).intValue(), ((Boolean) list.get(i)[7]).booleanValue());
+            assertEquals(itemTmp.getPriority(), ((Integer) list.get(i)[5]).intValue());
+            assertEquals(itemTmp.getStatus(), ((Integer) list.get(i)[6]).intValue());
+            assertEquals(itemTmp.isFather(), ((Boolean) list.get(i)[7]).booleanValue());
         }
     }
 

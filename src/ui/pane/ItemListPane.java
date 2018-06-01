@@ -4,6 +4,7 @@ import exception.DataErrorException;
 import io.ItemIO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -17,6 +18,7 @@ import todoitem.Item;
 import todoitem.ItemManager;
 import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
+import ui.item.CommonItemPane;
 
 import java.util.ArrayList;
 
@@ -71,9 +73,16 @@ public class ItemListPane extends VBox {
             hBox.setPadding(insets);
             ItemPane itemPane = new ItemPane(memo);
             itemPane.setOnMouseClicked(event -> {
-                Display.addDetailPane(memo);
+//                Display.addDetailPane(memo);
                 stage.close();
+                CommonItemPane commonItemPane = new CommonItemPane(memo, false);
+                Stage newStage = new Stage();
+                newStage.setScene(new Scene(commonItemPane));
+                commonItemPane.setPrimaryStage(newStage);
+                newStage.setResizable(false);
+                newStage.show();
             });
+
             Label label = new Label("");
             Label delLabel = new Label("DEL");
 
@@ -106,7 +115,8 @@ public class ItemListPane extends VBox {
                 ItemManager.getInstance().addItem(item, false);
 //                ItemIO.output();
                 stage.close();
-                Display.addEditPane(item, true);
+//                Display.addEditPane(item, true);
+                CommonItemPane.addPane(item);
             } catch (DataErrorException e) {
                 Display.showToast(e.getMessage());
             } catch (Exception e) {

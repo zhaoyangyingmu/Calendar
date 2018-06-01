@@ -90,10 +90,6 @@ public class ItemManagerOnMysqlTest {
                     item2.addAttr("fatherID", item.getID() + "");
                     manager.addChildItem(item1);
                     manager.addChildItem(item2);
-                    ArrayList<Item> children = manager.getItemsByFatherItem(item);
-                    for (Item child : children) {
-                        manager.setCompleted(child);
-                    }
 //                    ArrayList<Item> father = manager.getItemsByStamp(item.getFrom(), item.getTo());
 //                    for (Item it : father) {
 //                        assertEquals(Const.COMPLETED, it.getStatus());

@@ -41,7 +41,7 @@ public class AppointmentItem extends Item {
         return getValue("people");
     }
 
-    private void setParticipants(String participants) {
+    public void setParticipants(String participants) {
         addAttr("people", participants == null ? "" : participants);
     }
 
@@ -49,7 +49,7 @@ public class AppointmentItem extends Item {
         return getValue("place");
     }
 
-    private void setLocation(String location) {
+    public void setLocation(String location) {
         addAttr("place", location == null ? "" : location);
     }
 

@@ -5,6 +5,7 @@ import io.ItemIO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -12,11 +13,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
 import todoitem.itemSub.*;
 import todoitem.util.TimeStamp;
+import ui.item.CommonItemPane;
 
 import java.util.ArrayList;
 
@@ -47,9 +50,10 @@ public class DetailPane extends GridPane {
                 ItemManager.getInstance().addItem(tmpItem, false);
 //                ItemIO.output();
                 Display.removeDetailPane();
-                Display.addEditPane(tmpItem, true);
-                Display.removeDetailPane();
-                Display.addEditPane(item, true);
+//                Display.addEditPane(tmpItem, true);
+//                Display.removeDetailPane();
+//                Display.addEditPane(item, true);
+                CommonItemPane.addPane(tmpItem);
             } catch (DataErrorException e) {
                 Display.showToast(e.getMessage());
             } catch (Exception e) {
@@ -123,7 +127,13 @@ public class DetailPane extends GridPane {
             editBt.getStyleClass().add("greenInDetail");
             editBt.setOnMouseClicked(event -> {
                 Display.removeDetailPane();
-                Display.addEditPane(item, false);
+//                Display.addEditPane(item, false);
+                CommonItemPane pane = new CommonItemPane(item, false);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(pane));
+                pane.setPrimaryStage(stage);
+                stage.setResizable(false);
+                stage.show();
             });
             editBt.setMaxSize(80, 23);
             editBt.setMinSize(80, 23);

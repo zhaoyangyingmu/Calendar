@@ -38,7 +38,7 @@ public class TravelItem extends Item {
         return getValue("way");
     }
 
-    private void setWay(String way) {
+    public void setWay(String way) {
         addAttr("way", way == null ? "" : way);
     }
 
@@ -46,7 +46,7 @@ public class TravelItem extends Item {
         return getValue("place");
     }
 
-    private void setPlace(String place) {
+    public void setPlace(String place) {
         addAttr("place", place == null ? "" : place);
     }
 
@@ -54,7 +54,7 @@ public class TravelItem extends Item {
         return getValue("number");
     }
 
-    private void setNumber(String number) {
+    public void setNumber(String number) {
         addAttr("number", number == null ? "" : number);
     }
 
@@ -62,7 +62,7 @@ public class TravelItem extends Item {
         return getValue("remark");
     }
 
-    private void setRemark(String remark) {
+    public void setRemark(String remark) {
         addAttr("remark", remark == null ? "" : remark);
     }
 
