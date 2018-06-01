@@ -2,11 +2,15 @@ package ui.pane;
 
 import exception.DataErrorException;
 import io.ItemIO;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -72,16 +76,6 @@ public class ItemListPane extends VBox {
             hBox.setAlignment(Pos.TOP_LEFT);
             hBox.setPadding(insets);
             ItemPane itemPane = new ItemPane(memo);
-            itemPane.setOnMouseClicked(event -> {
-//                Display.addDetailPane(memo);
-                stage.close();
-                CommonItemPane commonItemPane = new CommonItemPane(memo, false);
-                Stage newStage = new Stage();
-                newStage.setScene(new Scene(commonItemPane));
-                commonItemPane.setPrimaryStage(newStage);
-                newStage.setResizable(false);
-                newStage.show();
-            });
 
             Label label = new Label("");
             Label delLabel = new Label("DEL");
@@ -102,7 +96,8 @@ public class ItemListPane extends VBox {
             });
         }
         scrollPane.setContent(vBox);
-        scrollPane.setPrefSize(400, 400);
+//        scrollPane.setPrefSize(400, 400);
+        scrollPane.setMinSize(400, 400);
         this.getChildren().addAll(borderPane, scrollPane);
     }
 
@@ -132,6 +127,7 @@ public class ItemListPane extends VBox {
         private Label frLabel;
         private Label toLabel;
         private Label statusLabel;
+        private CheckBox checkBox;
 
         ItemPane(Item memo) {
             this.memo = memo;
@@ -149,23 +145,46 @@ public class ItemListPane extends VBox {
             this.toLabel = new Label(this.memo.getTo().toString());
             this.descLabel = new Label("Content: " + this.memo.getDetailText());
             this.statusLabel = new Label(Const.STATUS_STRING[this.memo.getStatus()]);
+            this.checkBox = new CheckBox();
 
             this.typeLabel.getStyleClass().addAll("item_title", "label");
             this.descLabel.getStyleClass().addAll("item_desc", "label");
             this.frLabel.getStyleClass().addAll("item_date", "label");
             this.toLabel.getStyleClass().addAll("item_date", "label");
             this.statusLabel.getStyleClass().addAll("item_status", "label");
+
             HBox titleHBox = new HBox();
             titleHBox.setSpacing(20);
             titleHBox.getChildren().addAll(typeLabel, statusLabel);
             titleHBox.setAlignment(Pos.CENTER_LEFT);
             titleHBox.setPadding(insets);
+            if (memo.getStatus() == Const.IN_PROGRESS) {
+                titleHBox.getChildren().add(checkBox);
+                checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        if (ItemManager.getInstance().setCompleted(memo)) {
+                            memo.setStatus(Const.COMPLETED);
+                            titleHBox.getChildren().remove(checkBox);
+                            statusLabel.setText(Const.STATUS_STRING[Const.COMPLETED]);
+                        } else checkBox.setSelected(false);
+                    }
+                });
+            }
             HBox hBox = new HBox();
             hBox.getChildren().addAll(frLabel, new Label(" ~ "), toLabel);
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.setPadding(insets);
 
             this.getChildren().addAll(titleHBox, hBox, descLabel);
+            this.setOnMouseClicked(event -> {
+                stage.close();
+                CommonItemPane commonItemPane = new CommonItemPane(memo, false);
+                Stage newStage = new Stage();
+                newStage.setScene(new Scene(commonItemPane));
+                commonItemPane.setPrimaryStage(newStage);
+                newStage.setResizable(false);
+                newStage.show();
+            });
         }
     }
 }

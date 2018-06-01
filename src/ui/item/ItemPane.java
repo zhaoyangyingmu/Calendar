@@ -124,8 +124,23 @@ public abstract class ItemPane extends GridPane {
         if (!item.isFather() || fromAdd) {
             addChildButton.setDisable(true);
         }
+        if (!fromAdd) {
+            setDisable();//暂时不支持修改时间
+        }
+        if (item.getStatus() == Const.COMPLETED) {
+            addChildButton.setDisable(true);
+        }
         bindEvent();
         paint();
+    }
+
+    void setDisable() {
+        startDate.setDisable(true);
+        startHourChoiceBox.setDisable(true);
+        startMinuteChoiceBox.setDisable(true);
+        endDate.setDisable(true);
+        endHourChoiceBox.setDisable(true);
+        endMinuteChoiceBox.setDisable(true);
     }
 
     private void bindEvent() {

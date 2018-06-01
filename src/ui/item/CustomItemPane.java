@@ -34,22 +34,20 @@ public class CustomItemPane extends ItemPane {
 
     private void bindEvent() {
         hasTimeBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!oldValue) {
-                startDate.setDisable(false);
-                endDate.setDisable(false);
-                startHourChoiceBox.setDisable(false);
-                startMinuteChoiceBox.setDisable(false);
-                endHourChoiceBox.setDisable(false);
-                endMinuteChoiceBox.setDisable(false);
-            } else {
-                startDate.setDisable(true);
-                endDate.setDisable(true);
-                startHourChoiceBox.setDisable(true);
-                startMinuteChoiceBox.setDisable(true);
-                endHourChoiceBox.setDisable(true);
-                endMinuteChoiceBox.setDisable(true);
-            }
+            if (fromAdd) {
+                if (!oldValue) {
+                    startDate.setDisable(false);
+                    endDate.setDisable(false);
+                    startHourChoiceBox.setDisable(false);
+                    startMinuteChoiceBox.setDisable(false);
+                    endHourChoiceBox.setDisable(false);
+                    endMinuteChoiceBox.setDisable(false);
+                } else {
+                    setDisable();
+                }
+            }//暂时不支持修改时间
         });
+
         addChildButton.setOnMouseClicked(event -> {
             try {
                 OtherItem tempItem = new OtherItem(item.getFrom(), item.getTo(), "");
