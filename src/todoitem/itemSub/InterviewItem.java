@@ -22,7 +22,8 @@ public class InterviewItem extends Item {
 
     public InterviewItem(TimeStamp from, TimeStamp to, String place, String company, String job, String remark,
                          int priority, int status, boolean isFather) throws Exception {
-        this(from, to, company, company, job, remark, priority, status, isFather,
+        //bug 一处， place 写成company了
+        this(from, to, place, company, job, remark, priority, status, isFather,
                 Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
