@@ -272,13 +272,13 @@ public class ItemManager {
         }
         if (fr == null || to == null)
             throw new DataErrorException("未设置时间的待办事项不能添加为子待办事项");
-        if ((fr.isBefore(fatherFr) || to.isAfter(fatherTo)) && !(fr.equals(fatherFr) || to.equals(fatherFr))) {
+        if ((fr.isBefore(fatherFr) || to.isAfter(fatherTo)) && !(fr.equals(fatherFr) || to.equals(fatherTo))) {
             throw new DataErrorException("子待办事项的时间应在父待办事项时间范围内");
         }
-        ArrayList<HashMap<String, String>> itemsMsg = mysql.queryByFatherID(father.getID());
-        if (itemsMsg != null && overlappedTypes.contains(item.getItemType().getTypeStr()))
-            for (HashMap<String, String> itemMsg : itemsMsg) {
-                if (overlappedTypes.contains(itemMsg.get("type")))
+        ArrayList<Item> items = getItemsByFatherItem(father);
+        if (overlappedTypes.contains(item.getItemType().getTypeStr()))
+            for (Item temp : items) {
+                if (temp.isDuringTime(item.getFrom(), item.getTo()) && overlappedTypes.contains(temp.getItemType().getTypeStr()))
                     throw new DataErrorException("与其他待办事项时间重叠！\n会议，课程，约会，面试，旅程等类型不允许时间重叠！");
             }
         updateStatus(item);
