@@ -1,58 +1,43 @@
 package ui.item;
 
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import todoitem.Item;
-import todoitem.ItemFactory;
-import todoitem.itemSub.OtherItem;
+import todoitem.itemSub.MeetingItem;
 import todoitem.util.TimeStamp;
 
-public class CustomItemPane extends ItemPane {
-    private CheckBox hasTimeBox;
-    private Label hasTimeLabel;
+public class MeetingItemPane extends ItemPane {
+    private MeetingItem item;
+    private Label topicLabel;
+    private Label locationLabel;
     private Label contentLabel;
+    private TextField topicText;
+    private TextField locationText;
     private TextField contentText;
 
-    private OtherItem item;
-
-    public CustomItemPane(Item item, boolean fromAdd) {
+    MeetingItemPane(Item item, boolean fromAdd) {
         super(item, fromAdd);
-        this.item = (OtherItem) item;
+        this.item = (MeetingItem) item;
         init();
     }
 
+
     private void init() {
-        hasTimeBox = new CheckBox();
-        hasTimeLabel = new Label("设置时间");
-        hasTimeBox.setSelected(true);
+        topicLabel = new Label("话题：");
+        locationLabel = new Label("地点：");
         contentLabel = new Label("内容：");
+
+        topicText = new TextField(item.getTopic());
+        locationText = new TextField(item.getLocation());
         contentText = new TextField(item.getDetailText());
         bindEvent();
         paint();
     }
 
     private void bindEvent() {
-        hasTimeBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!oldValue) {
-                startDate.setDisable(false);
-                endDate.setDisable(false);
-                startHourChoiceBox.setDisable(false);
-                startMinuteChoiceBox.setDisable(false);
-                endHourChoiceBox.setDisable(false);
-                endMinuteChoiceBox.setDisable(false);
-            } else {
-                startDate.setDisable(true);
-                endDate.setDisable(true);
-                startHourChoiceBox.setDisable(true);
-                startMinuteChoiceBox.setDisable(true);
-                endHourChoiceBox.setDisable(true);
-                endMinuteChoiceBox.setDisable(true);
-            }
-        });
         addChildButton.setOnMouseClicked(event -> {
             try {
-                OtherItem tempItem = new OtherItem(item.getFrom(), item.getTo(), "");
+                MeetingItem tempItem = new MeetingItem(item.getFrom(), item.getTo(), "", "", "");
                 tempItem.setFatherID(item.getID());
                 tempItem.setIsFather(false);
                 CommonItemPane.addPane(tempItem);
@@ -60,15 +45,17 @@ public class CustomItemPane extends ItemPane {
                 System.out.println();
             }
         });
-
     }
 
     private void paint() {
         int row = getTailRow();
-        this.add(hasTimeLabel, 2, 1);
-        this.add(hasTimeBox, 4, 1);
+        this.add(topicLabel, 0, row);
+        this.add(topicText, 1, row);
+        this.add(locationLabel, 0, ++row);
+        this.add(locationText, 1, row++);
         this.add(contentLabel, 0, row);
         this.add(contentText, 1, row++);
+
         this.add(addChildButton, 1, row);
         this.add(saveButton, 4, row);
     }
@@ -83,6 +70,8 @@ public class CustomItemPane extends ItemPane {
         item.setTo(to);
         item.setItemType(Item.ItemType.parseItemType(typeChoiceBox.getValue()));
         item.setPriority(priority);
+        item.setTopic(topicText.getText());
+        item.setLocation(locationText.getText());
         item.setDetailText(contentText.getText());
         saveItem(item);
     }

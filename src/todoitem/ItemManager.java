@@ -15,6 +15,7 @@ public class ItemManager {
     private static volatile Mysql mysql = Mysql.getInstance();
     private static volatile ItemManager itemManager;    //volatile关键字保证不能同时对itemManager的读写
     private static ArrayList<Item> itemList = new ArrayList<>();
+    private static ArrayList<Item> monthList = new ArrayList<>();
 
     private ItemManager() {
         overlappedTypes.addAll(FXCollections.observableArrayList(
@@ -114,16 +115,6 @@ public class ItemManager {
 
     }
 
-//    public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
-//        ArrayList<Item> resultList = new ArrayList<>();
-//        for (Item tmp : itemList) {
-//            if (tmp.isDuringTime(from, to)) {
-//                resultList.add(tmp);
-//            }
-//        }
-//        return resultList;
-//    }
-
     public ArrayList<Item> getPrompts() {
 
         ArrayList<Item> resultList = new ArrayList<>();
@@ -149,28 +140,6 @@ public class ItemManager {
 
     public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
         ArrayList<HashMap<String, String>> itemsMsg = mysql.queryByTime(from.toString(), to.toString());
-//        if (itemsMsg != null) {
-//            int year = 0;
-//            for (HashMap<String, String> msg : itemsMsg) {
-//                if (msg.get("type").equals(ItemType.ANNIVERSARY.getTypeStr())) {
-//                    if (year == 0) {
-//                        TimeStamp stamp = TimeStampFactory.createStampByString(msg.get("startDay"));
-//                        if (stamp != null) {    //获取第一次在时间段内的纪念日时间
-//                            while (stamp.isBefore(from)) {
-//                                TimeStamp temp = stamp;
-//                                stamp = TimeStampFactory.createStampDayStart(stamp.getYear() + 1, stamp.getMonth(), stamp.getDay());
-//                                if (!stamp.isValid()) {
-//                                    stamp = TimeStampFactory.createStampDayStart(temp.getYear() + 2, temp.getMonth(), temp.getDay());
-//                                }
-//                            }
-//                            year = stamp.getYear();
-//                        }
-//                    }
-//                    msg.put("year", year + "");
-//                    year++;
-//                }
-//            }
-//        }
         return getItems(itemsMsg);
     }
 
@@ -203,45 +172,67 @@ public class ItemManager {
         return resItems;
     }
 
-    /**
-     * what if add the same thing twice;
-     * how about sorting them in an order;
-     */
-//    public void addItem(Item item) {
-//        if (item != null) {
-//            itemList.add(item);
-//            System.out.println("是否是父待办事项: " + item.isFather());
-//            System.out.println("优先级: " + item.getPriority());
-//            System.out.println("完成状态: " + item.getStatus());
-//            System.out.println("是否设置提醒: " + item.promptStatus());
-//            System.out.println("提前多久提醒: " + item.minutesAhead());
-//            System.out.println("是否在界面上显示: " + item.showOnStage());
-//            System.out.println("=====================  分割线  =======================");
-//        }
-//    }
+    private Item getItemByID(int id) {
+        HashMap<String, String> attrs = mysql.queryByID(id + "");
+        ItemType type = ItemType.parseItemType(attrs.get("type"));
+        return ItemFactory.createItemByItemType(type, attrs);
+    }
 
+    public ArrayList<Item> getMonthDayItems(TimeStamp frTime, TimeStamp toTime) {
+        ArrayList<Item> resList = new ArrayList<>();
+        for (Item item : monthList) {
+            if (item.isDuringTime(frTime, toTime)) {
+                resList.add(item);
+            }
+        }
+        return resList;
+    }
+
+    public void setMonth(TimeStamp monthStart, TimeStamp monthEnd) {
+        monthList = getItemsByStamp(monthStart, monthEnd);
+    }
     /**
      * @param item    待添加的待办事项
      * @param confirm 确认是否添加
-     * @return 添加成功返回true，否则返回false
+     * @return 添加成功返回id，否则返回0
      */
-    public boolean addItem(Item item, boolean confirm) throws DataErrorException {
-        if (confirm && item != null)
-            if (canOverlapped(item)) {
+    public int addItem(Item item, boolean confirm) throws DataErrorException {
+        if (confirm && item != null) {
+            if (item.getID() <= 0 && canOverlapped(item)) {
                 updateStatus(item);
-                return mysql.addSchedule(item.getAttrs()) != 0;
+                int id = mysql.addSchedule(item.getAttrs());
+                if (id != 0)
+                    item.setID(id);
+                return id;
+            } else if (item.getID() > 0) {
+                deleteItem(item);
+                if (canOverlapped(item)) {
+                    updateStatus(item);
+                    int id = mysql.addSchedule(item.getAttrs());
+                    ArrayList<HashMap<String, String>> childrenMsg = mysql.queryByFatherID(item.getID());
+                    if (!childrenMsg.isEmpty()) {
+                        for (HashMap childMsg : childrenMsg) {
+                            childMsg.replace("fatherID", id + "");
+                            mysql.addSchedule(childMsg);
+                        }
+                    }
+                    return id;
+                }
             }
-        return false;
+        }
+        return 0;
     }
 
     /**
      * @param item 待添加的待办事项
-     * @return 添加成功返回true
+     * @return 添加成功返回id
      * @throws DataErrorException 添加失败抛出异常（失败原因）
      */
-    public boolean addChildItem(Item item) throws DataErrorException {
-        Item father = null;
-        if (father == null || item == null) {
+    public int addChildItem(Item item) throws DataErrorException {
+        if (item == null)
+            throw new DataErrorException("添加失败");
+        Item father = getItemByID(item.getFatherID());
+        if (father == null) {
             throw new DataErrorException("添加失败");
         }
         //保证待办事项的子待办事项不会再能添加子待办事项
@@ -259,9 +250,10 @@ public class ItemManager {
         types.addAll(FXCollections.observableArrayList(
                 ItemType.MEETING.getTypeStr(), ItemType.DATE.getTypeStr(),
                 ItemType.COURSE.getTypeStr(), ItemType.INTERVIEW.getTypeStr()));
-        if (types.remove(father.getItemType().getTypeStr()))  //true表示父类型为四种类型之一
+        if (types.remove(father.getItemType().getTypeStr())) {  //true表示父类型为四种类型之一
             if (types.contains(item.getItemType().getTypeStr())) //true表示子待办事项类型为互斥类型
                 throw new DataErrorException("会议，课程，约会，面试等为互斥类型！");
+        }
 
 
         /*
@@ -279,20 +271,20 @@ public class ItemManager {
         }
         if (fr == null || to == null)
             throw new DataErrorException("未设置时间的待办事项不能添加为子待办事项");
-        if (fr.isBefore(fatherFr) || to.isAfter(fatherTo)) {
+        if ((fr.isBefore(fatherFr) || to.isAfter(fatherTo)) && !(fr.equals(fatherFr) || to.equals(fatherFr))) {
             throw new DataErrorException("子待办事项的时间应在父待办事项时间范围内");
         }
-        return addItem(item, true);
+        updateStatus(item);
+        int id = mysql.addSchedule(item.getAttrs());
+        if (id != 0)
+            item.setID(id);
+        return id;
     }
 
     /**
      * what if delete the same thing twice;
      */
-//
-//    public void deleteItem(Item item) {
-//        itemList.remove(item);
-//    }
-//
+
     public boolean deleteItem(Item item) {
         if (item.isFather()) {//删除子待办事项
             boolean deleteAll = true;
@@ -300,7 +292,7 @@ public class ItemManager {
             if (childrenMsg != null)
                 for (HashMap<String, String> msg : childrenMsg)
                     deleteAll &= mysql.deleteSchedule(Integer.parseInt(msg.get("scheduleID"))) != 0;
-            return deleteAll;
+            return mysql.deleteSchedule(item.getID()) != 0 && deleteAll;
         } else
             return mysql.deleteSchedule(item.getID()) != 0;
     }

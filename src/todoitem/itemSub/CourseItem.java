@@ -54,12 +54,13 @@ public class CourseItem extends Item {
         return TimeStampFactory.createStampByString(getValue("startDay"));
     }
 
-    private void setStartDay(TimeStamp day) {
+    public void setStartDay(TimeStamp day) {
+        setDay("");
         addAttr("startDay", day.toString());
     }
 
     public int getDuration() {
-        return Integer.parseInt(getValue("duration"));
+        return Integer.parseInt(getAttrs().getOrDefault("duration", "1"));
     }
 
     public void setDuration(String duration) {
@@ -91,7 +92,7 @@ public class CourseItem extends Item {
     }
 
     public int getDay() {
-        return Integer.parseInt(getValue("day"));
+        return new CalendarDate(getFrom().getYear(), getFrom().getMonth(), getFrom().getDay()).getDayOfWeek();
     }
 
     private void setDay(String day) {

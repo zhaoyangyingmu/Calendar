@@ -51,7 +51,7 @@ public class PromptPopPane extends StackPane {
         long startMinutes = item.getFrom().getMinutes();
         long minutesDelta = startMinutes - currentMinutes;
         int day = (int) minutesDelta / (60 * 24);
-        int hour = (int)minutesDelta / 60;
+        int hour = ((int) minutesDelta - 60 * 24 * day) / 60;
         int minute = (int) minutesDelta % 60;
         String timeStr = "距离待办事项开始还有"+day + "天，"+ hour + "小时，" + minute + "分钟！\n";
         String typeStr = "待办事项：" + item.getItemType().getCnTypeStr() + "\n";

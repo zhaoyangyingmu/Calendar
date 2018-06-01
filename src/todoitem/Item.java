@@ -121,7 +121,8 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public int getID() {
-        return Integer.parseInt(getValue("scheduleID"));
+        return getValue("scheduleID").equals("") ?
+                Integer.parseInt(getValue("ID")) : Integer.parseInt(getValue("scheduleID"));
     }
 
     @Override
@@ -131,7 +132,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
 
     @Override
     public int getFatherID() {
-        return Integer.parseInt(getValue("fatherID"));
+        return Integer.parseInt(getValue("fatherID").equals("") ? "-1" : getValue("fatherID"));
     }
 
     @Override
@@ -222,7 +223,7 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     public String getValue(String key) {
         if (attrsMap.containsKey(key))
             return attrsMap.get(key);
-        return "-1";
+        return "";
     }
 
 

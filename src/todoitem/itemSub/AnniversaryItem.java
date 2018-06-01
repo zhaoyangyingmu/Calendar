@@ -12,25 +12,26 @@ public class AnniversaryItem extends Item {
         super(attrsMap);
     }
 
-    public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType) throws Exception {
-        this(from, to, detailText, anniversaryType, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
+    public AnniversaryItem(TimeStamp from, TimeStamp to, String name, String detailText, String anniversaryType) throws Exception {
+        this(from, to, name, detailText, anniversaryType, Const.PRIORITY, Const.STATUS, Const.IS_FATHER);
 
     }
 
-    public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType,
+    public AnniversaryItem(TimeStamp from, TimeStamp to, String name, String detailText, String anniversaryType,
                            int priority) throws Exception {
-        this(from, to, detailText, anniversaryType, priority, Const.STATUS, Const.IS_FATHER);
+        this(from, to, name, detailText, anniversaryType, priority, Const.STATUS, Const.IS_FATHER);
     }
 
-    public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType,
+    public AnniversaryItem(TimeStamp from, TimeStamp to, String name, String detailText, String anniversaryType,
                            int priority, int status, boolean isFather) throws Exception {
-        this(from, to, detailText, anniversaryType, priority, status, isFather,
+        this(from, to, name, detailText, anniversaryType, priority, status, isFather,
                 Const.PROMPT_STATUS, Const.MINUTES_AHEAD, Const.SHOW_ON_STAGE, Const.MINUTES_DELTA);
     }
 
-    public AnniversaryItem(TimeStamp from, TimeStamp to, String detailText, String anniversaryType, int priority, int status, boolean isFather,
+    public AnniversaryItem(TimeStamp from, TimeStamp to, String name, String detailText, String anniversaryType, int priority, int status, boolean isFather,
                            boolean promptStatus, long ahead, boolean showOnStage, long delta) throws Exception {
         super(from, to, detailText, ItemType.ANNIVERSARY, priority, status, isFather, promptStatus, ahead, showOnStage, delta);
+        setName(name);
         setAnniversaryType(anniversaryType);
         setStartDay(from);
     }
@@ -39,7 +40,7 @@ public class AnniversaryItem extends Item {
         return getValue("anniversaryType");
     }
 
-    private void setAnniversaryType(String anniversaryType) {
+    public void setAnniversaryType(String anniversaryType) {
         addAttr("anniversaryType", anniversaryType == null ? "" : anniversaryType);
     }
 
@@ -47,11 +48,18 @@ public class AnniversaryItem extends Item {
         return TimeStampFactory.createStampByString(getValue("startDay"));
     }
 
-    private void setStartDay(TimeStamp day) {
+    public void setStartDay(TimeStamp day) {
         if (day != null)
             addAttr("startDay", day.toString());
     }
 
+    public void setName(String name) {
+        addAttr("name", name != null ? name : "");
+    }
+
+    public String getName() {
+        return getValue("name");
+    }
 
     public int getYear() {
         return Integer.parseInt(getValue("year"));

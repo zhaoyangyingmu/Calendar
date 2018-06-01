@@ -43,6 +43,9 @@ public class Mysql {
         return mysql;
     }
 
+    /**
+     * 只负责增加元素，不成功时返回0.
+     * */
     public int addSchedule(HashMap<String, String> hashMap) {
         String scheduleID = "";
         try {
@@ -468,6 +471,9 @@ public class Mysql {
         return 0;
     }//测试完毕
 
+    /**
+     *  更新状态。
+     * */
     public int updateState(int scheduleID, int status) {
         String sql = "UPDATE schedule SET status = '" + status + "'WHERE ID= '" + scheduleID + "' ";   //SQL语句
         try {
@@ -478,6 +484,7 @@ public class Mysql {
         }
         return -1;
     }//测试完毕
+
 
     private static String getMaxID(Statement stmt) throws SQLException {
         String sql = "SELECT ID FROM schedule ORDER BY ID DESC";
