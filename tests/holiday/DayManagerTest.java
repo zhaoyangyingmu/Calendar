@@ -50,7 +50,7 @@ public class DayManagerTest {
                 {"2018-05-10", null, null, null},
                 {"2018-10-10", null, null, null},
                 {"2018-11-11", null, null, null},
-                {"2018-12-12", null, null, null},
+                {"2018-12-12", null, null, null}
         });
     }
 

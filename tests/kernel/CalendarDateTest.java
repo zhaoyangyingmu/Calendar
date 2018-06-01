@@ -20,11 +20,11 @@ public class CalendarDateTest {
         CalendarDate date = new CalendarDate(2018, 4, 2);
         int actual = date.getDayOfWeek();
         assertEquals(1, actual);
-        assertEquals(1,new CalendarDate(2018,1,1).getDayOfWeek());
+        assertEquals(1, new CalendarDate(2018, 1, 1).getDayOfWeek());
     }
 
     @org.junit.Test
-    public void testGetDayOfWeekFalse(){
+    public void testGetDayOfWeekFalse() {
         CalendarDate date1 = new CalendarDate(2018, 4, 2);
         int actual1 = date1.getDayOfWeek();
         assertNotEquals(6, actual1);

@@ -14,7 +14,7 @@ public class MysqlTest {
         //Anniversary
         TimeStamp from = TimeStamp.createStampDayStart(1801, 1, 1);
         TimeStamp to = TimeStamp.createStampDayEnd(1801, 2, 2);
-        AnniversaryItem anniversaryItem = new AnniversaryItem(from, to, "名字", "纪念日详情", "结婚纪念日");
+        AnniversaryItem anniversaryItem = new AnniversaryItem(from, to, "张健", "纪念日详情", "结婚纪念日");
         int anniId = mysql.addSchedule(anniversaryItem.getAttrs());
         anniversaryItem.setID(anniId); // 可能为0
 

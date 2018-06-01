@@ -35,7 +35,7 @@ public class ItemIOTest {
         for (int i = 0; i < testSize; i++) {
             try {
                 Item item = new AppointmentItem(startList.get(i), endList.get(i), "date everyday",
-                        "Girfriend", "Fudan");
+                        "Girlfriend", "Fudan");
                 list.add(item);
             } catch (Exception e) {
                 System.out.println();
