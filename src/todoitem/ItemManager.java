@@ -70,10 +70,10 @@ public class ItemManager {
         if (item.getStatus() == Const.IN_PROGRESS) {//在进行中的待办事项才可以设置为完成状态
             ArrayList<HashMap<String, String>> childrenMsg = new ArrayList<>();
             if (!item.isFather()) {
-                childrenMsg = mysql.queryByFatherID(item.getFatherID());
-                if (mysql.updateState(item.getID(), Const.COMPLETED) == Const.COMPLETED) {//更新成功
+                if (mysql.updateState(item.getID(), Const.COMPLETED) != Const.COMPLETED) {//没更新成功
                     return false;
                 }
+                childrenMsg = mysql.queryByFatherID(item.getFatherID());
             }
             boolean allCompleted = true;
             for (HashMap<String, String> msg : childrenMsg) {
@@ -82,7 +82,7 @@ public class ItemManager {
             if (allCompleted)//所有子待办事项都完成后，更新父待办事项
                 return mysql.updateState(item.isFather() ? item.getID() : item.getFatherID(), Const.COMPLETED) == Const.COMPLETED;
         }
-        return item.getStatus() != Const.COMPLETED;
+        return item.getStatus() == Const.COMPLETED;
     }
 
     /**
@@ -104,14 +104,14 @@ public class ItemManager {
         } else if (stamp.isAfter(to) && st != Const.COMPLETED) {
             status = Const.OVERDUE;
         }
-        if (st != Const.COMPLETED) {
+        if (st != Const.COMPLETED && st != Const.IN_PROGRESS) {
             if (item.getID() < 0)//还未插入数据库
                 item.setStatus(status);
             else
                 mysql.updateState(item.getID(), status);//不是完成状态就自动更新，是否完成由用户更新}
             return status;
         }
-        return Const.COMPLETED;
+        return st;
 
     }
 
@@ -172,7 +172,7 @@ public class ItemManager {
         return resItems;
     }
 
-    private Item getItemByID(int id) {
+    public Item getItemByID(int id) {
         HashMap<String, String> attrs = mysql.queryByID(id + "");
         ItemType type = ItemType.parseItemType(attrs.get("type"));
         return ItemFactory.createItemByItemType(type, attrs);
@@ -191,6 +191,7 @@ public class ItemManager {
     public void setMonth(TimeStamp monthStart, TimeStamp monthEnd) {
         monthList = getItemsByStamp(monthStart, monthEnd);
     }
+
     /**
      * @param item    待添加的待办事项
      * @param confirm 确认是否添加
