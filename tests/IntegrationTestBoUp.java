@@ -4,14 +4,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import todoitem.Item;
+import todoitem.ItemTest;
+import todoitem.itemSub.*;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.junit.Assert.assertTrue;
+
 @RunWith(Parameterized.class)
 public class IntegrationTestBoUp {
     @Parameterized.Parameters
-    public static Collection<Object []> getTestData() {
+    public static Collection<Object[]> getTestData() {
         return Arrays.asList(new Object[][]{
                 {"2018-5-1", "2018-4-29", false, false, false, Item.ItemType.DATE},     //非法时间段，不能创建待办事项对象
 //                {"2018-1-1", "2017-12-30", false, false, false, Item.ItemType.DATE},    //非法时间段
@@ -29,7 +33,7 @@ public class IntegrationTestBoUp {
         });
     }
 
-    public IntegrationTestBoUp(String startTime, String endTime, boolean a , boolean b , boolean c, Item.ItemType type) {
+    public IntegrationTestBoUp(String startTime, String endTime, boolean a, boolean b, boolean c, Item.ItemType type) {
 
     }
 
@@ -55,10 +59,42 @@ public class IntegrationTestBoUp {
         utilTest.testIsLeapYearTrue();
     }
 
-    private void itemTest() {
-
+    private void itemBasicTest() {
+        ItemTest itemTest = new ItemTest();
+        try {
+            itemTest.isDuringTime();
+            itemTest.NullItemInstance();
+            itemTest.promptRelatedTest();
+            itemTest.setDetailText();
+            itemTest.setFrom();
+            itemTest.setItemType();
+            itemTest.setTo();
+            itemTest.statusPriorityFatherRelatedTest();
+        } catch (Exception e) {
+            assertTrue(false);
+        }
     }
 
+    private void itemDiffTypeTest() {
+        try {
+            AnniversaryItemTest anniversaryItemTest = new AnniversaryItemTest();
+            anniversaryItemTest.attrTest();
+            AppointmentItemTest appointmentItem = new AppointmentItemTest();
+            appointmentItem.attrTest();
+            CourseItemTest courseItemTest = new CourseItemTest();
+            courseItemTest.attrTest();
+            InterviewItemTest interviewItemTest = new InterviewItemTest();
+            interviewItemTest.attrTest();
+            MeetingItemTest meetingItemTest = new MeetingItemTest();
+            meetingItemTest.attrTest();
+            OtherItemTest otherItemTest = new OtherItemTest();
+            otherItemTest.attrTest();
+            TravelItemTest travelItem = new TravelItemTest();
+            travelItem.attrTest();
+        } catch (Exception e) {
+            assertTrue(false);
+        }
+    }
 
     @Test
     public void integration() {
@@ -70,7 +106,16 @@ public class IntegrationTestBoUp {
 
         /**
          * 接下来测试 todoitem 包
+         * 1. Item 的基本属性测试
+         * 2. 不同的类型的测试
          * */
+        itemBasicTest();
+        itemDiffTypeTest();
+        /**
+         * database 包测试
+         * 1. Mysql 测试
+         * */
+
 
     }
 
