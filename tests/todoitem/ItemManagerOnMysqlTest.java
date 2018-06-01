@@ -85,15 +85,19 @@ public class ItemManagerOnMysqlTest {
                             "已完成", Const.PRIORITY, Const.COMPLETED, false);
                     Item item2 = new OtherItem(new TimeStamp(2018, 5, 20, 8, 0),
                             new TimeStamp(2020, 2, 10, 0, 0),
-                            "已完成", Const.PRIORITY, Const.COMPLETED, false);
-                    item1.addAttr("fatherID", item.getID() + "");
-                    item2.addAttr("fatherID", item.getID() + "");
+                            "进行中", Const.PRIORITY, Const.IN_PROGRESS, false);
+                    item1.setFatherID(item.getID());
+                    item2.setFatherID(item.getID());
+                    item1.setIsFather(false);
+                    item2.setIsFather(false);
                     manager.addChildItem(item1);
                     manager.addChildItem(item2);
+                    manager.setCompleted(item2);
 //                    ArrayList<Item> father = manager.getItemsByStamp(item.getFrom(), item.getTo());
 //                    for (Item it : father) {
 //                        assertEquals(Const.COMPLETED, it.getStatus());
 //                    }
+                    item = manager.getItemByID(item.getID());
                     //TODO 获取新的父待办事项
                     assertEquals(Const.COMPLETED, item.getStatus());
                 } else if (item.getDetailText().equals("进行中")) {
