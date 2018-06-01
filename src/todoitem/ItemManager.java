@@ -72,7 +72,7 @@ public class ItemManager {
             if (!item.isFather()) {
                 if (mysql.updateState(item.getID(), Const.COMPLETED) != Const.COMPLETED) {//没更新成功
                     return false;
-                }
+                } else item.setStatus(Const.COMPLETED);
                 childrenMsg = mysql.queryByFatherID(item.getFatherID());
             }
             boolean allCompleted = true;
@@ -275,6 +275,12 @@ public class ItemManager {
         if ((fr.isBefore(fatherFr) || to.isAfter(fatherTo)) && !(fr.equals(fatherFr) || to.equals(fatherFr))) {
             throw new DataErrorException("子待办事项的时间应在父待办事项时间范围内");
         }
+        ArrayList<HashMap<String, String>> itemsMsg = mysql.queryByFatherID(father.getID());
+        if (itemsMsg != null && overlappedTypes.contains(item.getItemType().getTypeStr()))
+            for (HashMap<String, String> itemMsg : itemsMsg) {
+                if (overlappedTypes.contains(itemMsg.get("type")))
+                    throw new DataErrorException("与其他待办事项时间重叠！\n会议，课程，约会，面试，旅程等类型不允许时间重叠！");
+            }
         updateStatus(item);
         int id = mysql.addSchedule(item.getAttrs());
         if (id != 0)
@@ -291,11 +297,12 @@ public class ItemManager {
             boolean deleteAll = true;
             ArrayList<HashMap<String, String>> childrenMsg = mysql.queryByFatherID(item.getID());
             if (childrenMsg != null)
-                for (HashMap<String, String> msg : childrenMsg)
-                    deleteAll &= mysql.deleteSchedule(Integer.parseInt(msg.get("scheduleID"))) != 0;
-            return mysql.deleteSchedule(item.getID()) != 0 && deleteAll;
+                for (HashMap<String, String> msg : childrenMsg) {
+                    deleteAll &= mysql.deleteSchedule(Integer.parseInt(msg.getOrDefault("scheduleID", msg.get("ID")))) == 0;
+                }
+            return mysql.deleteSchedule(item.getID()) == 0 && deleteAll;
         } else
-            return mysql.deleteSchedule(item.getID()) != 0;
+            return mysql.deleteSchedule(item.getID()) == 0;
     }
 
 
@@ -313,7 +320,7 @@ public class ItemManager {
         *例子：会议不能和会议时间重叠，会议不能和约会时间重叠。会议不能和纪念日的子待办事项-约会时间重叠。
         **/
         ArrayList<HashMap<String, String>> itemsMsg = mysql.queryByTime(item.getFrom().toString(), item.getTo().toString());
-        if (itemsMsg != null)
+        if (itemsMsg != null && overlappedTypes.contains(item.getItemType().getTypeStr()))
             for (HashMap<String, String> itemMsg : itemsMsg) {
                 if (overlappedTypes.contains(itemMsg.get("type")))
                     throw new DataErrorException("与其他待办事项时间重叠！\n会议，课程，约会，面试，旅程等类型不允许时间重叠！");
