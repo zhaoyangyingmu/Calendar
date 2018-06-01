@@ -1,9 +1,11 @@
+import database.MysqlTest;
 import kernel.CalendarDateTest;
 import kernel.DateUtilTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import todoitem.Item;
+import todoitem.ItemManagerOnMysqlTest;
 import todoitem.ItemTest;
 import todoitem.itemSub.*;
 
@@ -96,6 +98,32 @@ public class IntegrationTestBoUp {
         }
     }
 
+
+    private void sqlTest() {
+        MysqlTest mysqlTest = new MysqlTest();
+        try {
+            mysqlTest.totalTest();
+        } catch (Exception e) {
+            assertTrue(false);
+        }
+    }
+
+    private void itemManagerTest() {
+        ItemManagerOnMysqlTest.init();
+        ItemManagerOnMysqlTest itemManagerOnMysqlTest = new ItemManagerOnMysqlTest();
+        try {
+            itemManagerOnMysqlTest.updateStatus();
+            itemManagerOnMysqlTest.setCompleted();
+            itemManagerOnMysqlTest.getItemsByStamp();
+            itemManagerOnMysqlTest.getInstance();
+            itemManagerOnMysqlTest.deleteItem();
+            itemManagerOnMysqlTest.addItem();
+        } catch (Exception e) {
+            assertTrue(false);
+        }
+    }
+
+
     @Test
     public void integration() {
         /**
@@ -115,8 +143,13 @@ public class IntegrationTestBoUp {
          * database 包测试
          * 1. Mysql 测试
          * */
+        sqlTest();
 
+        /**
+         * 基础设施设计好了之后，开始测顶层的ItemManager
+         * */
 
+        itemManagerTest();
 
     }
 

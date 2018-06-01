@@ -40,7 +40,6 @@ public class CourseItemTest {
             assertEquals(itemTmp.getRemark(), (String)list.get(i)[5]);
             assertEquals(itemTmp.getPlace(), (String)list.get(i)[6]);
             assertEquals(itemTmp.getDuration(), Integer.parseInt((String)list.get(i)[7]));
-            assertEquals(itemTmp.getDay(), Integer.parseInt((String)list.get(i)[8]));
         }
     }
 }
