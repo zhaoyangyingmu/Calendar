@@ -1,24 +1,31 @@
 package ui.item;
 
+import exception.DataErrorException;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import kernel.Display;
 import todoitem.Const;
 import todoitem.Item;
 import todoitem.ItemFactory;
+import todoitem.ItemManager;
 import todoitem.util.TimeStamp;
+import ui.pane.BodyPane;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ItemPane extends GridPane {
+public abstract class ItemPane extends GridPane {
     private Item item;
     private Label typeLabel;
     private Label startLabel;
@@ -38,12 +45,14 @@ public class ItemPane extends GridPane {
     DatePicker startDate;
     DatePicker endDate;
 
-    private Stage primaryStage;
+    ItemManager manager;
     protected int priority;
     private int row;
+    public boolean fromAdd;
 
-    public ItemPane(Item item) {
+    ItemPane(Item item, boolean fromAdd) {
         this.item = item;
+        this.fromAdd = fromAdd;
         init();
     }
 
@@ -55,7 +64,7 @@ public class ItemPane extends GridPane {
 
         row = 0;
         priority = item.getPriority();
-        primaryStage = null;
+        manager = ItemManager.getInstance();
 
         TimeStamp from = item.getFrom();
         TimeStamp to = item.getTo();
@@ -111,6 +120,10 @@ public class ItemPane extends GridPane {
         addChildButton = new Button("添加子事项");
         promptButton = new Button("设置提醒");
         saveButton = new Button("保存");
+
+        if (!item.isFather() || fromAdd) {
+            addChildButton.setDisable(true);
+        }
         bindEvent();
         paint();
     }
@@ -130,18 +143,14 @@ public class ItemPane extends GridPane {
             }
             attrs.replace("priority", priority + "");
             Item item = ItemFactory.createItemByItemType(type, attrs);
-            close();
-            ItemPane pane = ItemPaneFactory.createPaneByItemType(item);
-            if (pane != null) {
-                Stage stage = new Stage();
-                pane.setPrimaryStage(stage);
-                stage.setScene(new Scene(pane));
-                stage.setResizable(false);
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.show();
-            }
+            CommonItemPane.close();
+            CommonItemPane.addPane(item);
         });
 
+        promptButton.setOnMouseClicked(event -> {
+//            Display.addPromptPopPane(item);
+            Display.addPromptPane(item);
+        });
         priorityChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             priority = newValue.intValue();
         });
@@ -209,6 +218,12 @@ public class ItemPane extends GridPane {
                 endHourChoiceBox.setValue(startHourChoiceBox.getValue());
             }
         });
+        saveButton.setOnMouseClicked(event -> {
+            save();
+            if (item.isFather() && fromAdd)
+                addChildButton.setDisable(false);
+            else CommonItemPane.close();
+        });
     }
 
     private void paint() {
@@ -237,29 +252,23 @@ public class ItemPane extends GridPane {
         row = 4;
     }
 
-    public void setPrimaryStage(Stage stage) {
-        this.primaryStage = stage;
-    }
-
-    private void close() {
-        if (primaryStage != null)
-            primaryStage.close();
-    }
-
     int getTailRow() {
         return row;
     }
 
-    void addNewItemPane(Item child) {
-        ItemPane itemPane = ItemPaneFactory.createPaneByItemType(child);
-        if (itemPane != null) {
-            Stage stage = new Stage();
-            itemPane.setPrimaryStage(stage);
-            stage.setScene(new Scene(itemPane));
-            stage.setResizable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+    abstract void save();
+
+    void saveItem(Item item) {
+        try {
+            if (!item.isFather() && item.getFatherID() > 0) {
+                manager.addChildItem(item);
+            } else if (item.isFather()) {
+                manager.addItem(item, true);
+            }
+            CommonItemPane.close();
+            BodyPane.getInstance().refresh();
+        } catch (DataErrorException e) {
+            Display.showToast(e.getMessage());
         }
     }
-
 }
