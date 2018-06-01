@@ -10,11 +10,14 @@ public class Mysql {
     private static Mysql mysql = null;
     // JDBC 驱动名及数据库 URL
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private final String DB_URL = "jdbc:mysql://184.170.217.107:3306/calendar?useUnicode=true&characterEncoding=utf8";
+    private final String DB_URL = "jdbc:mysql://120.77.244.158:3306/calendar?useUnicode=true&characterEncoding=utf8";
+//    private final String DB_URL = "jdbc:mysql://127.0.0.1:3306/calendar?useUnicode=true&characterEncoding=utf8";
+//    private final String DB_URL = "jdbc:mysql://184.170.217.107:3306/calendar?useUnicode=true&characterEncoding=utf8";
 
     // 数据库的用户名与密码，需要根据自己的设置
     private final String USER = "root";
-    private final String PASS = "password";
+//    private final String PASS = "password";
+    private final String PASS = "root";
     private Connection conn = null;
     private Statement stmt = null;
 
