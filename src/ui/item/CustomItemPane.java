@@ -14,18 +14,20 @@ public class CustomItemPane extends ItemPane {
     private Label contentLabel;
     private TextField contentText;
 
+    private boolean hasTime;
     private OtherItem item;
 
     public CustomItemPane(Item item, boolean fromAdd) {
         super(item, fromAdd);
         this.item = (OtherItem) item;
+        this.hasTime = item.getAttrs().getOrDefault("hasTime", "1").equals("1");
         init();
     }
 
     private void init() {
         hasTimeBox = new CheckBox();
         hasTimeLabel = new Label("设置时间");
-        hasTimeBox.setSelected(true);
+        hasTimeBox.setSelected(hasTime);
         contentLabel = new Label("内容：");
         contentText = new TextField(item.getDetailText());
         bindEvent();
@@ -35,6 +37,7 @@ public class CustomItemPane extends ItemPane {
     private void bindEvent() {
         hasTimeBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (fromAdd) {
+                hasTime = newValue;
                 if (!oldValue) {
                     startDate.setDisable(false);
                     endDate.setDisable(false);
@@ -73,12 +76,18 @@ public class CustomItemPane extends ItemPane {
 
     @Override
     void save() {
-        TimeStamp from = new TimeStamp(startDate.getValue().getYear(), startDate.getValue().getMonth().getValue(),
-                startDate.getValue().getDayOfMonth(), startHourChoiceBox.getValue(), startMinuteChoiceBox.getValue());
-        TimeStamp to = new TimeStamp(endDate.getValue().getYear(), endDate.getValue().getMonth().getValue(),
-                endDate.getValue().getDayOfMonth(), endHourChoiceBox.getValue(), endMinuteChoiceBox.getValue());
-        item.setFrom(from);
-        item.setTo(to);
+        if (hasTime) {
+            TimeStamp from = new TimeStamp(startDate.getValue().getYear(), startDate.getValue().getMonth().getValue(),
+                    startDate.getValue().getDayOfMonth(), startHourChoiceBox.getValue(), startMinuteChoiceBox.getValue());
+            TimeStamp to = new TimeStamp(endDate.getValue().getYear(), endDate.getValue().getMonth().getValue(),
+                    endDate.getValue().getDayOfMonth(), endHourChoiceBox.getValue(), endMinuteChoiceBox.getValue());
+            item.setFrom(from);
+            item.setTo(to);
+        } else {
+            item.setFrom(null);
+            item.setTo(null);
+        }
+
         item.setItemType(Item.ItemType.parseItemType(typeChoiceBox.getValue()));
         item.setPriority(priority);
         item.setDetailText(contentText.getText());

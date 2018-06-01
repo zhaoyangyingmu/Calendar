@@ -3,8 +3,11 @@ package todoitem;
 import database.Mysql;
 import exception.DataErrorException;
 import javafx.collections.FXCollections;
+import kernel.CalendarDate;
+import kernel.DateUtil;
 import todoitem.Item.ItemType;
 import todoitem.itemSub.AnniversaryItem;
+import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 import todoitem.util.TimeStampFactory;
 
@@ -92,6 +95,9 @@ public class ItemManager {
     public int updateStatus(Item item) {
         if (item == null)
             return -1;//更新失败
+        if (item.getFrom() == null && item.getTo() == null && item.getStatus() != Const.COMPLETED) {
+            item.setStatus(Const.IN_PROGRESS);
+        }
         Calendar time = Calendar.getInstance();
         TimeStamp stamp = new TimeStamp(time.get(Calendar.YEAR), time.get(Calendar.MONTH) + 1, time.get(Calendar.DAY_OF_MONTH),
                 time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
@@ -138,9 +144,34 @@ public class ItemManager {
         return resultList;
     }
 
+    public ArrayList<Item> getCustomItems() {
+        ArrayList<Item> customItems = getItems(mysql.queryByTime("", ""));
+        CalendarDate today = DateUtil.getToday();
+        TimeStamp fr = TimeStamp.createStampDayStart(today.getYear(), today.getMonth(), today.getDay());
+        TimeStamp to = TimeStamp.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay());
+        for (Item item : customItems) {
+            item.setFrom(fr);
+            item.setTo(to);
+            item.addAttr("hasTime", "0");
+        }
+        return customItems;
+    }
+
     public ArrayList<Item> getItemsByStamp(TimeStamp from, TimeStamp to) {
         ArrayList<HashMap<String, String>> itemsMsg = mysql.queryByTime(from.toString(), to.toString());
-        return getItems(itemsMsg);
+        ArrayList<Item> resList = new ArrayList<>();
+        try {
+            CalendarDate today = DateUtil.getToday();
+            Item temp = new OtherItem(TimeStamp.createStampDayStart(today.getYear(), today.getMonth(), today.getDay()),
+                    TimeStamp.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay()), "");
+            if (temp.isDuringTime(from, to)) {
+                resList.addAll(getCustomItems());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        resList.addAll(getItems(itemsMsg));
+        return resList;
     }
 
     public ArrayList<Item> getItemsByFatherItem(Item item) {
@@ -190,6 +221,7 @@ public class ItemManager {
 
     public void setMonth(TimeStamp monthStart, TimeStamp monthEnd) {
         monthList = getItemsByStamp(monthStart, monthEnd);
+        monthList.addAll(getCustomItems());
     }
 
     /**
@@ -198,7 +230,7 @@ public class ItemManager {
      * @return 添加成功返回id，否则返回0
      */
     public int addItem(Item item, boolean confirm) throws DataErrorException {
-        if (confirm && item != null) {
+        if (confirm && item != null && item.getFrom() != null) {
             if (item.getID() <= 0 && canOverlapped(item)) {
                 updateStatus(item);
                 int id = mysql.addSchedule(item.getAttrs());
@@ -220,6 +252,15 @@ public class ItemManager {
                     return id;
                 }
             }
+        } else if (item != null && item.getFrom() == null) {
+            if (item.getID() > 0) {
+                deleteItem(item);
+            }
+            updateStatus(item);
+            int id = mysql.addSchedule(item.getAttrs());
+            if (id != 0)
+                item.setID(id);
+            return id;
         }
         return 0;
     }

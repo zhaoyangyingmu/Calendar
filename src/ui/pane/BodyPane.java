@@ -179,14 +179,10 @@ public class BodyPane extends StackPane {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-//                Display.addDetailPane(from, to);
                 if (manager.getItemsByStamp(from, to).isEmpty()) {
                     Item item = null;
                     try {
                         item = new OtherItem(from, to, "");
-//                        ItemManager.getInstance().addItem(item, false);
-//                        ItemIO.output();
-//                        Display.addEditPane(item, true);
                         CommonItemPane pane = new CommonItemPane(item, true);
                         Stage stage = new Stage();
                         stage.setScene(new Scene(pane));
@@ -200,8 +196,6 @@ public class BodyPane extends StackPane {
                     }
                 } else
                     Display.startItemListStage(from, to);
-
-//                Display.addDetailPane(from, to);
             }
         }
     }
