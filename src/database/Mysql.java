@@ -72,7 +72,8 @@ public class Mysql {
                     anniversaryType = hashMap.get("anniversaryType");
                     content = hashMap.get("content");
                     startDay = hashMap.get("startDay");
-                    sql = "INSERT INTO anniversary  (anniversaryType,content,scheduleID,startDay)VALUES " +
+                    name = hashMap.get("name");
+                    sql = "INSERT INTO anniversary  (anniversaryType,content,scheduleID,startDay,name)VALUES " +
                             "('" + anniversaryType + "','" + content + "','" + scheduleID + "','" + startDay + "')";
                     stmt.execute(sql);
                     break;
@@ -190,6 +191,7 @@ public class Mysql {
                         hashMap.put("anniversaryType", rs.getString("anniversaryType"));
                         hashMap.put("content", rs.getString("content"));
                         hashMap.put("startDay", rs.getString("startDay"));
+                        hashMap.put("name", rs.getString("name"));
                     }
                     break;
                 case "COURSE":
@@ -348,6 +350,7 @@ public class Mysql {
                             result.get(i).put("anniversaryType", rs.getString("anniversaryType"));
                             result.get(i).put("content", rs.getString("content"));
                             result.get(i).put("startDay", rs.getString("startDay"));
+                            result.get(i).put("name", rs.getString("name"));
                         }
                         break;
                     case "COURSE":
@@ -654,6 +657,7 @@ public class Mysql {
                         hashMap.put("scheduleID", rs.getString("scheduleID"));
                         hashMap.put("endTime", calToStr(resultEndTime));
                         hashMap.put("year", resultStartTime.get(Calendar.YEAR));
+                        hashMap.put("name",rs.getString("name"));
                         result.add(hashMap);
                     }
                 }
