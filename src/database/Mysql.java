@@ -263,7 +263,7 @@ public class Mysql {
 
     public ArrayList<HashMap<String, String>> queryByTime(String startTime, String endTime) {
         //处理传入startTime endTime都为空，此时查找custom表中startTime，endTime都为空字符串的待办事项
-        if (startTime.equals("") && endTime.equals("")) {
+        if (startTime.trim().equals("") && endTime.trim().equals("")) {
             ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
             String sql;
             ResultSet rs = null;     //将sql语句传至数据库，返回的值为一个字符集用一个变量接收
