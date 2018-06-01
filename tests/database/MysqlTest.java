@@ -108,5 +108,14 @@ public class MysqlTest {
             System.out.println("插入子待办事项失败！");
         }
 
+
+        /**
+         * 测试update方法
+         * */
+        meetingChild.setStatus(2);
+        int resultId = mysql.updateState(meetingChild.getID(), 2);
+        if(resultId != -1) {
+            assertEquals(meetingChild.getStatus() , 2);
+        }
     }
 }
