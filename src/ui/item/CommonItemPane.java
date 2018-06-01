@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import todoitem.Item;
 import todoitem.ItemManager;
+import ui.pane.ItemListPane;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,8 @@ public class CommonItemPane extends VBox {
             HBox hBox = new HBox();
             hBox.setSpacing(20);
             hBox.setPadding(insets);
+            scrollPane.setPadding(new Insets(5, 0, 0, 5));
+            scrollPane.setMinSize(300,60);
             this.getChildren().add(hBox);
             ArrayList<Item> children = manager.getItemsByFatherItem(item);
             if (children.isEmpty()) {
@@ -64,8 +67,15 @@ public class CommonItemPane extends VBox {
                     Label timeLabel = new Label(child.getFrom().toString() + " ~ " + child.getTo().toString());
                     hBox1.getChildren().addAll(typeLabel, timeLabel);
                     hBox1.setOnMouseClicked(event -> {
-
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.alwaysOnTopProperty();
+                        stage.setTitle("Memo");
+                        stage.setResizable(false);
+                        stage.setScene(new Scene(new ItemListPane(child, stage)));
+                        stage.showAndWait();
                     });
+                    hBox1.setStyle("-fx-border-color: transparent transparent #a39e9e transparent; -fx-cursor: hand");
                     vBox.getChildren().add(hBox1);
                 }
                 scrollPane.setContent(vBox);

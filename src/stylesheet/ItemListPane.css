@@ -3,7 +3,6 @@
     -fx-font-smoothing-type: inherit;
 }
 
-
 #memoListPane .item_title {
     -fx-text-fill: #334252;
     -fx-font-size: 18px;
@@ -24,7 +23,6 @@
     -fx-border-color: transparent transparent rgba(0, 0, 0, .05) transparent;
     -fx-border-insets: 0 0 1 0;
     -fx-border-style: solid;
-    -fx-cursor: hand;
 }
 
 #memoListPane #num_label {
@@ -35,6 +33,7 @@
     -fx-font-size: 30px;
     -fx-text-fill: #38925E;
     -fx-font-weight: bolder;
+    -fx-cursor: hand;
 }
 
 #memoListPane #add_label:hover {
@@ -47,6 +46,7 @@
     -fx-border-color: transparent transparent transparent #D3E397;
     -fx-border-insets: 0 0 0 1;
     -fx-border-style: solid;
+    -fx-cursor: hand;
 }
 
 #memoListPane .del_label:hover {
@@ -55,5 +55,9 @@
 
 #memoListPane .item_status:hover {
     -fx-text-fill: #2d2d2d;
+}
+
+#memoListPane .memo_item {
+    -fx-cursor: hand;
 }
 

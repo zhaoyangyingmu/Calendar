@@ -34,11 +34,27 @@ public class ItemListPane extends VBox {
     private TimeStamp frTime;
     private TimeStamp toTime;
     private Stage stage;
+    private boolean isChild = false;
 
     public ItemListPane(TimeStamp frTime, TimeStamp toTime, Stage stage) {
         this.memos = ItemManager.getInstance().getItemsByStamp(frTime, toTime);
         this.frTime = frTime;
         this.toTime = toTime;
+        this.stage = stage;
+        this.setId("memoListPane");
+        this.getStylesheets().add(ItemListPane.class.getResource("../../stylesheet/ItemListPane.css").toString());
+        numLabel = new Label("Total " + memos.size() + " to-do");
+        addLabel = new Label("+");
+        paint();
+        bindEvent();
+    }
+
+    public ItemListPane(Item item, Stage stage) {
+        this.isChild = true;
+        this.memos = new ArrayList<>();
+        memos.add(item);
+        this.frTime = item.getFrom();
+        this.toTime = item.getTo();
         this.stage = stage;
         this.setId("memoListPane");
         this.getStylesheets().add(ItemListPane.class.getResource("../../stylesheet/ItemListPane.css").toString());
@@ -89,7 +105,9 @@ public class ItemListPane extends VBox {
             delLabel.getStyleClass().addAll("del_label", "label");
             delLabel.setOnMouseClicked(event -> {
                 ItemManager.getInstance().deleteItem(memo);
-//                ItemIO.output();
+                if (isChild) {
+                    stage.close();
+                }
                 vBox.getChildren().remove(pane);
                 numLabel.setText("Total " + ItemManager.getInstance().getItemsByStamp(frTime, toTime).size() + " to-do");
                 BodyPane.getInstance().refresh();
