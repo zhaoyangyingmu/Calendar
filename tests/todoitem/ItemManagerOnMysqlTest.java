@@ -88,12 +88,8 @@ public class ItemManagerOnMysqlTest {
                             "已完成", Const.PRIORITY, Const.COMPLETED, false);
                     item1.addAttr("fatherID", item.getID() + "");
                     item2.addAttr("fatherID", item.getID() + "");
-                    manager.addChildItem(item, item1);
-                    manager.addChildItem(item, item2);
-                    ArrayList<Item> children = manager.getItemsByFatherItem(item);
-                    for (Item child : children) {
-                        manager.setCompleted(child);
-                    }
+                    manager.addChildItem(item1);
+                    manager.addChildItem(item2);
 //                    ArrayList<Item> father = manager.getItemsByStamp(item.getFrom(), item.getTo());
 //                    for (Item it : father) {
 //                        assertEquals(Const.COMPLETED, it.getStatus());
