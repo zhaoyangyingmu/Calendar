@@ -16,7 +16,7 @@ public class Mysql {
 
     // 数据库的用户名与密码，需要根据自己的设置
     private final String USER = "root";
-//    private final String PASS = "password";
+    //    private final String PASS = "password";
     private final String PASS = "root";
     private Connection conn = null;
     private Statement stmt = null;
@@ -45,7 +45,7 @@ public class Mysql {
 
     /**
      * 只负责增加元素，不成功时返回0.
-     * */
+     */
     public int addSchedule(HashMap<String, String> hashMap) {
         String scheduleID = "";
         try {
@@ -74,7 +74,7 @@ public class Mysql {
                     startDay = hashMap.get("startDay");
                     name = hashMap.get("name");
                     sql = "INSERT INTO anniversary  (anniversaryType,content,scheduleID,startDay,name)VALUES " +
-                            "('" + anniversaryType + "','" + content + "','" + scheduleID + "','" + startDay + "')";
+                            "('" + anniversaryType + "','" + content + "','" + scheduleID + "','" + startDay + "','" + name + "')";
                     stmt.execute(sql);
                     break;
                 case "COURSE":
@@ -155,7 +155,7 @@ public class Mysql {
     public HashMap<String, String> queryByID(String id) {
         String sql = "SELECT * FROM schedule WHERE ID = '" + id + "'";
         ResultSet rs = null;     //将sql语句传至数据库，返回的值为一个字符集用一个变量接收
-        HashMap<String,String>  hashMap= new HashMap<String,String>();
+        HashMap<String, String> hashMap = new HashMap<String, String>();
         try {
             rs = stmt.executeQuery(sql);
             while (rs.next()) {    //next（）获取里面的内容
@@ -475,8 +475,8 @@ public class Mysql {
     }//测试完毕
 
     /**
-     *  更新状态。
-     * */
+     * 更新状态。
+     */
     public int updateState(int scheduleID, int status) {
         String sql = "UPDATE schedule SET status = '" + status + "'WHERE ID= '" + scheduleID + "' ";   //SQL语句
         try {
@@ -657,7 +657,7 @@ public class Mysql {
                         hashMap.put("scheduleID", rs.getString("scheduleID"));
                         hashMap.put("endTime", calToStr(resultEndTime));
                         hashMap.put("year", resultStartTime.get(Calendar.YEAR));
-                        hashMap.put("name",rs.getString("name"));
+                        hashMap.put("name", rs.getString("name"));
                         result.add(hashMap);
                     }
                 }
