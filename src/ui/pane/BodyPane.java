@@ -7,9 +7,11 @@ import io.ItemIO;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import kernel.CalendarDate;
 import kernel.DateUtil;
 import kernel.Display;
@@ -18,6 +20,7 @@ import todoitem.ItemManager;
 import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 import ui.Config;
+import ui.item.CommonItemPane;
 import ui.view.*;
 
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ public class BodyPane extends StackPane {
     private ContentGrid contentGrid;
     private CalendarDate currentDate;
     private VBox vBox;
+    private ItemManager manager;
 
     public static BodyPane getInstance() {
         if (bodyPane == null) {
@@ -46,6 +50,7 @@ public class BodyPane extends StackPane {
     }
 
     private BodyPane() {
+        manager = ItemManager.getInstance();
         currentDate = DateUtil.getToday();
         contentGrid = new ContentGrid(currentDate);
         vBox = new VBox();
@@ -112,11 +117,14 @@ public class BodyPane extends StackPane {
                 });
                 this.add(item.getItem(), i, 0);
             }
+
+            manager.setMonth(TimeStamp.createStampDayStart(calendars.get(0).getYear(), calendars.get(0).getMonth(), calendars.get(0).getDay()),
+                    TimeStamp.createStampDayEnd(calendars.get(curSize - 1).getYear(), calendars.get(curSize - 1).getMonth(), calendars.get(curSize - 1).getDay()));
             int j;
             for (int i = 0; i < curSize; i++) {
                 j = i + lastSize;
                 DayItem item = new OrdinaryDay(calendars.get(i));
-                ArrayList<Item> items = ItemManager.getInstance().getItemsByStamp(from, to);
+                ArrayList<Item> items = manager.getMonthDayItems(from, to);
                 if (items.size() > 0) {
                     item = new MemoDay(item, items).getItem();
                 }
@@ -172,13 +180,19 @@ public class BodyPane extends StackPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
 //                Display.addDetailPane(from, to);
-                if (ItemManager.getInstance().getItemsByStamp(from, to).isEmpty()) {
+                if (manager.getItemsByStamp(from, to).isEmpty()) {
                     Item item = null;
                     try {
                         item = new OtherItem(from, to, "");
-                        ItemManager.getInstance().addItem(item, false);
+//                        ItemManager.getInstance().addItem(item, false);
 //                        ItemIO.output();
-                        Display.addEditPane(item, true);
+//                        Display.addEditPane(item, true);
+                        CommonItemPane pane = new CommonItemPane(item, true);
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(pane));
+                        pane.setPrimaryStage(stage);
+                        stage.setResizable(false);
+                        stage.show();
                     } catch (DataErrorException e) {
                         Display.showToast(e.getMessage());
                     } catch (Exception e) {

@@ -429,7 +429,7 @@ public class EditPane extends GridPane {
     private Item anniversaryTypeItem(TimeStamp from, TimeStamp to) throws Exception {
         String anniversaryType = ((LabelAndTextRow) anniversaryControl[0]).getTextField().getText();
         String anniversaryContent = ((LabelAndTextRow) anniversaryControl[1]).getTextField().getText();
-        return new AnniversaryItem(from, to, anniversaryContent, anniversaryType, priority);
+        return new AnniversaryItem(from, to, "", anniversaryContent, anniversaryType, priority);
     }
 
     private Item courseTypeItem(TimeStamp from, TimeStamp to) throws Exception {
