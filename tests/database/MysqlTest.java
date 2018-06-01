@@ -17,7 +17,7 @@ public class MysqlTest {
         //Anniversary
         TimeStamp from = TimeStamp.createStampDayStart(1801,1,1);
         TimeStamp to = TimeStamp.createStampDayEnd(1801,2,2);
-        AnniversaryItem anniversaryItem = new AnniversaryItem(from , to ,"纪念日详情" , "结婚纪念日" );
+        AnniversaryItem anniversaryItem = new AnniversaryItem(from , to ,"张健","纪念日详情" , "结婚纪念日" );
         int anniId = mysql.addSchedule(anniversaryItem.getAttrs());
         anniversaryItem.setID(anniId); // 可能为0
 
@@ -92,10 +92,20 @@ public class MysqlTest {
          * 现在开始增加子待办事项
          * */
 
-        if(travelId != 0) {
-            from = TimeStamp.createStampDayStart(1811 , 2, 1);
-            to = TimeStamp.createStampDayEnd(1812, 1, 1);
-            OtherItem otherItem1 = new OtherItem(from , to , "No details");
+        from = TimeStamp.createStampDayStart(1800 , 1, 1);
+        to = TimeStamp.createStampDayEnd(1811, 2 , 2);
+        AnniversaryItem anniFather = new AnniversaryItem(from , to , "谢东方" , "周年纪念日" , "生日");
+        anniFather.setIsFather(true);
+        int fatherId = mysql.addSchedule(anniFather.getAttrs());
+        MeetingItem meetingChild = new MeetingItem(from , to ,"到逸夫楼开会", "外出研讨会", "衣服科技咯我" );
+        meetingChild.setFatherID(fatherId);
+        int childId = mysql.addSchedule(meetingChild.getAttrs());
+        if(childId != 0) {
+            MeetingItem meetingResult = new MeetingItem(mysql.queryByFatherID(meetingChild.getFatherID()).get(0));
+            assertEquals(meetingChild.getLocation() , meetingResult.getLocation());
+        }
+        else {
+            System.out.println("插入子待办事项失败！");
         }
 
     }
