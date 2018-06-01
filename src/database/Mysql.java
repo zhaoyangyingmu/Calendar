@@ -10,11 +10,14 @@ public class Mysql {
     private static Mysql mysql = null;
     // JDBC 驱动名及数据库 URL
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private final String DB_URL = "jdbc:mysql://184.170.217.107:3306/calendar?useUnicode=true&characterEncoding=utf8";
+    private final String DB_URL = "jdbc:mysql://120.77.244.158:3306/calendar?useUnicode=true&characterEncoding=utf8";
+//    private final String DB_URL = "jdbc:mysql://127.0.0.1:3306/calendar?useUnicode=true&characterEncoding=utf8";
+//    private final String DB_URL = "jdbc:mysql://184.170.217.107:3306/calendar?useUnicode=true&characterEncoding=utf8";
 
     // 数据库的用户名与密码，需要根据自己的设置
     private final String USER = "root";
-    private final String PASS = "password";
+//    private final String PASS = "password";
+    private final String PASS = "root";
     private Connection conn = null;
     private Statement stmt = null;
 
@@ -69,7 +72,8 @@ public class Mysql {
                     anniversaryType = hashMap.get("anniversaryType");
                     content = hashMap.get("content");
                     startDay = hashMap.get("startDay");
-                    sql = "INSERT INTO anniversary  (anniversaryType,content,scheduleID,startDay)VALUES " +
+                    name = hashMap.get("name");
+                    sql = "INSERT INTO anniversary  (anniversaryType,content,scheduleID,startDay,name)VALUES " +
                             "('" + anniversaryType + "','" + content + "','" + scheduleID + "','" + startDay + "')";
                     stmt.execute(sql);
                     break;
@@ -187,6 +191,7 @@ public class Mysql {
                         hashMap.put("anniversaryType", rs.getString("anniversaryType"));
                         hashMap.put("content", rs.getString("content"));
                         hashMap.put("startDay", rs.getString("startDay"));
+                        hashMap.put("name", rs.getString("name"));
                     }
                     break;
                 case "COURSE":
@@ -345,6 +350,7 @@ public class Mysql {
                             result.get(i).put("anniversaryType", rs.getString("anniversaryType"));
                             result.get(i).put("content", rs.getString("content"));
                             result.get(i).put("startDay", rs.getString("startDay"));
+                            result.get(i).put("name", rs.getString("name"));
                         }
                         break;
                     case "COURSE":
@@ -651,6 +657,7 @@ public class Mysql {
                         hashMap.put("scheduleID", rs.getString("scheduleID"));
                         hashMap.put("endTime", calToStr(resultEndTime));
                         hashMap.put("year", resultStartTime.get(Calendar.YEAR));
+                        hashMap.put("name",rs.getString("name"));
                         result.add(hashMap);
                     }
                 }
