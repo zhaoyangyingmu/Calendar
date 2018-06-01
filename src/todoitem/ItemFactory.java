@@ -5,7 +5,7 @@ import todoitem.itemSub.*;
 import java.util.HashMap;
 
 public class ItemFactory {
-    static Item createItemByItemType(Item.ItemType type, HashMap<String, String> attrs) {
+    public static Item createItemByItemType(Item.ItemType type, HashMap<String, String> attrs) {
         if (type != null)
             switch (type) {
                 case DATE:

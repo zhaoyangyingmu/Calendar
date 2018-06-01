@@ -46,7 +46,7 @@ public class CourseItem extends Item {
         return getValue("name");
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         addAttr("name", name);
     }
 
@@ -62,7 +62,7 @@ public class CourseItem extends Item {
         return Integer.parseInt(getValue("duration"));
     }
 
-    private void setDuration(String duration) {
+    public void setDuration(String duration) {
         addAttr("duration", duration == null || duration.trim().equals("") ? 1 + "" : duration);
     }
 
@@ -70,7 +70,7 @@ public class CourseItem extends Item {
         return getValue("teacher");
     }
 
-    private void setTeacher(String teacher) {
+    public void setTeacher(String teacher) {
         addAttr("teacher", teacher == null ? "" : teacher);
     }
 
@@ -78,7 +78,7 @@ public class CourseItem extends Item {
         return getValue("remark");
     }
 
-    private void setRemark(String remark) {
+    public void setRemark(String remark) {
         addAttr("remark", remark == null ? "" : remark);
     }
 
