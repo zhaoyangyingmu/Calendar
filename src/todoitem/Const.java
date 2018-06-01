@@ -24,6 +24,12 @@ public class Const {
     public final static String WEEK_NAMES[] = new String[]{
             "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日",
     };
+    public final static String WAYS[] = new String[]{
+            "飞机", "火车", "大巴"
+    };
+    public final static String ANNIVERSARY_TYPES[] = new String[]{
+            "生日", "节日", "结婚纪念日"
+    };
 
     public final static float CELL_WIDTH = 75;
 
