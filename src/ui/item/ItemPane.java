@@ -19,6 +19,7 @@ import todoitem.ItemFactory;
 import todoitem.ItemManager;
 import todoitem.util.TimeStamp;
 import ui.pane.BodyPane;
+import ui.pane.PromptSetPane;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -164,7 +165,8 @@ public abstract class ItemPane extends GridPane {
 
         promptButton.setOnMouseClicked(event -> {
 //            Display.addPromptPopPane(item);
-            Display.addPromptPane(item);
+            PromptSetPane.getInstance().setItem(item);
+            Display.addPromptSetPane();
         });
         priorityChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             priority = newValue.intValue();
