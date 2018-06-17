@@ -22,15 +22,6 @@ public class TimeStamp implements Serializable {
         this.minute = minute;
     }
 
-
-    public static TimeStamp createStampDayStart(int year, int month, int day) {
-        return new TimeStamp(year, month, day, 0, 0);
-    }
-
-    public static TimeStamp createStampDayEnd(int year, int month, int day) {
-        return new TimeStamp(year, month, day, 23, 59);
-    }
-
     public int getYear() {
         return year;
     }
@@ -192,7 +183,6 @@ public class TimeStamp implements Serializable {
      * this - timeStamp
      * */
     public long delta(TimeStamp timeStamp) {
-
         return this.getMinutes() - timeStamp.getMinutes();
     }
 

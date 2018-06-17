@@ -19,6 +19,7 @@ import todoitem.Item;
 import todoitem.ItemManager;
 import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 import ui.Config;
 import ui.item.CommonItemPane;
 import ui.view.*;
@@ -118,8 +119,8 @@ public class BodyPane extends StackPane {
                 this.add(item.getItem(), i, 0);
             }
 
-            manager.setMonth(TimeStamp.createStampDayStart(calendars.get(0).getYear(), calendars.get(0).getMonth(), calendars.get(0).getDay()),
-                    TimeStamp.createStampDayEnd(calendars.get(curSize - 1).getYear(), calendars.get(curSize - 1).getMonth(), calendars.get(curSize - 1).getDay()));
+            manager.setMonth(TimeStampFactory.createStampDayStart(calendars.get(0).getYear(), calendars.get(0).getMonth(), calendars.get(0).getDay()),
+                    TimeStampFactory.createStampDayEnd(calendars.get(curSize - 1).getYear(), calendars.get(curSize - 1).getMonth(), calendars.get(curSize - 1).getDay()));
             int j;
             for (int i = 0; i < curSize; i++) {
                 j = i + lastSize;

@@ -12,6 +12,9 @@ public class TimeStampFactory {
         return new TimeStamp(year, month, day, 23, 59);
     }
 
+    /**
+     * 输入格式： yyyy-mm-dd hh:mm
+     * */
     public static TimeStamp createStampByString(String stampString) {
         String msg[] = stampString.trim().split(" ");
         try {

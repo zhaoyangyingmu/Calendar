@@ -445,4 +445,9 @@ public class ItemManagerOnMysqlTest {
 
     }
 
+    @Test
+    public void promptTest() {
+
+    }
+
 }

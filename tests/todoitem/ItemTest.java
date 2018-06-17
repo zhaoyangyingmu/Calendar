@@ -9,6 +9,7 @@ import todoitem.itemSub.AppointmentItem;
 import todoitem.itemSub.MeetingItem;
 import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -139,9 +140,9 @@ public class ItemTest {
         });
         for (int i = 0; i < list.size(); i++) {
             CalendarDate fromCal = new CalendarDate(((String) list.get(i)[0]));
-            TimeStamp from = TimeStamp.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
+            TimeStamp from = TimeStampFactory.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
             CalendarDate toCal = new CalendarDate(list.get(i)[1].toString());
-            TimeStamp to = TimeStamp.createStampDayEnd(toCal.getYear(), toCal.getMonth(), toCal.getDay());
+            TimeStamp to = TimeStampFactory.createStampDayEnd(toCal.getYear(), toCal.getMonth(), toCal.getDay());
             Item itemTmp = new OtherItem(from, to, list.get(i)[2].toString(),
                     ((Integer) list.get(i)[3]).intValue(), ((Integer) list.get(i)[4]).intValue(), ((Boolean) list.get(i)[5]).booleanValue(),
                     ((Boolean) list.get(i)[6]).booleanValue(), ((Long) list.get(i)[7]).longValue(),
@@ -171,9 +172,9 @@ public class ItemTest {
         });
         for (int i = 0; i < list.size(); i++) {
             CalendarDate fromCal = new CalendarDate(((String) list.get(i)[0]));
-            TimeStamp from = TimeStamp.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
+            TimeStamp from = TimeStampFactory.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
             CalendarDate toCal = new CalendarDate(list.get(i)[1].toString());
-            TimeStamp to = TimeStamp.createStampDayEnd(toCal.getYear(), toCal.getMonth(), toCal.getDay());
+            TimeStamp to = TimeStampFactory.createStampDayEnd(toCal.getYear(), toCal.getMonth(), toCal.getDay());
             Item itemTmp = new AnniversaryItem(from, to, list.get(i)[2].toString(), list.get(i)[3].toString(), ((String) list.get(i)[4]),
                     ((Integer) list.get(i)[5]).intValue(), ((Integer) list.get(i)[6]).intValue(), ((Boolean) list.get(i)[7]).booleanValue());
             assertEquals(itemTmp.getPriority(), ((Integer) list.get(i)[5]).intValue());

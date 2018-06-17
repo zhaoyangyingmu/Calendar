@@ -122,7 +122,6 @@ public class ItemManager {
     }
 
     public ArrayList<Item> getPrompts() {
-
         ArrayList<Item> resultList = new ArrayList<>();
 
         long currentMinute = System.currentTimeMillis() / (60 * 1000);
@@ -147,8 +146,8 @@ public class ItemManager {
     public ArrayList<Item> getCustomItems() {
         ArrayList<Item> customItems = getItems(mysql.queryByTime("", ""));
         CalendarDate today = DateUtil.getToday();
-        TimeStamp fr = TimeStamp.createStampDayStart(today.getYear(), today.getMonth(), today.getDay());
-        TimeStamp to = TimeStamp.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay());
+        TimeStamp fr = TimeStampFactory.createStampDayStart(today.getYear(), today.getMonth(), today.getDay());
+        TimeStamp to = TimeStampFactory.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay());
         for (Item item : customItems) {
             item.setFrom(fr);
             item.setTo(to);
@@ -162,8 +161,8 @@ public class ItemManager {
         ArrayList<Item> resList = new ArrayList<>();
         try {
             CalendarDate today = DateUtil.getToday();
-            Item temp = new OtherItem(TimeStamp.createStampDayStart(today.getYear(), today.getMonth(), today.getDay()),
-                    TimeStamp.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay()), "");
+            Item temp = new OtherItem(TimeStampFactory.createStampDayStart(today.getYear(), today.getMonth(), today.getDay()),
+                    TimeStampFactory.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay()), "");
             if (temp.isDuringTime(from, to)) {
                 resList.addAll(getCustomItems());
             }
