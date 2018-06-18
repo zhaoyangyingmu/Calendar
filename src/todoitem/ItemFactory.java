@@ -39,7 +39,7 @@ public class ItemFactory {
         attrs.putIfAbsent("priority" , "3");
         attrs.putIfAbsent("minutesAhead" , "60");
         attrs.putIfAbsent("isFather" , "1");
-        attrs.putIfAbsent("minutesDelta" , "5");
+        attrs.putIfAbsent("minuteDelta" , "5");
         attrs.putIfAbsent("showOnStage" , "1");
         attrs.putIfAbsent("fatherID" , "-1");
         attrs.putIfAbsent("startTime" , "1800-1-1 0:0");

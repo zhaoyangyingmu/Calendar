@@ -61,6 +61,7 @@ public class ItemManager {
 
     public static void destroy() {
         itemList.clear();
+        Mysql.getInstance().clear();
         // 用 itemManager = null 出问题，因为实际上外部可以保存这个单例，导致不是单例。
     }
 
@@ -233,8 +234,10 @@ public class ItemManager {
             if (item.getID() <= 0 && canOverlapped(item)) {
                 updateStatus(item);
                 int id = mysql.addSchedule(item.getAttrs());
-                if (id != 0)
+                if (id != 0) {
                     item.setID(id);
+                    itemList.add(item);
+                }
                 return id;
             } else if (item.getID() > 0) {
                 deleteItem(item);

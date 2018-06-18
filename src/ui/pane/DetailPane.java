@@ -1,7 +1,6 @@
 package ui.pane;
 
 import exception.DataErrorException;
-import io.ItemIO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -48,7 +47,6 @@ public class DetailPane extends GridPane {
             try {
                 tmpItem = new OtherItem(item.getFrom(), item.getTo(), "");
                 ItemManager.getInstance().addItem(tmpItem, false);
-//                ItemIO.output();
                 Display.removeDetailPane();
 //                Display.addEditPane(tmpItem, true);
 //                Display.removeDetailPane();
@@ -117,7 +115,6 @@ public class DetailPane extends GridPane {
             removeBt.setMinSize(80, 23);
             removeBt.setOnMouseClicked(event -> {
                 ItemManager.getInstance().deleteItem(item);
-//                ItemIO.output();
                 Display.removeDetailPane();
                 BodyPane.getInstance().refresh();
             });

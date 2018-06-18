@@ -13,6 +13,7 @@ import todoitem.util.TimeStampFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -180,6 +181,14 @@ public class ItemTest {
             assertEquals(itemTmp.getPriority(), ((Integer) list.get(i)[5]).intValue());
             assertEquals(itemTmp.getStatus(), ((Integer) list.get(i)[6]).intValue());
             assertEquals(itemTmp.isFather(), ((Boolean) list.get(i)[7]).booleanValue());
+        }
+    }
+
+    @Test
+    public void equalsTest() {
+        for(int i = 0 ; i < Item.ItemType.values().length ; i++) {
+            Item item = ItemFactory.getDefaultItemByType(Item.ItemType.values()[i] , new HashMap<String , String>());
+            assertEquals(item , item);
         }
     }
 

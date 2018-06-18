@@ -270,10 +270,17 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
     @Override
     public boolean equals(Object object) {
         Item item = (Item) object;
-        return ((getValue("startTime")).equals(item.getValue("startTime")))
-                && ((getValue("endTime")).equals(item.getValue("endTime")))
-                && (getValue("content").equals(item.getDetailText()))
-                && ((getValue("type")).equals(item.getItemType().getTypeStr()));
+        for (Iterator<Map.Entry<String , String>> it = attrsMap.entrySet().iterator(); it.hasNext() ; ) {
+            Map.Entry<String ,String> entry = it.next();
+            if(attrsMap.get(entry.getKey()) != item.attrsMap.get(entry.getKey())) {
+                return false;
+            }
+        }
+        return true;
+//        return ((getValue("startTime")).equals(item.getValue("startTime")))
+//                && ((getValue("endTime")).equals(item.getValue("endTime")))
+//                && (getValue("content").equals(item.getDetailText()))
+//                && ((getValue("type")).equals(item.getItemType().getTypeStr()));
     }
 
     @Override

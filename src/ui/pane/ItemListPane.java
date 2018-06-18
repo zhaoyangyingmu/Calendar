@@ -1,16 +1,12 @@
 package ui.pane;
 
 import exception.DataErrorException;
-import io.ItemIO;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -126,7 +122,6 @@ public class ItemListPane extends VBox {
             try {
                 item = new OtherItem(this.frTime, this.toTime, "");
                 ItemManager.getInstance().addItem(item, false);
-//                ItemIO.output();
                 stage.close();
 //                Display.addEditPane(item, true);
                 CommonItemPane.addPane(item);

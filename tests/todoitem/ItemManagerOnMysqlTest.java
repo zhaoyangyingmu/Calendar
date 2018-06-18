@@ -6,8 +6,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import todoitem.itemSub.*;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -446,8 +449,24 @@ public class ItemManagerOnMysqlTest {
     }
 
     @Test
-    public void promptTest() {
+    public void promptTest() throws DataErrorException {
+        List<Item> list = new ArrayList<>();
+        for (int i = 0; i < Item.ItemType.values().length; i++) {
+            list.add(ItemFactory.getDefaultItemByType(Item.ItemType.values()[i], new HashMap<String , String>()));
+        }
+        TimeStamp ts = new TimeStamp(2018 , 1 , 1, 0 , 0);
+        for (int i = 0 ; i < list.size() ; i++) {
+            Item item = list.get(i);
+            item.setFrom(ts);
+            item.setTo(TimeStampFactory.createOneHourLater(ts));
+            ts = TimeStampFactory.createOneDayLater(ts);
+            item.setPromptStatus(true);
+            ItemManager.getInstance().addItem(item , true);
+        }
+        List<Item> actualList = ItemManager.getInstance().getPrompts();
+        assertEquals(list.size(), actualList.size());
+        for (int i = 0; i < list.size(); i++) {
 
+        }
     }
-
 }
