@@ -122,11 +122,15 @@ public class ItemManager {
 
     }
 
-    public ArrayList<Item> getPrompts() {
+    public ArrayList<Item> getPrompts(long currentMilis) {
         ArrayList<Item> resultList = new ArrayList<>();
 
-        long currentMinute = System.currentTimeMillis() / (60 * 1000);
-        for (Item tmp : itemList) {
+        TimeStamp from = TimeStampFactory.createStampDayStart(1800 , 1, 1 );
+        TimeStamp to = TimeStampFactory.createStampDayEnd(2100 , 12,31);
+        long currentMinute = currentMilis / (60 * 1000);
+        List<Item> list = getItemsByStamp(from , to);
+        System.out.println("list.size() = " + list.size());
+        for (Item tmp : list) {
             if (tmp.getFrom() == null || tmp.getTo() == null) {
                 continue;
             }

@@ -224,7 +224,7 @@ public class Display extends Application {
             Runnable run = new Runnable() {
                 @Override
                 public void run() {
-                    ArrayList<Item> items = ItemManager.getInstance().getPrompts();
+                    ArrayList<Item> items = ItemManager.getInstance().getPrompts(System.currentTimeMillis());
                     for (Item item : items) {
                         if (item.showOnStage()) {
                             addPromptPane(item);

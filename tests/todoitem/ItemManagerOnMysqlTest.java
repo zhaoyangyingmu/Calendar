@@ -450,23 +450,43 @@ public class ItemManagerOnMysqlTest {
 
     @Test
     public void promptTest() throws DataErrorException {
+        ItemManager.destroy();
         List<Item> list = new ArrayList<>();
         for (int i = 0; i < Item.ItemType.values().length; i++) {
+            if (Item.ItemType.values()[i] == Item.ItemType.ANNIVERSARY) {
+                continue;
+            }
             list.add(ItemFactory.getDefaultItemByType(Item.ItemType.values()[i], new HashMap<String , String>()));
         }
-        TimeStamp ts = new TimeStamp(2018 , 1 , 1, 0 , 0);
+        long currentMilis = System.currentTimeMillis();
+        TimeStamp ts = TimeStampFactory.createStampByMiliseconds(currentMilis);
+        ts = TimeStampFactory.createOneHourLater(ts); // 一个小时后的事件，每个事件持续一个小时， 相隔两个小时。
         for (int i = 0 ; i < list.size() ; i++) {
             Item item = list.get(i);
             item.setFrom(ts);
             item.setTo(TimeStampFactory.createOneHourLater(ts));
-            ts = TimeStampFactory.createOneDayLater(ts);
+            ts = TimeStampFactory.createHoursLater(ts , 2);
             item.setPromptStatus(true);
-            ItemManager.getInstance().addItem(item , true);
+            item.setMinutesAhead(MinutesAheadType.ONEWEEK.getMinutes());
+            item.setMinutesDelta(MinutesDeltaType.FIVEMINUTES.getMinutes());
+            System.out.println(ItemManager.getInstance().addItem(item , true));
         }
-        List<Item> actualList = ItemManager.getInstance().getPrompts();
+        List<Item> actualList = ItemManager.getInstance().getPrompts(currentMilis);
+        for (Item item : actualList) {
+            System.out.println(item.getItemType().getTypeStr());
+        }
         assertEquals(list.size(), actualList.size());
+        boolean flag = false;
         for (int i = 0; i < list.size(); i++) {
-
+            for (int j = 0 ; j < actualList.size(); j++) {
+                   if(list.get(i).equals(actualList.get(j))) {
+                       flag = true;
+                       break;
+                   }
+            }
+            System.out.println("index == " + i);
+            assertTrue(flag);
+            flag = false;
         }
     }
 }

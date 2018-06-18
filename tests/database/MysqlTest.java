@@ -1,9 +1,15 @@
 package database;
 
+import exception.DataErrorException;
 import org.junit.Test;
+import todoitem.*;
 import todoitem.itemSub.*;
 import todoitem.util.TimeStamp;
 import todoitem.util.TimeStampFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -117,5 +123,30 @@ public class MysqlTest {
         }
 
 
+    }
+
+    @Test
+    public void clearTest() throws DataErrorException {
+        Mysql.getInstance().clear();
+        TimeStamp from = TimeStampFactory.createStampDayStart(1800 , 1 , 1);
+        TimeStamp to = TimeStampFactory.createStampDayEnd(2100 , 12 ,31);
+        List<Item> list = ItemManager.getInstance().getItemsByStamp(from , to);
+        assertEquals(0 , list.size());
+        List<Item> expectedList = new ArrayList<>();
+        for (int i = 0; i < Item.ItemType.values().length; i++) {
+            expectedList.add(ItemFactory.getDefaultItemByType(Item.ItemType.values()[i], new HashMap<String , String>()));
+        }
+        long currentMilis = System.currentTimeMillis();
+        TimeStamp ts = TimeStampFactory.createStampByMiliseconds(currentMilis);
+        ts = TimeStampFactory.createOneHourLater(ts); // 一个小时后的事件，每个事件持续一个小时， 相隔两个小时。
+        for (int i = 0 ; i < expectedList.size() ; i++) {
+            Item item = expectedList.get(i);
+            item.setFrom(ts);
+            item.setTo(TimeStampFactory.createOneHourLater(ts));
+            ts = TimeStampFactory.createHoursLater(ts , 2);
+            System.out.println(ItemManager.getInstance().addItem(item , true));
+        }
+        List<Item> actualList = ItemManager.getInstance().getItemsByStamp(from , to);
+        assertEquals(expectedList.size() , actualList.size());
     }
 }
