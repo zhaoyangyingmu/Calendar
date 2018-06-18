@@ -176,6 +176,13 @@ public class ItemListPane extends VBox {
                 checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         if (ItemManager.getInstance().setCompleted(memo)) {
+                            if (memo instanceof OtherItem && memo.getValue("hasTime").equals("0")) {
+                                try {
+                                    ItemManager.getInstance().addItem(memo, true);
+                                } catch (DataErrorException e) {
+                                    System.out.println();
+                                }
+                            }
                             memo.setStatus(Const.COMPLETED);
                             titleHBox.getChildren().remove(checkBox);
                             statusLabel.setText(Const.STATUS_STRING[Const.COMPLETED]);
