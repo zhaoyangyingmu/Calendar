@@ -74,7 +74,7 @@ public class IntegrationTestPart4 {
     public void finishedByOneClick() {
         // 还需要有状态的设置。
         Item meeting = ItemFactory.getDefaultItemByType(Item.ItemType.MEETING , new HashMap<>());
-        TimeStamp from = TimeStampFactory.createStampByMiliseconds(System.currentTimeMillis() - 60 * 1000 * 60);
+        TimeStamp from = TimeStampFactory.createStampByMiliseconds(System.currentTimeMillis() + 60 * 1000 * 60); // 往后推迟一个小时
         TimeStamp to = TimeStampFactory.createHoursLater(from , 24*7);
         meeting.setFrom(from);
         meeting.setTo(to);
@@ -93,7 +93,6 @@ public class IntegrationTestPart4 {
             ts = TimeStampFactory.createHoursLater(ts, 2);
             child.setIsFather(false);
             child.setFatherID(meeting.getID());
-            child.setStatus(i);
             try {
                 ItemManager.getInstance().addChildItem(child);
             } catch (DataErrorException e) {
@@ -105,20 +104,14 @@ public class IntegrationTestPart4 {
         // 完成父待办事项。
         ItemManager.getInstance().setCompleted(meeting);
         List<Item> childList = ItemManager.getInstance().getItemsByFatherItem(meeting);
-        int expectedFinishedNum = 3;
+        int expectedFinishedNum = 4;
         int actualFinishedNum = 0;
-        int expectedExpiredNum = 1;
-        int actualExpiredNum = 0;
         // 有点问题，3是过期，还是
         for (int i = 0; i < childList.size() ; i++) {
             if (childList.get(i).getStatus() == Const.COMPLETED) {
                 actualFinishedNum++;
             }
-            if (childList.get(i).getStatus() == Const.OVERDUE) {
-                actualExpiredNum++;
-            }
         }
-        assertEquals(expectedExpiredNum , actualExpiredNum);
         assertEquals(expectedFinishedNum , actualFinishedNum);
     }
 
