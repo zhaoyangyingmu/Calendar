@@ -184,6 +184,9 @@ public class Display extends Application {
         }
     }
 
+    public static boolean hasPromptSet() {
+        return hasPromptSet;
+    }
 
     /**
      * paint the days of whole current month on the frame with the given kernel.CalendarDate

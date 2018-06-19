@@ -236,6 +236,10 @@ public abstract class ItemPane extends GridPane {
             }
         });
         saveButton.setOnMouseClicked(event -> {
+            if (Display.hasPromptSet()) {
+                Display.showToast("请先保存提醒设置！");
+                return;
+            }
             save();
             if (item.isFather() && fromAdd)
                 addChildButton.setDisable(false);
@@ -264,8 +268,6 @@ public abstract class ItemPane extends GridPane {
         this.add(endHourChoiceBox, 2, 3);
         this.add(new Label(":"), 3, 3);
         this.add(endMinuteChoiceBox, 4, 3);
-
-
         row = 4;
     }
 

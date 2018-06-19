@@ -8,9 +8,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import kernel.Display;
 import todoitem.Item;
 import todoitem.ItemManager;
 import ui.pane.ItemListPane;
+import ui.view.DayItem;
 
 import java.util.ArrayList;
 
@@ -90,12 +92,17 @@ public class CommonItemPane extends VBox {
     }
 
     public static void close() {
-        if (primaryStage != null)
+        if (primaryStage != null) {
+            Display.removePromptSetPane();
             primaryStage.close();
+        }
     }
 
     public void setPrimaryStage(Stage stage) {
         primaryStage = stage;
+        stage.setOnCloseRequest(event -> {
+            Display.removePromptSetPane();
+        });
     }
 
     public static void addPane(Item item) {

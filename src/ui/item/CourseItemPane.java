@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import kernel.Display;
 import todoitem.Const;
 import todoitem.Item;
 import todoitem.ItemFactory;
