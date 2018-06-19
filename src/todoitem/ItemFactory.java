@@ -70,8 +70,8 @@ public class ItemFactory {
                     return new AnniversaryItem(attrs);
                 case TRAVEL:
                     attrs.putIfAbsent("remark" , "default remark");
-                    attrs.putIfAbsent("content" , "default content");
                     attrs.putIfAbsent("way" , "plane");
+                    //no content?
                     attrs.putIfAbsent("number" , "0");
                     attrs.putIfAbsent("place" , "default place");
                     return new TravelItem(attrs);
@@ -87,7 +87,7 @@ public class ItemFactory {
                     return new CourseItem(attrs);
                 case INTERVIEW:
                     attrs.putIfAbsent("remark" , "default remark");
-                    attrs.putIfAbsent("content" , "default content");
+//                    attrs.putIfAbsent("content" , "default content");
                     attrs.putIfAbsent("company" , "default company");
                     attrs.putIfAbsent("place" , "default place");
                     attrs.putIfAbsent("job" , "default job");

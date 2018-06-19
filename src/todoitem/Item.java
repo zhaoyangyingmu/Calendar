@@ -272,7 +272,10 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
         Item item = (Item) object;
         for (Iterator<Map.Entry<String , String>> it = attrsMap.entrySet().iterator(); it.hasNext() ; ) {
             Map.Entry<String ,String> entry = it.next();
-            if(attrsMap.get(entry.getKey()) != item.attrsMap.get(entry.getKey())) {
+            if (attrsMap.get(entry.getKey()).equals("year")) {
+                continue;
+            }
+            if(!attrsMap.get(entry.getKey()).equals(item.attrsMap.get(entry.getKey()))) {
                 return false;
             }
         }

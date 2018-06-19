@@ -147,6 +147,18 @@ public class MysqlTest {
             System.out.println(ItemManager.getInstance().addItem(item , true));
         }
         List<Item> actualList = ItemManager.getInstance().getItemsByStamp(from , to);
-        assertEquals(expectedList.size() , actualList.size());
+        int size = 0;
+        for (int i = 0 ; i < expectedList.size(); i++) {
+            if (expectedList.get(i).getItemType() == Item.ItemType.ANNIVERSARY) {
+                size += 100;
+                continue;
+            }
+            if (expectedList.get(i).getItemType() == Item.ItemType.COURSE) {
+                size += ((CourseItem)expectedList.get(i)).getDuration();
+                continue;
+            }
+            size++;
+        }
+        assertEquals(size, actualList.size());
     }
 }

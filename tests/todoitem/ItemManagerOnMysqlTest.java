@@ -4,6 +4,7 @@ import database.Mysql;
 import exception.DataErrorException;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import todoitem.itemSub.*;
 import todoitem.util.TimeStamp;
 import todoitem.util.TimeStampFactory;
@@ -453,9 +454,6 @@ public class ItemManagerOnMysqlTest {
         ItemManager.destroy();
         List<Item> list = new ArrayList<>();
         for (int i = 0; i < Item.ItemType.values().length; i++) {
-            if (Item.ItemType.values()[i] == Item.ItemType.ANNIVERSARY) {
-                continue;
-            }
             list.add(ItemFactory.getDefaultItemByType(Item.ItemType.values()[i], new HashMap<String , String>()));
         }
         long currentMilis = System.currentTimeMillis();
@@ -465,6 +463,10 @@ public class ItemManagerOnMysqlTest {
             Item item = list.get(i);
             item.setFrom(ts);
             item.setTo(TimeStampFactory.createOneHourLater(ts));
+            if (item.getItemType() == Item.ItemType.ANNIVERSARY) {
+                ((AnniversaryItem)item).setStartDay(ts);
+                item.setTo(ts);
+            }
             ts = TimeStampFactory.createHoursLater(ts , 2);
             item.setPromptStatus(true);
             item.setMinutesAhead(MinutesAheadType.ONEWEEK.getMinutes());
@@ -472,9 +474,6 @@ public class ItemManagerOnMysqlTest {
             System.out.println(ItemManager.getInstance().addItem(item , true));
         }
         List<Item> actualList = ItemManager.getInstance().getPrompts(currentMilis);
-        for (Item item : actualList) {
-            System.out.println(item.getItemType().getTypeStr());
-        }
         assertEquals(list.size(), actualList.size());
         boolean flag = false;
         for (int i = 0; i < list.size(); i++) {

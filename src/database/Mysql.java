@@ -692,6 +692,7 @@ public class Mysql {
                         hashMap.put("teacher", rs.getString("teacher"));
                         hashMap.put("remark", rs.getString("remark"));
                         hashMap.put("place", rs.getString("place"));
+                        hashMap.put("day", rs.getString("day"));
                         hashMap.put("startTime", calToStr(resultStartTime));
                         hashMap.put("endTime", calToStr(resultEndTime));
                         result.add(hashMap);

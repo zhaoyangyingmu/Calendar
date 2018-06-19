@@ -129,7 +129,6 @@ public class ItemManager {
         TimeStamp to = TimeStampFactory.createStampDayEnd(2100 , 12,31);
         long currentMinute = currentMilis / (60 * 1000);
         List<Item> list = getItemsByStamp(from , to);
-        System.out.println("list.size() = " + list.size());
         for (Item tmp : list) {
             if (tmp.getFrom() == null || tmp.getTo() == null) {
                 continue;
