@@ -4,10 +4,14 @@ import database.Mysql;
 import exception.DataErrorException;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import todoitem.itemSub.*;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -445,4 +449,43 @@ public class ItemManagerOnMysqlTest {
 
     }
 
+    @Test
+    public void promptTest() throws DataErrorException {
+        ItemManager.destroy();
+        List<Item> list = new ArrayList<>();
+        for (int i = 0; i < Item.ItemType.values().length; i++) {
+            list.add(ItemFactory.getDefaultItemByType(Item.ItemType.values()[i], new HashMap<String , String>()));
+        }
+        long currentMilis = System.currentTimeMillis();
+        TimeStamp ts = TimeStampFactory.createStampByMiliseconds(currentMilis);
+        ts = TimeStampFactory.createOneHourLater(ts); // 一个小时后的事件，每个事件持续一个小时， 相隔两个小时。
+        for (int i = 0 ; i < list.size() ; i++) {
+            Item item = list.get(i);
+            item.setFrom(ts);
+            item.setTo(TimeStampFactory.createOneHourLater(ts));
+            if (item.getItemType() == Item.ItemType.ANNIVERSARY) {
+                ((AnniversaryItem)item).setStartDay(ts);
+                item.setTo(ts);
+            }
+            ts = TimeStampFactory.createHoursLater(ts , 2);
+            item.setPromptStatus(true);
+            item.setMinutesAhead(MinutesAheadType.ONEWEEK.getMinutes());
+            item.setMinutesDelta(MinutesDeltaType.FIVEMINUTES.getMinutes());
+            System.out.println(ItemManager.getInstance().addItem(item , true));
+        }
+        List<Item> actualList = ItemManager.getInstance().getPrompts(currentMilis);
+        assertEquals(list.size(), actualList.size());
+        boolean flag = false;
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0 ; j < actualList.size(); j++) {
+                   if(list.get(i).equals(actualList.get(j))) {
+                       flag = true;
+                       break;
+                   }
+            }
+            System.out.println("index == " + i);
+            assertTrue(flag);
+            flag = false;
+        }
+    }
 }

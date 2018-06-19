@@ -1,7 +1,6 @@
 package ui.pane;
 
 import exception.DataErrorException;
-import io.ItemIO;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -316,7 +315,6 @@ public class EditPane extends GridPane {
 
                 ItemManager.getInstance().deleteItem(this.item);
                 ItemManager.getInstance().addItem(tmpItem, true);
-//                ItemIO.output();
                 Display.removeEditPane();
             } catch (DataErrorException e) {
                 Display.showToast(e.getMessage());
@@ -330,7 +328,6 @@ public class EditPane extends GridPane {
         cancelBt.setOnMouseClicked(event -> {
             if (fromAdd) {
                 ItemManager.getInstance().deleteItem(item);
-//                ItemIO.output();
             }
             Display.removeEditPane();
         });

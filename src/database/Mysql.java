@@ -271,11 +271,8 @@ public class Mysql {
             try {
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {    //next（）获取里面的内容
-                    HashMap hashMap = new HashMap();
+                    HashMap hashMap = getBasicMap(rs);
                     hashMap.put("content", rs.getString("content"));
-                    hashMap.put("startTime", rs.getString("startTime"));
-                    hashMap.put("endTime", rs.getString("endTime"));
-                    hashMap.put("scheduleID", rs.getString("scheduleID"));
                     result.add(hashMap);
                 }
             } catch (SQLException e) {
@@ -612,13 +609,10 @@ public class Mysql {
                 Calendar resultStartTime = strToCal(rs.getString("startTime"));
                 Calendar resultEndTime = strToCal(rs.getString("endTime"));
                 if ((before(resultStartTime, queryStartTime) && after(resultEndTime, queryStartTime)) || after(resultStartTime, queryStartTime) && before(resultStartTime, queryEndTime)) {
-                    HashMap hashMap = new HashMap();
+                    HashMap hashMap = getBasicMap(rs);
                     hashMap.put("place", rs.getString("place"));
                     hashMap.put("people", rs.getString("people"));
                     hashMap.put("content", rs.getString("content"));
-                    hashMap.put("startTime", rs.getString("startTime"));
-                    hashMap.put("endTime", rs.getString("endTime"));
-                    hashMap.put("scheduleID", rs.getString("scheduleID"));
                     result.add(hashMap);
                 }
             }
@@ -698,6 +692,7 @@ public class Mysql {
                         hashMap.put("teacher", rs.getString("teacher"));
                         hashMap.put("remark", rs.getString("remark"));
                         hashMap.put("place", rs.getString("place"));
+                        hashMap.put("day", rs.getString("day"));
                         hashMap.put("startTime", calToStr(resultStartTime));
                         hashMap.put("endTime", calToStr(resultEndTime));
                         result.add(hashMap);
@@ -721,11 +716,8 @@ public class Mysql {
                 Calendar resultStartTime = strToCal(rs.getString("startTime"));
                 Calendar resultEndTime = strToCal(rs.getString("endTime"));
                 if ((before(resultStartTime, queryStartTime) && after(resultEndTime, queryStartTime)) || after(resultStartTime, queryStartTime) && before(resultStartTime, queryEndTime)) {
-                    HashMap hashMap = new HashMap();
+                    HashMap hashMap = getBasicMap(rs);
                     hashMap.put("content", rs.getString("content"));
-                    hashMap.put("startTime", rs.getString("startTime"));
-                    hashMap.put("endTime", rs.getString("endTime"));
-                    hashMap.put("scheduleID", rs.getString("scheduleID"));
                     result.add(hashMap);
                 }
             }
@@ -743,14 +735,11 @@ public class Mysql {
                 Calendar resultStartTime = strToCal(rs.getString("startTime"));
                 Calendar resultEndTime = strToCal(rs.getString("endTime"));
                 if ((before(resultStartTime, queryStartTime) && after(resultEndTime, queryStartTime)) || after(resultStartTime, queryStartTime) && before(resultStartTime, queryEndTime)) {
-                    HashMap hashMap = new HashMap();
+                    HashMap hashMap = getBasicMap(rs);
                     hashMap.put("place", rs.getString("place"));
                     hashMap.put("company", rs.getString("company"));
                     hashMap.put("job", rs.getString("job"));
                     hashMap.put("remark", rs.getString("remark"));
-                    hashMap.put("startTime", rs.getString("startTime"));
-                    hashMap.put("endTime", rs.getString("endTime"));
-                    hashMap.put("scheduleID", rs.getString("scheduleID"));
                     result.add(hashMap);
                 }
             }
@@ -768,13 +757,10 @@ public class Mysql {
                 Calendar resultStartTime = strToCal(rs.getString("startTime"));
                 Calendar resultEndTime = strToCal(rs.getString("endTime"));
                 if ((before(resultStartTime, queryStartTime) && after(resultEndTime, queryStartTime)) || after(resultStartTime, queryStartTime) && before(resultStartTime, queryEndTime)) {
-                    HashMap hashMap = new HashMap();
+                    HashMap hashMap = getBasicMap(rs);
                     hashMap.put("place", rs.getString("place"));
                     hashMap.put("topic", rs.getString("topic"));
                     hashMap.put("content", rs.getString("content"));
-                    hashMap.put("startTime", rs.getString("startTime"));
-                    hashMap.put("endTime", rs.getString("endTime"));
-                    hashMap.put("scheduleID", rs.getString("scheduleID"));
                     result.add(hashMap);
                 }
             }
@@ -792,14 +778,11 @@ public class Mysql {
                 Calendar resultStartTime = strToCal(rs.getString("startTime"));
                 Calendar resultEndTime = strToCal(rs.getString("endTime"));
                 if ((before(resultStartTime, queryStartTime) && after(resultEndTime, queryStartTime)) || after(resultStartTime, queryStartTime) && before(resultStartTime, queryEndTime)) {
-                    HashMap hashMap = new HashMap();
+                    HashMap hashMap = getBasicMap(rs);
                     hashMap.put("place", rs.getString("place"));
                     hashMap.put("way", rs.getString("way"));
                     hashMap.put("number", rs.getString("number"));
                     hashMap.put("remark", rs.getString("remark"));
-                    hashMap.put("startTime", rs.getString("startTime"));
-                    hashMap.put("endTime", rs.getString("endTime"));
-                    hashMap.put("scheduleID", rs.getString("scheduleID"));
                     result.add(hashMap);
                 }
             }
@@ -830,5 +813,18 @@ public class Mysql {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * get basic information from resultSet.
+     * as follows:
+     * startTime, endTime and scheduleID
+     * */
+    private HashMap<String , String > getBasicMap(ResultSet rs) throws SQLException {
+        HashMap hashMap = new HashMap();
+        hashMap.put("startTime", rs.getString("startTime"));
+        hashMap.put("endTime", rs.getString("endTime"));
+        hashMap.put("scheduleID", rs.getString("scheduleID"));
+        return hashMap;
     }
 }

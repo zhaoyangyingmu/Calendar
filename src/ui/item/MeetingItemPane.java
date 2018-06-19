@@ -2,6 +2,7 @@ package ui.item;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import kernel.Display;
 import todoitem.Item;
 import todoitem.itemSub.MeetingItem;
 import todoitem.util.TimeStamp;

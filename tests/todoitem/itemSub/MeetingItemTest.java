@@ -4,6 +4,7 @@ import exception.InvalidDateException;
 import kernel.CalendarDate;
 import org.junit.Test;
 import todoitem.util.TimeStamp;
+import todoitem.util.TimeStampFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,9 +21,9 @@ public class MeetingItemTest {
         });
         for(int i = 0 ; i < list.size() ; i++) {
             CalendarDate fromCal = new CalendarDate((String)list.get(i)[0]);
-            TimeStamp from = TimeStamp.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
+            TimeStamp from = TimeStampFactory.createStampDayStart(fromCal.getYear(), fromCal.getMonth(), fromCal.getDay());
             CalendarDate toCal = new CalendarDate((String)list.get(i)[1]);
-            TimeStamp to = TimeStamp.createStampDayEnd(toCal.getYear(),toCal.getMonth(), toCal.getDay());
+            TimeStamp to = TimeStampFactory.createStampDayEnd(toCal.getYear(),toCal.getMonth(), toCal.getDay());
             MeetingItem tmpItem = new MeetingItem(from  , to ,(String)list.get(i)[2],(String)list.get(i)[3],(String)list.get(i)[4]);
             assertEquals(tmpItem.getDetailText(), (String)list.get(i)[2]);
             assertEquals(tmpItem.getTopic() , (String)list.get(i)[3]);

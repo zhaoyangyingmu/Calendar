@@ -61,6 +61,7 @@ public class ItemManager {
 
     public static void destroy() {
         itemList.clear();
+        Mysql.getInstance().clear();
         // 用 itemManager = null 出问题，因为实际上外部可以保存这个单例，导致不是单例。
     }
 
@@ -128,12 +129,14 @@ public class ItemManager {
 
     }
 
-    public ArrayList<Item> getPrompts() {
-
+    public ArrayList<Item> getPrompts(long currentMilis) {
         ArrayList<Item> resultList = new ArrayList<>();
 
-        long currentMinute = System.currentTimeMillis() / (60 * 1000);
-        for (Item tmp : itemList) {
+        TimeStamp from = TimeStampFactory.createStampDayStart(1800 , 1, 1 );
+        TimeStamp to = TimeStampFactory.createStampDayEnd(2100 , 12,31);
+        long currentMinute = currentMilis / (60 * 1000);
+        List<Item> list = getItemsByStamp(from , to);
+        for (Item tmp : list) {
             if (tmp.getFrom() == null || tmp.getTo() == null) {
                 continue;
             }
@@ -154,8 +157,8 @@ public class ItemManager {
     public ArrayList<Item> getCustomItems() {
         ArrayList<Item> customItems = getItems(mysql.queryByTime("", ""));
         CalendarDate today = DateUtil.getToday();
-        TimeStamp fr = TimeStamp.createStampDayStart(today.getYear(), today.getMonth(), today.getDay());
-        TimeStamp to = TimeStamp.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay());
+        TimeStamp fr = TimeStampFactory.createStampDayStart(today.getYear(), today.getMonth(), today.getDay());
+        TimeStamp to = TimeStampFactory.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay());
         for (Item item : customItems) {
             item.setFrom(fr);
             item.setTo(to);
@@ -169,8 +172,8 @@ public class ItemManager {
         ArrayList<Item> resList = new ArrayList<>();
         try {
             CalendarDate today = DateUtil.getToday();
-            Item temp = new OtherItem(TimeStamp.createStampDayStart(today.getYear(), today.getMonth(), today.getDay()),
-                    TimeStamp.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay()), "");
+            Item temp = new OtherItem(TimeStampFactory.createStampDayStart(today.getYear(), today.getMonth(), today.getDay()),
+                    TimeStampFactory.createStampDayEnd(today.getYear(), today.getMonth(), today.getDay()), "");
             if (temp.isDuringTime(from, to)) {
                 resList.addAll(getCustomItems());
             }
@@ -241,8 +244,10 @@ public class ItemManager {
             if (item.getID() <= 0 && canOverlapped(item)) {
                 updateStatus(item);
                 int id = mysql.addSchedule(item.getAttrs());
-                if (id != 0)
+                if (id != 0) {
                     item.setID(id);
+                    itemList.add(item);
+                }
                 return id;
             } else if (item.getID() > 0) {
                 deleteItem(item);

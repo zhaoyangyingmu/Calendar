@@ -19,7 +19,7 @@ public class DayManager {
         workdays = new ArrayList<Calendar>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("holiday.json"));// 读取原始json文件
-            String line, s, ws;
+            String line, s;
             s = "";
             while ((line = br.readLine()) != null) {
                 s += line;
@@ -52,6 +52,11 @@ public class DayManager {
         }
     }
 
+
+    /**
+     * 调用日期格式必须是 yyyy-mm-dd.
+     * the date format should be yyyy-mm-dd.
+     * */
     public static DayType isFestival(String str) {
         Calendar cal = Holiday.strToCal(str);
         for (int i = 0; i < dayManager.holidays.size(); i++)
