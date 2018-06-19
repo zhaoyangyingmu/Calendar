@@ -275,6 +275,15 @@ public abstract class Item implements Serializable, ItemInterface, AttributeMap,
             if (attrsMap.get(entry.getKey()).equals("year")) {
                 continue;
             }
+            if (attrsMap.get(entry.getKey()).equals("isFather")) {
+                continue;
+            }
+            if (attrsMap.get(entry.getKey()).equals("fatherID")) {
+                continue;
+            }
+            if (attrsMap.get(entry.getKey()).equals("scheduleID")) {
+                continue;
+            }
             if(!attrsMap.get(entry.getKey()).equals(item.attrsMap.get(entry.getKey()))) {
                 return false;
             }
