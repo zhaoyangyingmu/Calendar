@@ -10,6 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kernel.Display;
@@ -20,6 +21,7 @@ import todoitem.itemSub.OtherItem;
 import todoitem.util.TimeStamp;
 import ui.item.CommonItemPane;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 
@@ -171,7 +173,7 @@ public class ItemListPane extends VBox {
             titleHBox.getChildren().addAll(typeLabel, statusLabel);
             titleHBox.setAlignment(Pos.CENTER_LEFT);
             titleHBox.setPadding(insets);
-            if (memo.getStatus() == Const.IN_PROGRESS) {
+            if (memo.getStatus() == Const.IN_PROGRESS || (memo.isFather() && memo.getStatus() != Const.COMPLETED)) {
                 titleHBox.getChildren().add(checkBox);
                 checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
@@ -202,6 +204,7 @@ public class ItemListPane extends VBox {
                 Stage newStage = new Stage();
                 newStage.setScene(new Scene(commonItemPane));
                 commonItemPane.setPrimaryStage(newStage);
+                newStage.initModality(Modality.APPLICATION_MODAL);
                 newStage.setResizable(false);
                 newStage.show();
             });

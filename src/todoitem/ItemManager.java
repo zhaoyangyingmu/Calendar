@@ -71,20 +71,27 @@ public class ItemManager {
      * @param item 待更新的待办事项对象
      */
     public boolean setCompleted(Item item) {
-        if (item.getStatus() == Const.IN_PROGRESS) {//在进行中的待办事项才可以设置为完成状态
-            ArrayList<HashMap<String, String>> childrenMsg = new ArrayList<>();
-            if (!item.isFather()) {
-                if (mysql.updateState(item.getID(), Const.COMPLETED) != Const.COMPLETED) {//没更新成功
-                    return false;
-                } else item.setStatus(Const.COMPLETED);
-                childrenMsg = mysql.queryByFatherID(item.getFatherID());
+        if (item.isFather()) {//父待办事项一键完成
+            ArrayList<Item> childrenItems = getItems(mysql.queryByFatherID(item.getID()));
+            boolean allCompleted = true;
+            for (Item child : childrenItems) {
+                if (child.getStatus() != Const.OVERDUE) {
+                    allCompleted &= mysql.updateState(child.getID(), Const.COMPLETED) == Const.COMPLETED;
+                }
             }
+            return allCompleted && mysql.updateState(item.getID(), Const.COMPLETED) == Const.COMPLETED;
+        }
+        if (item.getStatus() == Const.IN_PROGRESS) {//在进行中的待办事项才可以设置为完成状态
+            if (mysql.updateState(item.getID(), Const.COMPLETED) != Const.COMPLETED) {//没更新成功
+                return false;
+            } else item.setStatus(Const.COMPLETED);
+            ArrayList<HashMap<String, String>> childrenMsg = mysql.queryByFatherID(item.getFatherID());
             boolean allCompleted = true;
             for (HashMap<String, String> msg : childrenMsg) {
                 allCompleted &= (Integer.parseInt(msg.get("status")) == Const.COMPLETED);
             }
             if (allCompleted)//所有子待办事项都完成后，更新父待办事项
-                return mysql.updateState(item.isFather() ? item.getID() : item.getFatherID(), Const.COMPLETED) == Const.COMPLETED;
+                return mysql.updateState(item.getFatherID(), Const.COMPLETED) == Const.COMPLETED;
         }
         return item.getStatus() == Const.COMPLETED;
     }
@@ -365,11 +372,15 @@ public class ItemManager {
         *其余类型待办事项可以时间重叠
         *例子：会议不能和会议时间重叠，会议不能和约会时间重叠。会议不能和纪念日的子待办事项-约会时间重叠。
         **/
-        ArrayList<HashMap<String, String>> itemsMsg = mysql.queryByTime(item.getFrom().toString(), item.getTo().toString());
-        if (itemsMsg != null && overlappedTypes.contains(item.getItemType().getTypeStr()))
-            for (HashMap<String, String> itemMsg : itemsMsg) {
-                if (overlappedTypes.contains(itemMsg.get("type")))
-                    throw new DataErrorException("与其他待办事项时间重叠！\n会议，课程，约会，面试，旅程等类型不允许时间重叠！");
+        ArrayList<Item> children = getItems(mysql.queryByTime(item.getFrom().toString(), item.getTo().toString()));
+        if (children != null && overlappedTypes.contains(item.getItemType().getTypeStr()))
+            for (Item child : children) {
+                if (overlappedTypes.contains(child.getItemType().getTypeStr())) {
+                    if (child.equals(item)) {//如果完全相等，则默认不添加、不提示
+                        return false;
+                    } else
+                        throw new DataErrorException("与其他待办事项时间重叠！\n会议，课程，约会，面试，旅程等类型不允许时间重叠！");
+                }
             }
         return true;
     }
