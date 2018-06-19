@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kernel.CalendarDate;
 import kernel.DateUtil;
@@ -187,6 +188,7 @@ public class BodyPane extends StackPane {
                         Stage stage = new Stage();
                         stage.setScene(new Scene(pane));
                         pane.setPrimaryStage(stage);
+                        stage.initModality(Modality.APPLICATION_MODAL);
                         stage.setResizable(false);
                         stage.show();
                     } catch (DataErrorException e) {

@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kernel.Display;
 import todoitem.Item;
@@ -132,6 +133,7 @@ public class DetailPane extends GridPane {
                 Stage stage = new Stage();
                 stage.setScene(new Scene(pane));
                 pane.setPrimaryStage(stage);
+                stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setResizable(false);
                 stage.show();
             });

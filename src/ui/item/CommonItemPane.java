@@ -28,7 +28,6 @@ public class CommonItemPane extends VBox {
         this.fromAdd = fromAdd;
         item = temp;
         manager = ItemManager.getInstance();
-        primaryStage = null;
         init();
     }
 
@@ -51,7 +50,7 @@ public class CommonItemPane extends VBox {
             hBox.setSpacing(20);
             hBox.setPadding(insets);
             scrollPane.setPadding(new Insets(5, 0, 0, 5));
-            scrollPane.setMinSize(300,60);
+            scrollPane.setMinSize(300, 60);
             this.getChildren().add(hBox);
             ArrayList<Item> children = manager.getItemsByFatherItem(item);
             if (children.isEmpty()) {
@@ -100,11 +99,10 @@ public class CommonItemPane extends VBox {
 
     public static void addPane(Item item) {
         CommonItemPane pane = new CommonItemPane(item, true);
-        Stage stage = new Stage();
-        pane.setPrimaryStage(stage);
-        stage.setScene(new Scene(pane));
-        stage.setResizable(false);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
+        if (primaryStage != null) {
+            primaryStage.close();
+            primaryStage.setScene(new Scene(pane));
+            primaryStage.show();
+        }
     }
 }
