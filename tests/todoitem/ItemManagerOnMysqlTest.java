@@ -85,10 +85,11 @@ public class ItemManagerOnMysqlTest {
                     new TimeStamp(2022, 12, 31, 23, 59)
             );
             for (Item item : items) {
-                if (item.getStatus() == Const.OVERDUE || item.getStatus() == Const.BEFORE_BEGINNING
-                        || item.getStatus() == Const.COMPLETED) { //未开始或已过期或已完成
+                if (item.getStatus() == Const.OVERDUE || item.getStatus() == Const.BEFORE_BEGINNING) { //未开始或已过期或已完成
+                    assertTrue(manager.setCompleted(item));
+                } else if (item.getStatus() == Const.COMPLETED) {
                     assertFalse(manager.setCompleted(item));
-                } else if (item.getDetailText().equals("进行中，含子待办事项")) {//进行中，含子待办事项
+                }else if (item.getDetailText().equals("进行中，含子待办事项")) {//进行中，含子待办事项
                     //添加子待办事项
                     Item item1 = new OtherItem(new TimeStamp(2018, 5, 20, 6, 0),
                             new TimeStamp(2019, 5, 20, 0, 0),

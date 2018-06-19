@@ -23,13 +23,10 @@ public class IntegrationTestPart4 {
     public void setUp() {
         ItemManager.destroy();
     }
-
     @After
     public void tearDown() {
         ItemManager.destroy();
     }
-
-
     @Test
     public void addTwiceTest() {
         List<Item> list = getTestList();
@@ -69,7 +66,6 @@ public class IntegrationTestPart4 {
             assertEquals(expectedNum , actualNum);
         }
     }
-
     @Test
     public void finishedByOneClick() {
         // 还需要有状态的设置。
@@ -133,6 +129,4 @@ public class IntegrationTestPart4 {
         }
         return list;
     }
-
-
 }
