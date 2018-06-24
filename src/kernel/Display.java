@@ -1,5 +1,6 @@
 package kernel;
 
+import database.Mysql;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -87,6 +88,7 @@ public class Display extends Application {
         stage.show();
         stage.setOnCloseRequest(event -> {
             isClosed = true;
+            Mysql.getInstance().close();
         });
         setPrompt();
     }

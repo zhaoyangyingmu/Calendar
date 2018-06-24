@@ -171,6 +171,7 @@ public class Mysql {
                 hashMap.put("minuteDelta", rs.getString("minuteDelta"));
             }
 
+            rs.close();
             String type = hashMap.get("type");
             switch (type) {
                 case "DATE":
@@ -255,6 +256,7 @@ public class Mysql {
                     }
                     break;
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -275,6 +277,7 @@ public class Mysql {
                     hashMap.put("content", rs.getString("content"));
                     result.add(hashMap);
                 }
+                rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -284,8 +287,7 @@ public class Mysql {
         ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         Calendar queryStartTime = strToCal(startTime);//查询开始时间
         Calendar queryEndTime = strToCal(endTime);//查询结束时间
-        String sql = "";
-        ResultSet rs = null;     //将sql语句传至数据库，返回的值为一个字符集用一个变量接收
+        String sql = "";     //将sql语句传至数据库，返回的值为一个字符集用一个变量接收
         //查询travel表
         queryTravel(queryStartTime, queryEndTime, result);
         //查询meeting表
@@ -325,6 +327,7 @@ public class Mysql {
                 hashMap.put("minuteDelta", rs.getString("minuteDelta"));
                 result.add(hashMap);
             }
+            rs.close();
             for (int i = 0; i < result.size(); i++) {
                 String scheduleID = result.get(i).get("ID");
                 String type = result.get(i).get("type");
@@ -411,6 +414,7 @@ public class Mysql {
                         }
                         break;
                 }
+                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -427,6 +431,7 @@ public class Mysql {
             while (rs.next()) {    //next（）获取里面的内容
                 type = rs.getString("type");
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -490,7 +495,9 @@ public class Mysql {
         String sql = "SELECT ID FROM schedule ORDER BY ID DESC";
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
-        return rs.getString("ID");
+        String id = rs.getString("ID");
+        rs.close();
+        return id;
     }
 
     public void close() {
@@ -587,6 +594,7 @@ public class Mysql {
                     result.get(i).put("showOnStage", rs.getString("showOnStage"));
                     result.get(i).put("minuteDelta", rs.getString("minuteDelta"));
                 }
+                rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -616,6 +624,7 @@ public class Mysql {
                     result.add(hashMap);
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -656,6 +665,7 @@ public class Mysql {
                     }
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -699,6 +709,7 @@ public class Mysql {
                     }
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -721,6 +732,7 @@ public class Mysql {
                     result.add(hashMap);
                 }
             }
+            rs.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
@@ -743,6 +755,7 @@ public class Mysql {
                     result.add(hashMap);
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -764,6 +777,7 @@ public class Mysql {
                     result.add(hashMap);
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -786,6 +800,7 @@ public class Mysql {
                     result.add(hashMap);
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
