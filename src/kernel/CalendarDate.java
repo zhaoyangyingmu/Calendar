@@ -83,6 +83,9 @@ public class CalendarDate {
 
     @Override
     public boolean equals(Object date) {
+        if ( !(date instanceof CalendarDate) ) {
+            return false;
+        }
         int year = ((CalendarDate) date).getYear();
         int month = ((CalendarDate) date).getMonth();
         int day = ((CalendarDate) date).getDay();
@@ -90,5 +93,12 @@ public class CalendarDate {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        // int 2^32 ==
+        int hashCode = (year * 7013) + (month * 967) + (day * 83);
+        return hashCode;
     }
 }
