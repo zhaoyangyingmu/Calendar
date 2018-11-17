@@ -1,6 +1,6 @@
 # Calendar System
 
-This is the calendar system made by 609 Group, which consist of zhaoyangyingmu, Oops, Chen Tao and Chenleiyuan.
+This is the calendar system made by 609 Group, which consist of zhaoyangyingmu(team leader: Dongfang Xie), Oops(Fudan JianGe), Chen Tao and Chenleiyuan.
 You can use this system to record the items you are going to do and set the prompt if you want. 
 The functions are as follows:
 
