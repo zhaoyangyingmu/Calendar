@@ -12,4 +12,6 @@ The functions are as follows:
 * edit the information about the items you added.
 * set prompt if you want to get prompt information.
 
-## Wish you have a good time use this calendar.
+It is a large system consisting of over ten thousand lines of code. It takes the group a month to build and improve it and we have used all our knowledge to build up this program. Some java library advantages are exploited, such as ScheduledExecutorService aimed at multi-thread job, HashMap to add several attributes more easily. In addition, we also used several design pattern as decorator pattern and factory pattern. This system is built up step by step from interface design to group work and final test. Thanks for the hardworking of my group partner!
+
+## Wish you have a good time using this calendar!
